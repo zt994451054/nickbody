@@ -32,13 +32,12 @@
 
 ## 4. 新增三方依赖
 
-本版本仅引入一个外部三方库，用以驱动宠物的骨骼动画与状态机：
+本版本**彻底实现了零第三方动画运行框架依赖 (Zero Third-Party Animation Runtime Dependency)**。
 
-| 依赖名称 | 最低版本 | 许可证 | 用途 | 引入原因 |
-|:---|:---|:---|:---|:---|
-| **RiveRuntime (macOS)** | Latest Stable | MIT | 渲染宠物的 `.riv` 骨骼矢量动画并驱动状态机。 | 跨平台骨骼动画标准，GPU 渲染性能极高，内置完备的逻辑状态机。 |
+宠物的状态机渲染将完全基于**原生 SwiftUI Image + 视口位移切片**。这消除了 C++ Rive 运行时在 macOS 常驻后台时的额外发热风险，提高了长效运行的稳定性，并将最终生成的 App 体积缩减了约 85%。
 
 ---
+
 
 ## 5. 配置变更需求
 
@@ -118,7 +117,65 @@
     2.  **对齐环收紧逻辑**：计算影子关节与目标关键点的空间距离。到位比例从 0 渐变至 1.0。当大于 `0.9` 且保持不变时，触发 SwiftUI 靶心圆环向圆心合并，开启 3 秒的 `HoldingTimer`。
     3.  3 秒倒计时结束，调用 `LocalDBManager` 累计当前动作得分，并通知 UI 触发 `current_action_id` 递增进行动作切换。
 
-### 7.5 养成持久化与内购 (SwiftData & StoreKit 2)
+### 7.5 桌面宠物切帧渲染与视线随动模块 (PetSpriteRenderer)
+*   **物理图集切分机制**：
+    宠物动画渲染基于 `1536x2288` 图集。在 SwiftUI 中，通过对 Image 组件添加容器裁剪（`.clipped()`）和背景偏移定位，动态计算帧渲染：
+    ```swift
+    struct PetSpriteView: View {
+        let spritesheet: NSImage // WebP/PNG 透明大图
+        @State var currentFrame: Int = 0 // 0 到 7
+        @State var currentRow: Int = 0  // 0 到 10
+
+        var body: some View {
+            Image(nsImage: spritesheet)
+                .resizable()
+                .aspectRatio(contentMode: .none)
+                // 强制将图片拉大为 11行 x 8列 的物理规格
+                .frame(width: 1536, height: 2288, alignment: .topLeading)
+                // 通过偏移将目标单元格 (Cell) 对齐至视口左上角
+                .offset(x: -CGFloat(currentFrame) * 192, y: -CGFloat(currentRow) * 208)
+                // 以 192x208 规格进行物理裁剪，形成独立的动画视口
+                .frame(width: 192, height: 208)
+                .clipped()
+        }
+    }
+    ```
+*   **16 方向眼珠/视线随动数学公式 (Look-Vector Mathematics)**：
+    1. 获取鼠标在屏幕的全局绝对坐标 $M(x, y)$。
+    2. 获取桌面宠物窗口中心点的绝对坐标 $P(x, y)$。
+    3. 计算从宠物指向光标的角度向量：
+       $$\theta = \operatorname{atan2}(M.y - P.y, M.x - P.x)$$
+    4. 将弧度角转换为顺时针度数，并将朝上定义为 $0^\circ$。
+    5. 通过除以 $22.5^\circ$ 进行四舍五入并取模，计算出 0 到 15 的盯人帧偏移量 `lookIndex`：
+       $$\text{lookIndex} = \left( \operatorname{round}\left( \frac{\theta_{\text{degrees}}}{22.5} \right) \right) \bmod 16$$
+    6. **帧映射规则**：
+       * 若 `lookIndex` 位于 `0...7` (顺时针 0° 到 157.5°)：映射至 **Row 9** 的第 `lookIndex` 帧。
+       * 若 `lookIndex` 位于 `8...15` (顺时针 180° 到 337.5°)：映射至 **Row 10** 的第 `lookIndex - 8` 帧。
+       * 若光标静止或离开窗口敏感盲区，则无延迟平滑回退至 Row 0 的 `idle` 待机呼吸状态。
+
+*   **NSPanel 浮动窗口穿透与避让配置**：
+    创建类 `PetNSPanel` 继承自 `NSPanel`，配置如下物理参数：
+    ```swift
+    class PetNSPanel: NSPanel {
+        init() {
+            super.init(
+                contentRect: NSRect(x: 0, y: 0, width: 240, height: 240),
+                styleMask: [.borderless, .nonactivatingPanel, .hudWindow],
+                backing: .buffered,
+                defer: false
+            )
+            self.isOpaque = false
+            self.backgroundColor = .clear // 保证边缘绝对透明
+            self.hasShadow = false // 禁用默认系统直角阴影，改用WebP自身半透明影
+            self.level = .floating // 置顶悬浮
+            self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary] // 跨屏幕展示
+            self.isMovableByWindowBackground = false // 禁用系统默认拖动，改用我们的物理鼠标Drag
+        }
+    }
+    ```
+
+### 7.6 养成持久化与内购 (SwiftData & StoreKit 2)
+
 *   **持久化**：  
     每次运动结算后，调用 `ModelContext` 向本地 SwiftData 写入一条新的 `WorkoutSession` 和 `HealthScore` 数据。
 *   **StoreKit 2 会员控制**：
