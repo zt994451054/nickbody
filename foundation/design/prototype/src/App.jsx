@@ -3,6 +3,12 @@ import Portal from './pages/Portal';
 import WebHome from './web/WebHome';
 import MobileHome from './mobile/MobileHome';
 import DesktopHome from './desktop/DesktopHome';
+import PetWidget from './desktop/PetWidget';
+import InviteCard from './desktop/InviteCard';
+import WorkoutSession from './desktop/WorkoutSession';
+import StatsPanel from './desktop/StatsPanel';
+import OnboardingFlow from './desktop/OnboardingFlow';
+import SettingsPanel from './desktop/SettingsPanel';
 
 function NotFound() {
   return (
@@ -29,6 +35,12 @@ export default function App() {
       {/* 桌面端 */}
       <Route path="/desktop" element={<Navigate to="/desktop/home" replace />} />
       <Route path="/desktop/home" element={<DesktopHome />} />
+      <Route path="/desktop/pet" element={<PetWidget />} />
+      <Route path="/desktop/invite" element={<InviteCard />} />
+      <Route path="/desktop/workout" element={<WorkoutSession />} />
+      <Route path="/desktop/stats" element={<StatsPanel />} />
+      <Route path="/desktop/onboarding" element={<OnboardingFlow />} />
+      <Route path="/desktop/settings" element={<SettingsPanel />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

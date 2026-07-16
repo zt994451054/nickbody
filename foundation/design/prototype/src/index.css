@@ -1,0 +1,56 @@
+:root {
+  /* Google Stitch Inspired Design Tokens */
+  --sys-color-primary: #2FBF98;
+  --sys-color-primary-hover: #27A583;
+  --sys-color-on-primary: #FFFFFF;
+  --sys-color-background: #FAF6EF;
+  --sys-color-surface: #F4F1EA;
+  --sys-color-surface-border: #EDE9E0;
+  --sys-color-text-primary: #2F2A33;
+  --sys-color-text-secondary: #6B657A;
+  --sys-color-text-disabled: #B9B3C2;
+  --sys-color-success: #2FBF98;
+  --sys-color-warning: #FFC948;
+  --sys-color-error: #FF6B5E;
+  --sys-color-accent: #FF8A70;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 14px rgba(47,42,51,0.08);
+  --shadow-lg: 0 12px 36px rgba(47,42,51,0.12);
+  --shadow-xl: 0 20px 60px rgba(47,42,51,0.18);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--sys-color-background);
+  color: var(--sys-color-text-primary);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
