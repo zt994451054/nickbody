@@ -5,13 +5,13 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-07-14
+> 最后更新：2026-07-16
 
 ---
 
 ## 架构概述
 
-**纯端侧单机架构，V1 零后端。** macOS 原生应用（Swift + SwiftUI），menu bar 常驻 + 透明悬浮窗承载宠物；摄像头姿态识别使用系统内置 Apple Vision framework（100% 端侧，帧仅内存处理不落盘不上传）；宠物动画由 Rive 状态机驱动；数据 SwiftData 本地存储；订阅走 StoreKit 2 本地验证。核心工程原则：姿态识别以 `PoseProvider` 协议抽象，评分引擎只消费「角度+关键点」，为未来跨平台换模型（MediaPipe）预留边界。
+**纯端侧单机架构，V1 零后端。** macOS 原生应用（Swift + SwiftUI），menu bar 常驻 + 透明悬浮窗承载宠物；摄像头姿态识别使用系统内置 Apple Vision framework（100% 端侧，帧仅内存处理不落盘不上传）；宠物动画由原生 SwiftUI 精灵图集（8×11 Spritesheet）切帧状态机驱动，零第三方动画运行时；数据 SwiftData 本地存储；订阅走 StoreKit 2 本地验证。核心工程原则：姿态识别以 `PoseProvider` 协议抽象，评分引擎只消费「角度+关键点」，为未来跨平台换模型（MediaPipe）预留边界。
 
 ---
 
@@ -23,7 +23,7 @@
 | 应用形态 | menu bar app（LSUIElement）+ NSPanel 透明无边框悬浮窗 | — | 桌面宠物常驻形态 |
 | 姿态识别 | Apple Vision framework（主选）| 系统内置 | FaceObservation yaw/pitch/roll 直接对应转头/点头/歪头；VNDetectHumanBodyPoseRequest 肩部关键点；自动调度神经引擎，功耗最低；详见 ADR-001 |
 | 姿态识别备选 | RTMPose/MoveNet 转 CoreML | Apache 2.0 | M1 bake-off 不达标时启用；V2 跨平台用 MediaPipe |
-| 宠物渲染 | Rive macOS Runtime | 最新稳定版 | 骨骼动画+状态机，一套骨骼全段位复用 |
+| 宠物渲染 | 原生 SwiftUI 精灵图集切帧（8×11 Spritesheet，透明 WebP）| 系统内置 | 视口裁剪切帧+状态机，零三方运行时，消除常驻发热；单帧 192×208；详见 ADR-002 |
 | 数据库 | SwiftData（本地）| 系统内置 | V1 无账号无云同步 |
 | 缓存 | 无 | — | 单机无需 |
 | 消息队列 | 无 | — | 单机无需 |
@@ -43,7 +43,7 @@ graph TB
   subgraph macOS App
     subgraph UI 层
       MB[Menu Bar 状态项]
-      PW[宠物悬浮窗 NSPanel + Rive]
+      PW[宠物悬浮窗 NSPanel + 精灵图切帧]
       EW[跟练窗口 SwiftUI]
       SW[统计/设置窗口]
     end
@@ -76,7 +76,7 @@ graph TB
 
 | 服务/模块 | 职责 | 技术栈 | 对应工程仓库 |
 |---------|------|--------|-----------|
-| macos-app | 全部产品功能（单工程）| Swift/SwiftUI + Vision + Rive + SwiftData + StoreKit 2 | engineering/workspace/macos-app（待创建）|
+| macos-app | 全部产品功能（单工程）| Swift/SwiftUI + Vision + 精灵图渲染 + SwiftData + StoreKit 2 | [nickbody-macos](https://github.com/zt994451054/nickbody-macos) |
 | 官网 | 落地页 + 隐私说明 + MAS 导流 | 静态站（待定，如 Astro）| 待创建 |
 
 ---
@@ -118,7 +118,7 @@ graph TB
 | 传输安全 | 无网络传输（除 StoreKit/官网）| — |
 | 数据加密 | SwiftData 本地容器（系统沙盒保护）| 无敏感个人信息 |
 | 数据合规 | GDPR/CCPA 天然合规（数据不出设备）| App Store 隐私标签如实申报 |
-| 依赖安全 | 三方依赖仅 Rive Runtime，锁定版本 | 最小依赖面 |
+| 依赖安全 | 零第三方运行时依赖（全部使用系统框架）| 最小依赖面 |
 
 ---
 
@@ -129,6 +129,7 @@ graph TB
 | 决策编号 | 决策主题 | 状态 | 引入版本 |
 |---------|---------|------|---------|
 | [ADR-001](./decisions/ADR-001-pose-estimation.md) | 姿态识别选型：Apple Vision framework vs 开源模型 | 已接受 | v1.0.0 |
+| [ADR-002](./decisions/ADR-002-sprite-animation-replace-rive.md) | 宠物动画渲染选型：原生精灵图集切帧替代 Rive Runtime | 已接受 | v1.0.0 |
 
 ---
 

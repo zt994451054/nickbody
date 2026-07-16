@@ -1,10 +1,10 @@
-# v1.0.0 本地接口与 Rive 状态机控制协议设计
+# v1.0.0 本地接口与精灵图状态机控制协议设计
 
 > **技术方案**：[tech-solution.md](./tech-solution.md)  
 > **数据持久化设计**：[db-design.md](./db-design.md)
 
 本产品为 **macOS 纯端侧单机项目**，无任何与云端网络服务器的 HTTP API 交互。  
-为了实现软件工程的松耦合，本接口设计定义为**应用内本地服务协议（Swift Protocols）**与 **Rive 矢量状态机变量控制接口（Rive State Machine APIs）**。
+为了实现软件工程的松耦合，本接口设计定义为**应用内本地服务协议（Swift Protocols）**与**精灵图状态机控制接口（Sprite State Machine APIs）**。
 
 ---
 
@@ -32,10 +32,10 @@ classDiagram
         +Publisher scorePublisher
         +evaluatePose(UserJoints joints, Int actionId) Float
     }
-    class RiveControllerProtocol {
+    class PetSpriteControllerProtocol {
         <<interface>>
-        +setInput(String name, Float value) Void
-        +trigger(String name) Void
+        +setState(PetState state) Void
+        +setLookDirection(Int lookIndex) Void
     }
 ```
 
@@ -115,27 +115,29 @@ classDiagram
 
 ---
 
-## 2. Rive 矢量动画控制接口 (Rive Input APIs)
+## 2. 精灵图状态机控制接口 (Sprite State Machine APIs)
 
-桌面端透明窗口的电子宠物为 Rive 骨骼动画（`.riv` 资产）。程序员需要通过控制 Rive 内部的变量（Inputs）来改变宠物的表现。
+桌面端透明窗口的电子宠物由 **8×11 透明 WebP 精灵图集**（图集 `1536×2288`，单帧 `192×208`）驱动切帧动画（CHANGE-004）。程序通过状态机输入改变宠物的表现，状态机负责将输入映射为图集的目标行（Row）与帧序列播放策略。
 
-Rive 内部状态机变量命名与输入规范如下：
+状态机输入命名与规范如下：
 
-| 状态机变量名 (Input Name) | 数据类型 (Type) | 取值范围 (Range) | 变量作用与触发动画 |
+| 状态机输入 (Input Name) | 数据类型 (Type) | 取值范围 (Range) | 作用与触发动画 |
 |:---|:---|:---|:---|
-| **`fatigue_level`** | Number | `0.0 - 100.0` | **疲劳值输入**：<br>- `0 - 50`：展示 Idle 待机、摇晃尾巴。<br>- `50 - 79`：转入倦怠、打哈欠（Yawn）。<br>- `80 - 100`：进入伏案睡觉状态。 |
-| **`is_workout_active`** | Boolean | `true / false` | **跟练指示**：<br>- `true`：宠物转入“精神抖擞领操模式”（根据 `action_id` 表演伸展动作）。<br>- `false` : 退回到普通桌面待机状态。 |
-| **`action_id`** | Number | `0.0 - 5.0` | **动作编号**：<br>- 对照 `WorkoutSession` 的 6 个领操动作。随着 `action_id` 改变，宠物做不同部位的拉伸示范。 |
-| **`trigger_celebrate`** | Trigger | — | **触发跳舞庆祝**：<br>- 激活该触发器时，宠物会跳起大笑转圈（用于“挠痒痒成功”和“跟练动作得分通过”）。 |
-| **`is_premium`** | Boolean | `true / false` | **付费专属控制**：<br>- `true` 时启用更高难度的拉伸细节动作，并允许触发领操时脚下的粒子光圈效果。 |
+| **`fatigue_level`** | Double | `0.0 - 1.0` | **疲劳值输入**：<br>- `0 - 0.49`：播放 Idle 待机呼吸行（Row 0）。<br>- `0.5 - 0.79`：切换至倦怠、打哈欠（Yawn）行。<br>- `0.8 - 1.0`：进入伏案睡觉行循环。 |
+| **`is_workout_active`** | Bool | `true / false` | **跟练指示**：<br>- `true`：宠物切换至“精神抖擞领操模式”行（根据 `action_id` 表演伸展动作）。<br>- `false`：退回到普通桌面待机状态。 |
+| **`action_id`** | Int | `0 - 5` | **动作编号**：<br>- 对照 `WorkoutSession` 的 6 个领操动作。随着 `action_id` 改变，宠物切换至不同部位拉伸示范的动画行。 |
+| **`trigger_celebrate`** | 触发事件 | — | **触发跳舞庆祝**：<br>- 激活时切换至跳舞/大笑行播放一轮后自动回退待机（用于“挠痒痒成功”和“跟练动作得分通过”）。 |
+| **`look_index`** | Int | `0 - 15` | **16 方向视线随动**：<br>- `0 - 7`：映射至 Row 9 第 `look_index` 帧。<br>- `8 - 15`：映射至 Row 10 第 `look_index - 8` 帧。<br>- 光标静止/离开盲区时回退 Row 0 待机。 |
+| **`is_premium`** | Bool | `true / false` | **付费专属控制**：<br>- `true` 时解锁高阶宠物专属动效行（挠痒痒大笑、弹性拉伸等拟人化互动）。 |
 
-### Swift 驱动 Rive 示例：
+### Swift 驱动示例：
 ```swift
-// Swift 驱动 Rive 状态机输入示例
-func updateRiveState(fatigue: Double) {
-    if let stateMachine = self.riveViewModel.stateMachine {
-        // 设置 Rive 疲劳输入值
-        stateMachine.setInput("fatigue_level", value: fatigue * 100.0)
+// Map fatigue level to sprite state machine animation rows
+func updateSpriteState(fatigue: Double) {
+    switch fatigue {
+    case ..<0.5: spriteController.setState(.idle)
+    case ..<0.8: spriteController.setState(.yawn)
+    default:     spriteController.setState(.sleep)
     }
 }
 ```

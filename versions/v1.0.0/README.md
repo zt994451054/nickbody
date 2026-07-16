@@ -21,7 +21,7 @@
 | 运动跟练 | P0 | 头颈肩操 6 动作、影子镜像、降级模式 |
 | 评分引擎 | P0 | 幅度/保持/节奏 + 宽容带 |
 | 养成系统 | P0 | 健康分/段位/软惩罚衰减 |
-| 桌面宠物 UI | P0 | 悬浮窗 + Rive 状态机 + 闲时逗趣 |
+| 桌面宠物 UI | P0 | 悬浮窗 + 8×11 精灵图集状态机 + 闲时逗趣 |
 | Onboarding | P0 | 选宠物→档位→首次跟练 |
 | 订阅/内购 | P1 | StoreKit 2，免费档慷慨 |
 | 数据统计页 | P1 | 段位页 + 周视图 |
@@ -64,12 +64,12 @@
 
 | 域 | 文档 | 状态 |
 |----|------|------|
-| 产品 | [需求文档](./product/requirements.md) | ⏳ |
-| 产品 | [产品设计](./product/design-spec.md) | ⏳ |
-| 产品 | [统一原型](../../foundation/design/prototype/README.md) | ⏳ |
-| 研发 | [技术方案](./engineering/tech-solution.md) | ⏳ |
-| 研发 | [接口设计](./engineering/api-design.md) | ⏳ |
-| 研发 | [数据库设计](./engineering/db-design.md) | ⏳ |
+| 产品 | [需求文档](./product/requirements.md) | ✅ |
+| 产品 | [产品设计](./product/design-spec.md) | ✅ |
+| 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
+| 研发 | [技术方案](./engineering/tech-solution.md) | 🔄 |
+| 研发 | [接口设计](./engineering/api-design.md) | ✅ |
+| 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
 | 测试 | [测试计划](./testing/test-plan.md) | ⏳ |
 | 测试 | [测试用例](./testing/test-cases.md) | ⏳ |
