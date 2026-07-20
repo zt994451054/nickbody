@@ -10,7 +10,7 @@
 ## 1. 方案概述
 
 本版本在 macOS 上交付 `nick` 产品的首个原生客户端。技术策略采用**纯端侧单机零后端架构**：
-1.  **UI 表现层**：采用 SwiftUI 编写，通过配置为 `LSUIElement`（无 Dock 图标）的常驻菜单栏项目承载，主交互由毛玻璃透明置顶的 `NSPanel` 承载，运行 `Rive` 宠物状态机。
+1.  **UI 表现层**：采用 SwiftUI 编写，通过配置为 `LSUIElement`（无 Dock 图标）的常驻菜单栏项目承载，主交互由毛玻璃透明置顶的 `NSPanel` 承载，运行基于 8×11 精灵图集（Spritesheet）切帧的宠物状态机。
 2.  **疲劳追踪**：基于全局鼠标/键盘活动事件监视器（非侵入式，无录入风险）。
 3.  **姿态识别与领操**：利用系统内置的 `Apple Vision`（`VNDetectHumanBodyPoseRequest`），并以 `PoseProvider` 协议隔离 Vision 依赖。
 4.  **数据持久化**：使用 macOS 沙盒内的 `SwiftData` 本地库。
@@ -50,7 +50,7 @@
 | 需求类型 | 需求指标 | 技术实现方案 |
 |:---|:---|:---|
 | **姿态推理性能** | 领操跟练时推理帧率 `≥ 15 fps` | 在 `AVFoundation` 视频流代理中，使用专有串行后台队列（`Serial Queue`）派发 Vision 请求。配置 Vision 以优先调用系统的 Apple Neural Engine (ANE) 进行硬件加速，防止阻塞主线程（Main Thread）。 |
-| **后台功耗控制** | 宠物待机常驻时 CPU 占用 `< 1%` | 1. 当宠物处于贴边隐藏（`Edge Snap`）或用户全屏工作时，通过 RiveViewModel 的 `stop()` 挂起 Rive 渲染循环，降为 0 fps 渲染。<br>2. 闲时动画采用 3-8 分钟随机定时器唤醒，非活动时完全挂起绘图更新。 |
+| **后台功耗控制** | 宠物待机常驻时 CPU 占用 `< 1%` | 1. 当宠物处于贴边隐藏（`Edge Snap`）或用户全屏工作时，使精灵图切帧定时器失效（`Timer.invalidate()`）挂起帧切换渲染循环，降为 0 fps 渲染。<br>2. 闲时动画采用 3-8 分钟随机定时器唤醒，非活动时完全挂起绘图更新。 |
 | **摄像头隐私** | 帧仅在内存处理，永不上传/落盘/入日志 | 使用 `CMSampleBuffer` 直接交给 Vision 提取骨骼点，整个链路无任何写盘（File I/O）动作。Vision 导出的骨骼坐标存入内存数组后，视频帧即被 ARC 机制销毁，日志模块（`os.Logger`）严禁输出视频相关数据。 |
 | **数据安全** | 数据不出设备，免 GDPR/CCPA 合规风险 | 全部用户历史跟练和段位记录均存储在 macOS 系统的 Sandboxed 文件夹下的 `SwiftData` 容器中，天然物理隔离，无网络出站请求。 |
 
@@ -64,7 +64,7 @@
   │                                                        │
   │  ┌──────────────┐   ┌──────────────┐   ┌────────────┐  │
   │  │ Fatigue-     │ ➔ │ Reminder-    │ ➔ │ NSPanel-   │  │
-  │  │ Tracker      │   │ Scheduler    │   │ Rive View  │  │
+  │  │ Tracker      │   │ Scheduler    │   │ SpriteView │  │
   │  └──────────────┘   └──────────────┘   └────────────┘  │
   │                                              ▲         │
   │  ┌──────────────┐   ┌──────────────┐         │         │
@@ -91,7 +91,7 @@
 *   **实现思路**：  
     监听 `FatigueThresholdReached` 广播。
 *   **交互控制**：
-    *   收到信号后，获取当前的 `NSPanel` 宠物窗，向 Rive 状态机输入参数 `fatigue_level` 设置为 `1.0`（使宠物在桌面变为极困或打哈欠姿态）。
+    *   收到信号后，获取当前的 `NSPanel` 宠物窗，将精灵图状态机切换至疲劳态动画行（打哈欠/极困行），使宠物在桌面表现出疲劳姿态。
     *   同时，在屏幕中央淡入（Fade-in）弹出提醒邀请卡片窗口。
     *   **延迟按钮限制逻辑**：在内存中维护 `delayCount`。每次点击延迟，卡片淡出，并在 5 分钟后重新分发信号。若 `delayCount >= 2`，则直接通过 SwiftUI 控制隐藏延迟按钮，仅向用户提供 "Let's move" 的主按钮。
 
@@ -185,7 +185,7 @@
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result {
                 if transaction.productID == "com.nickbody.app.pass" {
-                    // 解锁高阶段位和 Rive 宠物控制权
+                    // Unlock premium ranks and exclusive pet animation rows
                     DispatchQueue.main.async {
                         self.isPremiumUnlocked = true
                     }
@@ -202,7 +202,7 @@
 ### 实现顺序
 1.  **第一阶段 (1-3天)**：编写 `FatigueTracker` 并连接鼠标监视，完成本地 AppStorage 偏好配置。
 2.  **第二阶段 (4-7天)**：编写 `VisionPoseProvider` 与跟练评分引擎，利用测试用例跑通 6 个动作的角度判定。
-3.  **第三阶段 (8-10天)**：实现透明 `NSPanel` 与 `RiveView` 组件的挂载，并在 SwiftUI 中将所有窗口串联起来，联调 StoreKit 2。
+3.  **第三阶段 (8-10天)**：实现透明 `NSPanel` 与 `PetSpriteView` 组件的挂载，并在 SwiftUI 中将所有窗口串联起来，联调 StoreKit 2。
 
 ### 技术风险防范
 *   *风险*：Vision 姿态推理在 M1 基线机型发热高。  

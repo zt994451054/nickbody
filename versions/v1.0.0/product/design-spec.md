@@ -52,7 +52,7 @@
 #### 2.2.1 挠痒痒交互 (Tickle Interaction)
 *   **触发方式**：光标在宠物躯干（`bone_torso_spine`）范围内进行高频的来回滑动（`Horizontal Swipe`）。
 *   **交互逻辑**：
-    *   *免费宠物 (Gold 及以下)*：仅播放基础的害羞或微笑 Rive 动效。
+    *   *免费宠物 (Gold 及以下)*：仅播放基础的害羞或微笑动效（精灵图基础行）。
     *   *高阶订阅宠物 (Platinum+)*：状态机立即切换为 `Tickle_Response`，宠物身体剧烈缩起并大笑，面部红晕（`sys.color.accent`）渐变加深。持续滑屏超过 3 秒，宠物将笑出眼泪并跌倒（跌至 `bone_base_anchor` 基座），提供极强的治愈感。
 
 #### 2.2.2 边缘拖拽弹性拉伸 (Elastic Dragging)
@@ -84,7 +84,7 @@
 *   尺寸：`960×640 px` 居中窗口。
 *   **左侧：宠物领操面板 (Coach Panel)**
     *   由拟人化电子宠物进行实时的 3D 骨骼关节动画示范。
-    *   *订阅专享 (Platinum+)*：宠物在演示“耸肩”或“转头”时，其肩关节（`bone_left_shoulder` / `bone_right_shoulder`）在 `Rive` 中会随运动轨迹渲染动态流光引导线（`Flowing Trail`），指导用户看清运动路径与最大到位度。
+    *   *订阅专享 (Platinum+)*：宠物在演示“耸肩”或“转头”时，其肩关节位置会随运动轨迹渲染由 SwiftUI 叠加绘制的动态流光引导线（`Flowing Trail`），指导用户看清运动路径与最大到位度。
 *   **右侧：用户影子面板 (User Shadow Panel)**
     *   背景为深色墨色（`ref.color.ink-primary`，即 #2F2A33）。
     *   **姿态对齐**：使用端侧 `Apple Vision` 捕捉用户的头部及双肩骨骼坐标，在影子面板上仅渲染出绿色（`sys.color.success`）的虚拟几何线条骨骼（火柴人影子）。

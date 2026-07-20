@@ -9,7 +9,7 @@
 
 | 工程名 | 类型 | 仓库地址 | 主分支 | 分支策略 | 本地路径 | 职责边界 | 详细说明 |
 |-------|------|---------|--------|---------|---------|---------|---------|
-| `macos-app` | macOS 桌面客户端 | 待创建 | main | 见 `standards/engineering/standards.md` | `engineering/workspace/macos-app/` | 产品全部功能：疲劳追踪/提醒/跟练评分/宠物养成/订阅（Swift+SwiftUI+Vision+Rive+SwiftData+StoreKit 2）| [README.md](file:///Users/zhoutong/Documents/project/nick/engineering/workspace/macos-app/README.md) |
+| `macos-app` | macOS 桌面客户端 | https://github.com/zt994451054/nickbody-macos | main | 见 `standards/engineering/standards.md` | `engineering/workspace/macos-app/` | 产品全部功能：疲劳追踪/提醒/跟练评分/宠物养成/订阅（Swift+SwiftUI+Vision+精灵图渲染+SwiftData+StoreKit 2）| [README.md](https://github.com/zt994451054/nickbody-macos/blob/main/README.md) |
 | `website` | 前端（静态站）| 待创建 | main | 见 `standards/engineering/standards.md` | `engineering/workspace/website/` | 官网 nickbody.com：落地页/隐私说明/MAS 导流 | 待创建 |
 
 > **一行清单 = 一个 git 仓库 = 一个 workspace 子目录**。
