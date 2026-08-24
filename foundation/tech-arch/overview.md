@@ -5,13 +5,13 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-07-16
+> 最后更新：2026-08-12
 
 ---
 
 ## 架构概述
 
-**纯端侧单机架构，V1 零后端。** macOS 原生应用（Swift + SwiftUI），menu bar 常驻 + 透明悬浮窗承载宠物；摄像头姿态识别使用系统内置 Apple Vision framework（100% 端侧，帧仅内存处理不落盘不上传）；宠物动画由原生 SwiftUI 精灵图集（8×11 Spritesheet）切帧状态机驱动，零第三方动画运行时；数据 SwiftData 本地存储；订阅走 StoreKit 2 本地验证。核心工程原则：姿态识别以 `PoseProvider` 协议抽象，评分引擎只消费「角度+关键点」，为未来跨平台换模型（MediaPipe）预留边界。
+**纯端侧单机架构，V1 零后端。** macOS 原生应用使用 SwiftUI 与 AppKit，menu bar 常驻并以透明 `NSPanel` 承载桌面宠物；摄像头姿态识别使用系统内置 Apple Vision framework（100% 端侧，帧仅内存处理不落盘不上传）；大厅和跟练窗口按需使用 RealityKit 3D，桌面常驻宠物使用由同一 DCC 动作源烘焙的独立透明 sprite strip，以兼顾角色一致性和低功耗；数据由 SwiftData 本地存储，订阅走 StoreKit 2 本地验证。核心工程原则：姿态识别以 `PoseProvider` 协议抽象，角色动作以版本化 rig/clip manifest 隔离资产与运行时，为未来替换识别模型和扩展宠物动作预留稳定边界。
 
 ---
 
@@ -19,11 +19,13 @@
 
 | 层次 | 技术选型 | 版本 | 选型说明 |
 |------|---------|------|---------|
-| 客户端框架 | Swift + SwiftUI | Swift 5.x / 最低 macOS 14 | 原生性能与悬浮窗形态必需；最低版本随 M1 验证定档 |
+| 客户端框架 | Swift + SwiftUI + AppKit | Swift 5.x / 最低 macOS 14 | SwiftUI 承载声明式界面，AppKit 承载窗口、输入和 RealityKit 生命周期 |
 | 应用形态 | menu bar app（LSUIElement）+ NSPanel 透明无边框悬浮窗 | — | 桌面宠物常驻形态 |
 | 姿态识别 | Apple Vision framework（主选）| 系统内置 | FaceObservation yaw/pitch/roll 直接对应转头/点头/歪头；VNDetectHumanBodyPoseRequest 肩部关键点；自动调度神经引擎，功耗最低；详见 ADR-001 |
 | 姿态识别备选 | RTMPose/MoveNet 转 CoreML | Apache 2.0 | M1 bake-off 不达标时启用；V2 跨平台用 MediaPipe |
-| 宠物渲染 | 原生 SwiftUI 精灵图集切帧（8×11 Spritesheet，透明 WebP）| 系统内置 | 视口裁剪切帧+状态机，零三方运行时，消除常驻发热；单帧 192×208；详见 ADR-002 |
+| 宠物 3D 渲染 | RealityKit | 系统内置 | 大厅和跟练窗口有界渲染；使用生产 Rig v2、采样 clip 和统一 `PetAnimationGraph` |
+| 桌面宠物渲染 | Core Animation + 独立透明 sprite strip | 系统内置 | strip 与 3D 共用已批准 DCC 动作源，manifest 描述帧数/FPS/循环/事件；零第三方运行时，详见 ADR-002、ADR-003 |
+| 角色资产 DCC | Blender | 4.3.2（生产版本锁定）| 离线重拓扑、手工蒙皮、控制 rig 和动作烘焙；主发布路径为原生 USD → USDZ → RealityKit，GLB 仅作交换/诊断产物 |
 | 数据库 | SwiftData（本地）| 系统内置 | V1 无账号无云同步 |
 | 缓存 | 无 | — | 单机无需 |
 | 消息队列 | 无 | — | 单机无需 |
@@ -43,8 +45,9 @@ graph TB
   subgraph macOS App
     subgraph UI 层
       MB[Menu Bar 状态项]
-      PW[宠物悬浮窗 NSPanel + 精灵图切帧]
-      EW[跟练窗口 SwiftUI]
+      PW[宠物悬浮窗 NSPanel<br/>Core Animation sprite strip]
+      LW[大厅 RealityKit 3D]
+      EW[跟练窗口 AppKit/RealityKit]
       SW[统计/设置窗口]
     end
     subgraph 领域层
@@ -52,6 +55,7 @@ graph TB
       RM[提醒调度 ReminderScheduler]
       SE[评分引擎 ScoringEngine]
       GS[养成系统 GrowthSystem]
+      PAG[PetAnimationGraph<br/>Base/Action/Additive/IK/Secondary]
     end
     subgraph 基础设施层
       PP[PoseProvider 协议]
@@ -66,6 +70,8 @@ graph TB
   FT --> RM --> PW
   SE --> GS --> SD
   GS --> PW
+  GS --> PAG --> LW
+  PAG --> EW
   EW --> PP
   SK --> GS
 ```
@@ -76,7 +82,7 @@ graph TB
 
 | 服务/模块 | 职责 | 技术栈 | 对应工程仓库 |
 |---------|------|--------|-----------|
-| macos-app | 全部产品功能（单工程）| Swift/SwiftUI + Vision + 精灵图渲染 + SwiftData + StoreKit 2 | [nickbody-macos](https://github.com/zt994451054/nickbody-macos) |
+| macos-app | 全部产品功能（单工程）| Swift/SwiftUI/AppKit + Vision + RealityKit + Core Animation + SwiftData + StoreKit 2 | [nickbody-macos](https://github.com/zt994451054/nickbody-macos) |
 | 官网 | 落地页 + 隐私说明 + MAS 导流 | 静态站（待定，如 Astro）| 待创建 |
 
 ---
@@ -130,6 +136,7 @@ graph TB
 |---------|---------|------|---------|
 | [ADR-001](./decisions/ADR-001-pose-estimation.md) | 姿态识别选型：Apple Vision framework vs 开源模型 | 已接受 | v1.0.0 |
 | [ADR-002](./decisions/ADR-002-sprite-animation-replace-rive.md) | 宠物动画渲染选型：原生精灵图集切帧替代 Rive Runtime | 已接受 | v1.0.0 |
+| [ADR-003](./decisions/ADR-003-production-character-animation-pipeline.md) | 生产级角色动画资产管线与运行时分层 | 已接受，分阶段实施 | v1.0.0 |
 
 ---
 
@@ -140,6 +147,7 @@ graph TB
 | 跟练时姿态推理帧率 | 待 M1 实测（目标 ≥15fps）| MacBook Air M1 基线机型 | v1.0.0 |
 | 后台常驻 CPU 占用 | 待实测（目标 <1%）| 宠物闲时动画 | v1.0.0 |
 | Vision 肩部关键点稳定性 | 待 M1 bake-off | 坐姿近距（0.5–1m）| v1.0.0 |
+| Rig v2 变形质量 | Gate 0–4 全部通过 | RealityKit 八方位原尺寸逐帧审核 | v1.0.0 |
 
 ---
 

@@ -1,238 +1,320 @@
-# nick 项目进度盘点与交接说明
+# nick 3D 跟练宠物动效交接
 
-> 交接时间：2026-07-27
-> 交接人：Claude（接手自 Gemini）→ 下一位 AI 协作者
-> 本文目的：让接手者**冷启动**即可继续干活，不需要读历史对话。
-> 本文只写「经代码/命令验证过的事实」，推断与判断会显式标注。
-
----
-
-## 0. 接手前必读的 3 个坑
-
-这 3 条如果不知道，接手后大概率踩坑或改错地方。
-
-### 坑 1：App 代码不在这个仓库里，而在一个**嵌套的独立 git 仓库**
-
-```
-Documents/project/nick/              ← 外层「驱动面板」仓库（产品/版本/规范文档）
-└── engineering/workspace/macos-app/ ← ★ 真正的 App 代码，独立 git 仓库
-                                        remote: github.com/zt994451054/nickbody-macos
-                                        branch: feat/appkit-migration
-```
-
-外层仓库 `.gitignore:23` 有 `engineering/workspace/*`，**故意**把工程代码排除在驱动面板之外
-（注释原文：「研发工程代码不纳入驱动面板（所有工程 clone 到 engineering/workspace/<name>/）」）。
-
-后果：在外层仓库跑 `git status` 看到 clean，**不代表 App 没有改动**。改 App 代码要
-`cd engineering/workspace/macos-app` 再提交，提到 `feat/appkit-migration`（不是 main）。
-
-### 坑 2：UsdSkel 蒙皮模型不能用「父级 Empty 缩放」来归一化
-
-这是我实际踩过并修复的 bug（提交 `43ad986`）。给 3D 宠物换模型时若重蹈覆辙，
-资产会变成 1/4 大小并悬浮在半空，而且**编译、构建、导入全都不报错**，只有实测包围盒才看得出来。
-
-- 错误做法：把骨架+网格塞进一个 Empty，缩放 Empty → 父 Xform **不会**合成进导出的 UsdSkel 顶点。
-- 正确做法：直接缩放/平移 **Armature 对象本身**，蒙皮子网格会跟随。
-- 另一个陷阱：Meshy 的 `rigged.glb` 根节点带一个游离的单位 **Icosphere**（包围盒辅助体），
-  必须先删掉再量包围盒，否则归一化基准完全错误。
-- 现在 `tools/pet-model/glb_to_usdz_rigged.py` 末尾内置了回 import 校验
-  （高度≈1.1 / 脚踩 z=0 / 骨骼数>0），不达标直接 `sys.exit` 报错，杜绝静默产出坏资产。
-  **不要删掉这个校验。**
-
-### 坑 3：宠物模型的坐标约定
-
-USDZ 文件保持 **Blender Z-up** 不变，由 `PetSceneView.swift` 在运行时做 `-90° 绕 X` 旋转
-（常量 `zUpToYUp`）转成 RealityKit 的 Y-up。所以：
-
-- 导出时**不要**自己转成 Y-up，会转两次。
-- 归一化目标必须是「高 1.1 / 脚踩 z=0 / x,y 居中」，与旧资产同口径，这样现有相机参数不用重调。
+> 交接时间：2026-07-27 18:55（Asia/Singapore）
+> 交接给：Claude Code
+> 当前目标：完成 3D 跟练宠物的方向修正、全身协同、叶冠次级动效、脚底稳定和实机验收
+> 本文是当前工作的唯一最新交接说明；历史会话 `d01aa26a-b70c-46e4-96d3-c01b34bea8f6` 中的旧结论以本文为准。
 
 ---
 
-## 1. 项目是什么
+## 1. 先进入正确工作区
 
-macOS 原生桌面宠物健康 App（英文市场 / Mac App Store）：
+这次工作发生在 Claude worktree，不是项目根目录下的另一个 clone。
 
-**核心循环**：久坐疲劳追踪 → 宠物耍宝邀请（绝不锁屏）→ 摄像头头颈操跟练 + 动作评分
-→ 健康分/段位养成。
+外层驱动面板：
 
-**技术定位**：纯端侧、零后端。AppKit + Vision + SwiftData + StoreKit 2 +
-RealityKit（仅用于有界的跟练窗口）。
-
-**核心假设**：「桌面宠物养成 + 摄像头动作评分」能治愈休息提醒品类的留存墓地效应。
-
----
-
-## 2. 版本与阶段现状
-
-| 项 | 值 |
-|---|---|
-| 主线开发版本 | **v1.0.0**（`versions/CURRENT.md`） |
-| 阶段 | **开发中**，2026-07-16 进入，至今 11 天 |
-| 测试/发布阶段 | 均未开始 |
-| 产品/设计/技术方案文档 | ✅ 均已定稿 |
-| 测试域文档 | ⏳ test-plan / test-cases / defects / test-report / acceptance **全部空白** |
-
-`versions/v1.0.0/README.md` 的「阶段进度」已同步到实际代码状态，并补记了 2026-07-27
-真实 GUI 验证结果。版本仍处于开发中，下一项 P0 主线是补齐养成系统。
-
----
-
-## 3. 功能模块盘点（对照 v1.0.0 版本范围，逐条查过代码）
-
-| 模块 | 优先级 | 状态 | 证据 |
-|---|---|---|---|
-| 疲劳追踪 | P0 | ✅ 已建成 | `Services/FatigueMonitor.swift`，阈值/等级 publisher 已被 main.swift、PetWidget、Lobby 消费 |
-| 提醒模块 | P0 | ✅ 已建成 | `UI/AppKit/InviteCardController.swift` 邀请卡 |
-| 姿态识别引擎 | P0 | ✅ 已建成 | `Services/PoseTracker.swift` + `PoseCalibration.swift` + `PoseDiagnostics.swift` |
-| 运动跟练 | P0 | ✅ 已建成 | `WorkoutSessionController.swift`：六动作、影子镜像 `LiveMirrorView`、无摄像头照常降级 |
-| 评分引擎 | P0 | ✅ 已建成 | `Services/ScoringEngine.swift`，幅度+宽容带，常模取自 AAOS 统一来源 |
-| 桌面宠物 UI | P0 | ✅ 已建成 | `PetWidgetController.swift` + `UI/PetSpriteEngine.swift` 精灵图集 |
-| **养成系统** | **P0** | ⚠️ **半成品** | `healthScore` 跟练后 `+75` 有效；但 `rankRoadPoints` **只在 `PetEntity.init` 写入一次，全项目从未被读取或更新**（`grep -rn rankRoadPoints Sources` 只有 2 处命中，都在 Entities.swift）→ 段位、软惩罚衰减**都没实现** |
-| **Onboarding** | **P0** | ❌ **完全没有** | `grep -rli "onboarding"` 零命中。选宠物逻辑在 `LobbyViewController` 里，不存在「首启动引导流」 |
-| **订阅/内购** | P1 | ❌ **纯占位** | **全项目没有任何文件 `import StoreKit`**。只有 `LobbyViewController.swift:257` 一个 NSAlert：「$39.99 / 年（7 天免费试用）」+「确认订阅」按钮，点了不发生任何事 |
-| **数据统计页** | P1 | ❌ **没有** | `WorkoutRecordEntity` 写入后，只被 `PersistenceController.todayWorkoutCount()` 数了个数；周视图、段位页均不存在 |
-
-**结论**：P0 里 6 个已通、1 个半成品（养成）、1 个空白（Onboarding）；P1 两个基本都是空的。
-核心循环「疲劳→邀请→跟练→评分」已经跑通，**缺的是「养成」这一环和商业化**。
-
----
-
-## 4. 我这次做了什么（已提交并推送）
-
-全部提交在 **nickbody-macos 仓库的 `feat/appkit-migration` 分支**（非 main）：
-
-| 提交 | 内容 |
-|---|---|
-| `734f458` | 换用 A-pose 候选 B 的 24 骨全身骨架模型，替换 `pet_sprout_s2.usdz` |
-| `43ad986` | **修复**上一提交的归一化 bug（见「坑 2」），并给转换脚本加回 import 校验 |
-| `9e086e5` | 跟练教练面板接入 3D 宠物，真实头部演示六个颈椎动作 |
-
-### 4.1 3D 宠物选型（已定案，不用重做）
-
-起因：原「团子」宠物太圆润，四肢缩在身体里，Meshy 人形自动绑骨直接 `422 Pose estimation failed`，
-只能做 2 骨（脊柱+头）绑定 → **永远只能转头**。而产品愿景要宠物用摄像头**镜像用户全身**。
-
-做法：把同一个小草形象重画成 **A-pose 站姿**（四肢分开）→ Meshy `image-to-3d`（`pose_mode: a-pose`）
-→ Meshy 自动绑骨（5 credits，附赠走/跑动画）。
-
-生成了 4 个候选 A/B/C/D，**4 个全部成功绑上完全相同的 24 骨 Mixamo 人形骨架**，蒙皮干净。
-winston 在 Xcode 里逐个看 usdz 后**选定 B**——理由是**表面最光滑**，D/C/A 都有线性纹路
-（那是 Meshy 网格生成在**静态模型**上的artifact，与绑骨无关，所以选 B 没有绑骨方面的代价）。
-
-24 骨骨架结构（已验证）：
-```
-Hips → {LeftUpLeg→LeftLeg→LeftFoot→LeftToeBase,
-        RightUpLeg→…,
-        Spine02→Spine01→Spine→{LeftShoulder→LeftArm→LeftForeArm→LeftHand,
-                               RightShoulder→…,
-                               neck→Head→{head_end, headfront}}}
+```text
+/Users/zhoutong/Documents/project/nick/.claude/worktrees/takeover-doc-sync
+branch: worktree-takeover-doc-sync
+HEAD: 16bc0f6
 ```
 
-### 4.2 跟练面板接入方式（混合渲染，有优雅回退）
+App 独立仓库：
 
-`WorkoutSessionController` 的教练面板现在这样选渲染方式：
+```text
+/Users/zhoutong/Documents/project/nick/.claude/worktrees/takeover-doc-sync/engineering/workspace/macos-app
+branch: feat/appkit-migration
+HEAD: 9e086e5
+remote: github.com/zt994451054/nickbody-macos
+```
+
+不要进入这个同名但错误的 clone：
+
+```text
+/Users/zhoutong/Documents/project/nick/engineering/workspace/macos-app
+```
+
+接手后的第一组命令：
+
+```bash
+cd /Users/zhoutong/Documents/project/nick/.claude/worktrees/takeover-doc-sync/engineering/workspace/macos-app
+git status --short --branch
+sed -n '1,360p' plans/001-layer-workout-pet-motion.md
+swift test --filter PlantedFootSolverTests
+```
+
+不要先 `git pull`、reset、checkout 或清理未跟踪文件。两个仓库都有需要保留的未提交修改。
+
+---
+
+## 2. 用户本轮反馈与验收目标
+
+用户明确反馈：
+
+1. 当前看起来只有摇头，无法判断是否有更多动作、是否丝滑。
+2. 3D 宠物与原设计图视觉差距大；左右转头方向反了，仰头和低头也反了。
+3. 宠物呆板；希望头顶叶子随状态晃动，手脚在运动中做应景动作。
+
+本轮拆成两个计划：
+
+- `plans/001-layer-workout-pet-motion.md`：**IN PROGRESS**。修正方向、动作层次、时钟、叶冠、脚底和渲染生命周期。
+- `plans/002-rebuild-sprout-visual-identity.md`：**BLOCKED**。视觉模型重做必须先让 @winston 确认权威设计目标；动画无法修复轮廓、眼睛、比例、叶片数量和材质语言。
+
+当前不要替换或重新生成 `pet_sprout_s2.usdz`，也不要把视觉模型差距伪装成已由动画解决。
+
+---
+
+## 3. 必须保留的约束
+
+- 中文沟通；代码实体和代码注释使用英文。
+- 按 TDD 推进：测试先红后绿；新增纯逻辑行覆盖率至少 80%。
+- 不修改 `WorkoutMovement.direction` 和评分语义。视觉轴映射属于 Candidate B 的 rig profile。
+- 不替换、不重新生成 USDZ；当前资产 SHA-256：
+  `0c2f165b6a8be7aa36cf3b0668f6557919de09a8609243403a1822ea1a05273d`。
+- 不使用 Meshy 走/跑 clip 代替固定教练动作，它会产生脚滑且不能表达颈部拉伸。
+- RealityKit 仅用于前台有界跟练窗口，常驻桌面宠物继续使用低功耗 sprite。
+- 不新增第三方动画运行时。
+- 当前所有改动均未提交、未 push；完成验证前不要提交半成品。
+- 外层已有暂存/未提交内容属于前序工作，不得覆盖或撤销。
+
+---
+
+## 4. 当前已完成的实现
+
+### 4.1 六方向与上半身动作
+
+`PetMotionPlanner.swift` 已把 Candidate B 的视觉轴与评分方向解耦，峰值标定为：
+
+| 动作 | 模型局部轴 | 总幅度 |
+|---|---|---:|
+| 左侧倾 | roll Z | -26° |
+| 右侧倾 | roll Z | +26° |
+| 向左转头 | yaw Y | +42° |
+| 向右转头 | yaw Y | -42° |
+| 低头 | pitch X | +24° |
+| 仰头 | pitch X | -22° |
+
+主动作按 20% neck + 80% Head 分配，并加入 Spine02 / Spine01 / Spine、肩膀和上臂的克制协同。Reduce Motion 保留教学头颈动作，把辅助动作缩放到 25%。
+
+动作曲线已经改为：
+
+```text
+0.00-0.10 prepare
+0.10-0.42 move
+0.42-0.62 exact hold
+0.62-0.92 return
+0.92-1.00 settle
+```
+
+### 4.2 首拍、混合和统一时钟
+
+- playing 使用 `phase = positiveModulo(0.10 + u, 1)`。
+- 同一动作 `ready -> playing` 不重复启动 220ms blend，首拍与准备姿势连续。
+- 不同动作仍从当前可见姿势做 220ms ease-out 混合，不再 snap 回 rest。
+- 跟练动作、计数和语音调度共享单调时钟；后续 rep 由绝对 deadline 推导，Timer 迟到不累积漂移。
+- 2D strip 按绝对时间计算帧，不再用回调次数递增。
+- 2D Timer 首次触发已对齐下一个绝对帧边界。
+- strip 加载失败不会先破坏旧播放状态；普通 atlas 加载会原子重置 timer、网格、row/frame 和 idle 状态。
+
+### 4.3 叶冠三维弹簧
+
+- `head_end` 已从标量单轴升级为 SIMD3 rotation-vector spring。
+- 输入来自 blend 后完整 Head model orientation 的最短弧角速度，包含 Hips、spine、neck 和 Head 祖先链。
+- 0.30s natural response、0.68 damping、12°球面限制。
+- 碰到 12°边界只移除向外径向速度，保留切向速度。
+- 轴变化时状态连续，并做 Head 父空间共轭补偿。
+- Reduce Motion、暂停、恢复、重载会重置弹簧。
+- 当前资产只有一个 `head_end`，因此两片叶子只能整簇运动；独立双叶控制属于 plan 002 的新资产范围。
+
+### 4.4 生命周期和调试入口
+
+- 结果页和窗口退出会取消 RealityKit update subscription。
+- 后续动作需要渲染时会幂等恢复。
+- Debug 3D 窗口支持六动作切换与 phase 0.52 峰值定格。
+- 启动入口：`.build/NickBody.app/Contents/MacOS/NickBody --pet-scene`。
+
+### 4.5 文档
+
+- `tools/pet-model/README.md` 已更新为 24 骨 Candidate B 管线及 `head_end` 限制。
+- 外层 `versions/v1.0.0/CHANGES.md` 已新增 `CHANGE-006`，但其中“下肢整链锁定”是旧策略，最终接入 planted-foot solver 后要改成实际实现并逐项勾选。
+
+---
+
+## 5. 已有验证证据
+
+在新增 planted-foot 红灯测试之前，最后一次完整绿灯为：
+
+- `swift test`：71/71 通过。
+- `swift build`：通过。
+- `git diff --check`：通过。
+- 叶冠专项：12/12 通过。
+- 独立 diff review：没有 P0/P1；发现的两个 2D P2 已修复并回归。
+
+当前工作树加入 `PlantedFootSolverTests.swift` 后处于**有意的机械红灯**，所以现在运行全量 `swift test` 会在编译阶段失败。这不是已完成状态，也不是旧测试回归。
+
+2026-07-27 18:51 已重新执行：
+
+```bash
+swift test --filter PlantedFootSolverTests
+```
+
+结果：exit 1；测试 helper 已能编译，错误只剩生产 API 尚不存在：
+
+- `SkeletonRestPose`
+- `LowerBodyIntent`
+- `PlantedFootSolver`
+- `PetMotionPlanner.lowerBodyIntent(...)`
+
+上一位执行代理在实现前连接中断，没有留下 solver 半成品；没有 Swift build/test 进程在后台运行。
+
+---
+
+## 6. 当前精确停点：planted-foot solver
+
+新测试：
+
+```text
+Tests/NickBodyTests/PlantedFootSolverTests.swift
+```
+
+测试 fixture 已记录：
+
+- USDZ SHA-256。
+- 资产 scale：`0.021999998`。
+- 24 个真实 joint path 和 local rest matrix。
+- 左腿长度：upper `5.98089743` / lower `4.38095093`。
+- 右腿长度：upper `4.77215719` / lower `6.3895874`。
+- 六动作 × 101 phase。
+- 不完整链降级、共享 bisection、至少 6°膝弯、有限归一化和 Reduce Motion。
+
+测试里原来的 `simd_float3x3(transform)` 编译问题已经修成显式三列构造。不要再重复处理。
+
+### 重要：先修测试契约缺口
+
+当前脚底断言在重建 FK 时仍使用 fixture 的 rest translations：
 
 ```swift
-if PetSceneView.hasAsset(species: species, stage: 2) {
-    // 用 3D PetSceneView，调 petScene.play(movement, secondsPerRep:)
-} else {
-    // 回退到原 2D sprite（bear/fox 走这条，不会出现空面板）
-}
+localTranslations: fixture.localRestTransforms.map(translation)
 ```
 
-- 目前**只有 sprout 有 3D 模型**，bear/fox 仍是 sprite。
-- 3D 路径下宠物用**真实头部旋转**演示六个动作，按节拍每次一循环，
-  不再需要逐动作的演示美术（sprite 路径需要 `demoStripName` 那套图）。
-- `PetEntity` **没有 stage 字段**，stage 2 是硬编码对应唯一一个已发布资产。
-- 功耗：RealityKit 持续渲染约 **45% 单核** vs sprite ~0.1%。所以 3D 只允许用在
-  **有界的前台跟练窗口**，常驻桌面宠物必须继续用 sprite（`PetSceneView` 文件头注释有实测记录）。
+这意味着 `LowerBodyIntent.pelvisTranslation` 尚未真正进入脚底位置断言。若直接实现，测试可能在没有应用 pelvis translation 的情况下变绿，形成“脚底稳定”的假证明。
 
-### 4.3 已验证 / 未验证（重要，别把没验的当验过）
+在写生产 solver 前先补红灯：
 
-已验证：
-- `swift build` 通过，资产正确 bundle（`Copying pet3d`）。
-- `swift test` 通过：28 个测试、0 失败。
-- 资产实测：高度 1.1000 / 脚踩 z=0.0000 / 24 骨 / 往返校验 PASS。
-- 用 Blender 复刻 App 的真实相机与坐标系（`zUpToYUp` + 相机 `[0,0.58,2.35]` 看向 `[0,0.50,0]` fov 34）
-  渲染确认：构图不裁切、正面朝向、头部偏航约 40° 形变干净。教练卡片实际宽高比（210×216）也确认过。
-- 2026-07-27 在 `feat/appkit-migration@9e086e5` 上真实启动 GUI：Debug 3D 窗口和正式跟练窗口均能加载候选 B，
-  模型完整、居中、无悬浮或裁切；正式流程自动跑完六个动作并完成结算，大厅显示今日跟练 1 次、健康评分 420。
-- 隔离功耗采样：常驻状态约 0% CPU / 100 MB；跟练时约 35%-64% CPU / 915-925 MB；正式退出后 CPU
-  回落至 0.1%-0.2%。第二轮短会话退出后内存约 611 MB，未出现逐轮递增；高驻留内存更像框架缓存，仍建议后续长期压测。
+1. 让 solution 暴露完整 `localTranslations`，或暴露能应用到 Hips 的等价局部 transform。
+2. FK 使用 solution 的 rotations **和** translations。
+3. 增加一个非零 pelvis translation 的断言：Hips 确实移动，而左右 ankle 仍固定在 rest target。
+4. incomplete-chain fallback 同时验证 rotations 和 translations 都回到 rest。
 
-**仍需人工主观确认**：
-- 六个动作在峰值姿态上的美术表现、节奏观感与产品接受度仍应由 winston 看完整动态过程后拍板；
-  本次验证确认的是渲染、流程、结算和资源释放链路，不替代产品审美验收。
+### 生产实现合同
 
----
+完整算法以 `plans/001-layer-workout-pet-motion.md` 的 Target 和 Steps 4/7 为准。核心要求：
 
-## 5. 资产与工具位置
+1. 在原始 skeleton space 求解，早于 0.022 entity scale 和 `zUpToYUp`。
+2. 从真实 child translation 推导腿长和 rest direction，不假设骨轴是 +Y。
+3. 缓存 ankle rest position、foot model orientation、bend plane 和 rest local rotations。
+4. 对共享 pelvis intent 做有界二分缩放，直到双腿同时满足 reach 和至少 6°膝弯；不可单帧拒绝并跳姿势。
+5. 用 law of cosines 解析求 knee；pole direction 由 rest bend plane 运输后只加 authored swivel。
+6. 用最短 model-space swing 对齐上下腿 child direction，再转换回 local rotation，保留 rest twist。
+7. foot local rotation补偿父级，保持 foot rest model orientation；ToeBase 保持 rest。
+8. 任一腿链不完整时，整个共享下肢层禁用，不能让单侧继承移动的 Hips。
 
-### 5.1 已入库（nickbody-macos 仓库）
-- `Sources/NickBodyCore/pet3d/pet_sprout_s2.usdz` — 候选 B 成品，20.6MB
-- `tools/pet-model/glb_to_usdz_rigged.py` — **已绑骨**模型的 glb→usdz 转换（本次新增）
-- `tools/pet-model/rig_pet.py` — **未绑骨**模型的老流程（会 weld/decimate/重蒙皮，
-  ⚠️ 千万别拿它处理已绑骨模型，会把绑定搞坏）
-- `tools/pet-model/split_head.py` — 更早的「切头刚体」方案，已被淘汰
-
-### 5.2 持久化保存的源文件（不在 git 里）
-`~/Downloads/nick-pet-review/B_source_源文件/`（47MB，我在交接前特意抢救出来的）
-- `rigged.glb` — ★ **重新导出 USDZ 的唯一源文件**，要改高度/重导必须用它
-- `anim_walking.glb` / `anim_running.glb` — Meshy 附赠的走/跑动画（**目前 App 里完全没用上**）
-- `model.glb`、`thumbnail.png`、`glb_to_usdz_rigged.py` 副本
-
-> ⚠️ 这些原本只存在于 `~/.claude/jobs/d01aa26a/tmp/`，那是**会被清理的临时目录**。
-> 已复制到上述持久位置。接手者请勿依赖 job 临时目录里的任何东西。
-
-### 5.3 其他素材
-- `~/Downloads/nick-pet-designs/apose/` — 4 个候选的设计原图（`cand_B_refined.png` 是选中的）
-- `~/Downloads/nick-pet-review/` — 4 候选 usdz、对比图 `compare_4candidates.png`、
-  B 的动效 GIF（`B_walk.gif` / `B_joints.gif`）
-
-### 5.4 工具链
-- Blender 4.3：`/Applications/Blender.app/Contents/MacOS/Blender -b -P 脚本.py -- 参数`
-  （EEVEE 引擎名是 `BLENDER_EEVEE_NEXT`）
-- Meshy API：skill `meshy-3d-generation`。余额约 **1175 credits**（image-to-3d 30 + 绑骨 5 = 35/个）
-  - ⚠️ **API key 绝不能写进任何提交的文件**，只能在单条命令里内联使用。
-- grok CLI `image_edit`：做参考图条件的重绘（4 个 A-pose 候选就是这么来的）
+不要把旧的“锁死 Hips 到 ToeBase”当完成方案，也不要只旋转 Hips 后接受脚滑。
 
 ---
 
-## 6. 建议的下一步（按我的判断排序）
+## 7. Claude 接下来的执行顺序
 
-### 第 0 步：✅ 实机运行 + 文档同步（2026-07-27 已完成）
-真实 GUI、六动作流程、结算和退出后的 CPU 回落均已验证；版本 README 已同步。
-六个动作的最终美术观感仍由 winston 主观验收。
+1. 修正上面的 pelvis translation 测试契约，确认 focused suite 只因缺失生产行为而红。
+2. 实现纯 `SkeletonRestPose`、`LowerBodyIntent`、`PlantedFootSolver` 和 `PetMotionPlanner.lowerBodyIntent`。
+3. 先让 `PlantedFootSolverTests` 转绿，再跑全量测试；不要同时接 RealityKit。
+4. 对纯 solver 做独立 diff review，重点查矩阵乘法顺序、model/local 空间、foot orientation 和 fallback。
+5. 接入 `PetSceneView`：加载资产时构建 rest pose/solver；每帧把上半身 planner frame 与 solver 的完整下肢 pose 合并后一次性写入 `jointTransforms`。
+6. 增加场景接入/生命周期测试；验证 missing leg chain 时上半身仍能动、下肢回 rest。
+7. 跑覆盖率，新增纯逻辑至少 80%。
+8. 用真实 app 构建脚本打包。
+9. 用 `--pet-scene` 截六张 phase 0.52 峰值图。
+10. 录完整约 124.4 秒跟练，检查方向、首拍、脚底、叶冠、肢体协同和动作过渡。
+11. 测 idle / workout / summary / closed CPU，summary 和 closed 应回到非跟练基线。
+12. 更新 plan 状态、`CHANGE-006`、版本 README 和本文，再分别提交/push 两个仓库。
 
-### 第 1 步（P0，我认为最该补）：养成系统
-版本目标原文是「健康分/**段位**养成的完整核心循环」，而 `rankRoadPoints` 是个死字段——
-这正是「治愈留存墓地效应」这个**核心假设的载体**，却是整个 P0 里唯一的半成品。
-需要：段位晋升规则、软惩罚衰减、段位页展示。
+建议命令：
 
-### 第 2 步（P0）：Onboarding
-「选宠物 → 选疲劳档位 → 首次跟练」的首启动引导流，目前完全不存在。
+```bash
+swift test --filter PlantedFootSolverTests
+swift test
+swift test --enable-code-coverage
+./scripts/build-app.sh debug
+.build/NickBody.app/Contents/MacOS/NickBody --pet-scene
+```
 
-### 第 3 步（P1）：订阅 StoreKit 2
-把占位弹窗换成真的：商品 `com.nickbody.app.pass`、免费/付费档界限、7 天试用、恢复购买。
-`versions/v1.0.0/README.md` 的「发布关键项」里 App Store Connect 商品配置仍是 ⏳。
-
-### 第 4 步（P1）：数据统计页（段位页 + 周视图）
-
-### 并行/长线：3D 宠物线的延续
-- **全身体态镜像**——这是当初做 A-pose 全身骨架的**真正目的**。24 骨已就位，
-  `PoseTracker` 已产出上半身 8 个关节，但 `PetSceneView` 目前**只驱动 `Head` 关节**
-  （`bindSkeleton` 只找 head，`tick()` 只写 `jointTransforms[headJoint]`）。
-  下一步是把人体关节映射到 `LeftArm/RightArm` 等骨骼。
-- bear / fox 的 3D 模型（走同样的 grok→Meshy→glb_to_usdz_rigged.py 流水线）
-- Meshy 附赠的走/跑动画目前完全没用上，可以考虑用在待机/庆祝状态
-- B 的眼睛星形高光位置略有偏差（可选的贴图微调）
+真实 GUI 验收不能被单元测试替代。尤其要把 rest 和 peak 帧在脚底区域叠加：目标是 210×216 教练卡中 sole edge 移动不超过 1 px。
 
 ---
 
-## 7. 协作约定（沿用）
+## 8. 当前 App 仓库改动清单
 
-- 沟通用**简体中文**；代码实体（变量/函数/类名）和技术术语保持英文；**代码注释写英文**。
-- 流程：**Research → Plan → Implement**，不要直接跳到写代码。
-- **winston 会亲自确认每一个生成的资产**，再让它进仓库（先预览/展示，后应用）。
-- App 代码提交到 `nickbody-macos` 的 `feat/appkit-migration`；**不要**推 main、不要 force-push。
+已修改、未提交：
+
+```text
+Sources/NickBodyCore/UI/AppKit/PetSceneController.swift
+Sources/NickBodyCore/UI/AppKit/PetSceneView.swift
+Sources/NickBodyCore/UI/AppKit/WorkoutSessionController.swift
+Sources/NickBodyCore/UI/PetSpriteEngine.swift
+tools/pet-model/README.md
+```
+
+新建、未跟踪：
+
+```text
+Sources/NickBodyCore/Services/PetMotionPlanner.swift
+Tests/NickBodyTests/LeafSpringTests.swift
+Tests/NickBodyTests/PetMotionPlannerTests.swift
+Tests/NickBodyTests/PlantedFootSolverTests.swift
+Tests/NickBodyTests/SkeletonBindingTests.swift
+Tests/NickBodyTests/SpriteStripTimelineTests.swift
+Tests/NickBodyTests/WorkoutRepTimelineTests.swift
+plans/001-layer-workout-pet-motion.md
+plans/002-rebuild-sprout-visual-identity.md
+plans/README.md
+```
+
+当前 App diff（不含未跟踪文件）约 593 additions / 237 deletions。不要根据 `git diff --stat` 看不到未跟踪源码就误判它不存在。
+
+外层驱动面板也不是 clean：
+
+```text
+M  .gitignore                 # 已暂存，前序修改
+A  HANDOFF.md                 # 已暂存后又更新为本文
+ M versions/v1.0.0/CHANGES.md
+M  versions/v1.0.0/README.md  # 已暂存，前序修改
+```
+
+不要撤销或重排这些前序改动。
+
+---
+
+## 9. 资产与工具提醒
+
+- 生产资产：`Sources/NickBodyCore/pet3d/pet_sprout_s2.usdz`，Candidate B，24 骨。
+- 持久化源文件：`~/Downloads/nick-pet-review/B_source_源文件/rigged.glb`。
+- 已绑骨模型只能走 `tools/pet-model/glb_to_usdz_rigged.py`；不要用 `rig_pet.py` 重绑。
+- UsdSkel 归一化必须缩放/平移 Armature 本身，不能靠父级 Empty；根节点游离 Icosphere 要排除。
+- USDZ 保持 Blender Z-up，由运行时 `zUpToYUp` 转成 RealityKit Y-up；不要导出时再转一次。
+- 任何新资产都必须先给 @winston 预览并明确批准，之后才能替换 bundle。
+
+---
+
+## 10. 完成定义
+
+Plan 001 只有同时满足以下条件才算完成：
+
+- 六个中文动作标签与用户视角方向一致。
+- 头颈、脊柱、肩臂和下肢有克制但可见的协同，不撕裂。
+- 双脚在完整动作中视觉落地稳定。
+- 叶冠有受限惯性、回弹和收敛，无抖动。
+- 首拍、计数、语音调度和动作时钟一致，动作切换不 snap。
+- Reduce Motion 行为正确。
+- 全量测试、覆盖率、build 和真实 GUI 验收都通过。
+- summary / closed 状态停止渲染并回到 CPU 基线。
+- 视觉模型差距仍诚实记录为 plan 002 BLOCKED，等待权威目标确认。

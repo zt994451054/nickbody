@@ -10,23 +10,30 @@
 ## 1. 方案概述
 
 本版本在 macOS 上交付 `nick` 产品的首个原生客户端。技术策略采用**纯端侧单机零后端架构**：
-1.  **UI 表现层**：采用 SwiftUI 编写，通过配置为 `LSUIElement`（无 Dock 图标）的常驻菜单栏项目承载，主交互由毛玻璃透明置顶的 `NSPanel` 承载，运行基于 8×11 精灵图集（Spritesheet）切帧的宠物状态机。
+1.  **UI 表现层**：采用 SwiftUI + AppKit，通过配置为 `LSUIElement`（无 Dock 图标）的常驻菜单栏项目承载。大厅和跟练窗口按需使用 RealityKit 3D；桌面 `NSPanel` 使用 Core Animation 播放低功耗透明 sprite strip。
 2.  **疲劳追踪**：基于全局鼠标/键盘活动事件监视器（非侵入式，无录入风险）。
 3.  **姿态识别与领操**：利用系统内置的 `Apple Vision`（`VNDetectHumanBodyPoseRequest`），并以 `PoseProvider` 协议隔离 Vision 依赖。
-4.  **数据持久化**：使用 macOS 沙盒内的 `SwiftData` 本地库。
-5.  **变现控制**：使用 StoreKit 2 本地验证订阅状态，无云端校验。
+4.  **角色动画**：Rig v2 使用固定 32 关节生产骨架，表现动作在 Blender 4.3.2 制作并烘焙；运行时由唯一 `PetAnimationGraph` 分层合成最终关节姿势。
+5.  **数据持久化**：使用 macOS 沙盒内的 `SwiftData` 本地库。
+6.  **变现控制**：使用 StoreKit 2 本地验证订阅状态，无云端校验。
 
 ---
 
 ## 2. 架构变更
 
-无，完全沿用 `foundation/tech-arch/overview.md` 的纯端侧单机架构。
+CHANGE-011 引入生产级角色动画架构，保持纯端侧和零第三方运行时不变，但调整宠物资产与动作边界：
+
+- 当前 Meshy 24 骨资产只保留为身份与回归参考；新生产资产遵循 `pet-character-rig-v2.md` 的连续网格、32 关节骨架、手工蒙皮和认证合同。
+- Blender 是固定版本的离线 DCC，不随 App 分发。Meshy 只作为候选生成器，不再决定生产 rig 和最终权重。
+- 大厅/跟练的 RealityKit 3D clip 与桌面 sprite strip 来自同一已批准 DCC action。
+- `PetAnimationGraph` 是关节姿势的唯一最终写入者，取代 `PetSceneView` 和多个 planner 直接拼装骨骼角度的模式。
+- 详细决策见 ADR-003；ADR-002 的“移除 Rive、桌面使用预烘焙帧”继续有效，固定整张图集部分由独立 strip + manifest 取代。
 
 ---
 
 ## 3. 向后兼容性
 
-本版本为 v1.0.0 创世版本，不涉及历史兼容性问题。所有接口和本地 SwiftData 表结构均按新定义落地。
+本版本为 v1.0.0 创世版本，不涉及用户数据迁移。角色资产采用并行迁移：Rig v2 完整认证和用户批准前，App 继续使用当前正式 USDZ 与整张桌面图集；新资源以不可变版本和哈希并行加入，切换失败时回退旧资产。旧 24 骨 clip 不复制到 Rig v2，新骨架动作必须从 DCC 源重新烘焙。
 
 ---
 
@@ -34,7 +41,7 @@
 
 本版本**彻底实现了零第三方动画运行框架依赖 (Zero Third-Party Animation Runtime Dependency)**。
 
-宠物的状态机渲染将完全基于**原生 SwiftUI Image + 视口位移切片**。这消除了 C++ Rive 运行时在 macOS 常驻后台时的额外发热风险，提高了长效运行的稳定性，并将最终生成的 App 体积缩减了约 85%。
+App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation 负责桌面透明帧播放，不引入 Rive、Unity 或 Unreal。Blender 4.3.2 仅用于离线资产生产，不是 App 依赖。该边界消除了 C++ 动画运行时在 macOS 常驻后台时的额外发热风险，并保持最小运行时依赖面。
 
 ---
 
@@ -50,7 +57,8 @@
 | 需求类型 | 需求指标 | 技术实现方案 |
 |:---|:---|:---|
 | **姿态推理性能** | 领操跟练时推理帧率 `≥ 15 fps` | 在 `AVFoundation` 视频流代理中，使用专有串行后台队列（`Serial Queue`）派发 Vision 请求。配置 Vision 以优先调用系统的 Apple Neural Engine (ANE) 进行硬件加速，防止阻塞主线程（Main Thread）。 |
-| **后台功耗控制** | 宠物待机常驻时 CPU 占用 `< 1%` | 1. 当宠物处于贴边隐藏（`Edge Snap`）或用户全屏工作时，使精灵图切帧定时器失效（`Timer.invalidate()`）挂起帧切换渲染循环，降为 0 fps 渲染。<br>2. 闲时动画采用 3-8 分钟随机定时器唤醒，非活动时完全挂起绘图更新。 |
+| **后台功耗控制** | 宠物待机常驻时 CPU 占用 `< 1%` | 1. 桌面常驻只播放预烘焙 strip，不创建 RealityKit 场景。<br>2. 贴边隐藏、全屏工作或静止帧期间暂停 Core Animation。<br>3. 闲时动作由 3–8 分钟随机调度器唤醒，非活动时不运行逐帧 Swift 定时器。 |
+| **角色变形质量** | 正式动作无裂缝、远端拉扯、穿模和脚底滑动 | 生产 rig 依次通过结构、关键单关节、全关节、组合姿势和动作逐帧门禁；每个姿势/帧使用八方位 RealityKit 原尺寸图人工审核，机器指标只作问题定位。 |
 | **摄像头隐私** | 帧仅在内存处理，永不上传/落盘/入日志 | 使用 `CMSampleBuffer` 直接交给 Vision 提取骨骼点，整个链路无任何写盘（File I/O）动作。Vision 导出的骨骼坐标存入内存数组后，视频帧即被 ARC 机制销毁，日志模块（`os.Logger`）严禁输出视频相关数据。 |
 | **数据安全** | 数据不出设备，免 GDPR/CCPA 合规风险 | 全部用户历史跟练和段位记录均存储在 macOS 系统的 Sandboxed 文件夹下的 `SwiftData` 容器中，天然物理隔离，无网络出站请求。 |
 
@@ -63,13 +71,18 @@
   │                   macOS Swift App                      │
   │                                                        │
   │  ┌──────────────┐   ┌──────────────┐   ┌────────────┐  │
-  │  │ Fatigue-     │ ➔ │ Reminder-    │ ➔ │ NSPanel-   │  │
-  │  │ Tracker      │   │ Scheduler    │   │ SpriteView │  │
+  │  │ Fatigue-     │ ➔ │ Reminder-    │ ➔ │ NSPanel +  │  │
+  │  │ Tracker      │   │ Scheduler    │   │ SpriteStrip│  │
   │  └──────────────┘   └──────────────┘   └────────────┘  │
-  │                                              ▲         │
-  │  ┌──────────────┐   ┌──────────────┐         │         │
-  │  │ AVFoundation │ ➔ │ PoseProvider │ ➔ ScoringEngine   │
-  │  └──────────────┘   └──────────────┘                   │
+  │                                                        │
+  │  ┌──────────────┐   ┌──────────────┐   ┌────────────┐  │
+  │  │ AVFoundation │ ➔ │ PoseProvider │ ➔ │ Scoring-   │  │
+  │  └──────────────┘   └──────────────┘   │ Engine     │  │
+  │                                         └────────────┘  │
+  │  ┌──────────────┐   ┌──────────────┐   ┌────────────┐  │
+  │  │ Animation-   │ ➔ │ PetAnimation│ ➔ │ RealityKit │  │
+  │  │ Library      │   │ Graph       │   │ Scene      │  │
+  │  └──────────────┘   └──────────────┘   └────────────┘  │
   └────────────────────────────────────────────────────────┘
 ```
 
@@ -91,7 +104,7 @@
 *   **实现思路**：  
     监听 `FatigueThresholdReached` 广播。
 *   **交互控制**：
-    *   收到信号后，获取当前的 `NSPanel` 宠物窗，将精灵图状态机切换至疲劳态动画行（打哈欠/极困行），使宠物在桌面表现出疲劳姿态。
+    *   收到信号后，向桌面宠物发送 `yawn` 或 `sleep` 语义动作命令，由 manifest 定位独立帧资源，不依赖图集行号。
     *   同时，在屏幕中央淡入（Fade-in）弹出提醒邀请卡片窗口。
     *   **延迟按钮限制逻辑**：在内存中维护 `delayCount`。每次点击延迟，卡片淡出，并在 5 分钟后重新分发信号。若 `delayCount >= 2`，则直接通过 SwiftUI 控制隐藏延迟按钮，仅向用户提供 "Let's move" 的主按钮。
 
@@ -108,6 +121,9 @@
     实现 `VisionPoseProvider`。内部封装 `AVCaptureSession`，设置分发队列。在 `captureOutput` 中将视频帧直接交给系统的 `VNImageRequestHandler`，绑定两个检测请求：
     *   `VNDetectHumanBodyPoseRequest`：提取左右肩关节及头部的 2D 坐标（归一化为 0.0 - 1.0 的 CGFloat）。
     *   `VNGeneratePersonSegmentationRequest`：提取用户人像的遮罩（Mask），用于在影子面板渲染纯色的人像剪影，保护隐私。
+
+*   **跟练角色分工**：左侧 `PetSceneView` 始终按 `PersistenceController.activePet()` 加载用户当前宠物并播放教练动作；V1 当前电子宠物使用之前的 3D 人形小草 `pet_sprout_s2.usdz`。右侧 `MirrorSceneView` 只消费 Vision 关节和头部姿态，固定加载独立的闭嘴狐狸 `mirror_avatar_fox.usdz`；旧张嘴狐狸 `mirror_fox.usdz` 不再进入 App bundle。
+*   **资产坐标与静止姿态**：迁移期人形小草仍对当前正式资产保留历史 Z-up 到 Y-up 转换；闭嘴狐狸已统一为 RealityKit Y-up。Rig v2 发布资产必须直接使用 RealityKit Y-up，不再叠加历史根旋转。小草自然收脚站姿由 `idle-neutral` clip 提供，bind pose 保持蒙皮用 A-pose；用户替身继续使用自己的自然站姿回退。
 
 ### 7.4 评分引擎 (ScoringEngine)
 *   **实现思路**：  
@@ -173,29 +189,20 @@
 
 *   **对齐环收紧逻辑**：计算影子关节与目标关键点的空间距离。到位比例从 0 渐变至 1.0。当大于 `0.9` 且保持不变时，触发靶心圆环向圆心合并，开启 3 秒的 `HoldingTimer`。3 秒倒计时结束，调用 `LocalDBManager` 累计当前动作得分，并通知 UI 触发 `current_action_id` 递增进行动作切换。
 
-### 7.5 桌面宠物切帧渲染与视线随动模块 (PetSpriteRenderer)
-*   **物理图集切分机制**：
-    宠物动画渲染基于 `1536x2288` 图集。在 SwiftUI 中，通过对 Image 组件添加容器裁剪（`.clipped()`）和背景偏移定位，动态计算帧渲染：
-    ```swift
-    struct PetSpriteView: View {
-        let spritesheet: NSImage // WebP/PNG 透明大图
-        @State var currentFrame: Int = 0 // 0 到 7
-        @State var currentRow: Int = 0  // 0 到 10
+### 7.5 角色资产与统一动画图 (PetAnimationGraph)
 
-        var body: some View {
-            Image(nsImage: spritesheet)
-                .resizable()
-                .aspectRatio(contentMode: .none)
-                // 强制将图片拉大为 11行 x 8列 的物理规格
-                .frame(width: 1536, height: 2288, alignment: .topLeading)
-                // 通过偏移将目标单元格 (Cell) 对齐至视口左上角
-                .offset(x: -CGFloat(currentFrame) * 192, y: -CGFloat(currentRow) * 208)
-                // 以 192x208 规格进行物理裁剪，形成独立的动画视口
-                .frame(width: 192, height: 208)
-                .clipped()
-        }
-    }
-    ```
+*   **生产资产**：人形小草 Rig v2 的网格、32 关节导出骨架、蒙皮、动作 manifest、坐标和认证门禁统一由 `pet-character-rig-v2.md` 定义。当前 24 骨资产只作为迁移期正式回退和视觉参考。
+*   **动作来源**：挥手、张望、伸展、庆祝等表现动作在 Blender control rig 中制作并逐帧烘焙到固定导出骨架。Swift 不再定义这些动作的具体关节角度；现有 `PetIdleMotionPlanner` 迁移后只保留随机动作调度职责并更名为 `PetIdleActionScheduler`。
+*   **唯一姿势写入者**：`PetAnimationGraph` 按 Base → Action → Additive → IK → Secondary → Corrective 顺序合成完整姿势，一次性写入 `jointTransforms`。`PetSceneView` 只负责场景、相机、灯光、生命周期和最终提交。
+*   **可保留能力**：六个头颈教学动作语义、`PlantedFootSolver`、叶片受限弹簧和 Rig probe 保留；教学动作的具体姿势逐步迁移为采样 clip。
+*   **主发布路径与 Blend shape 边界**：最小往返实验已选择 Blender 4.3.2 → 原生 USD → USDZ → RealityKit。该路径保留骨名、31 个关节/shape 采样和 `TestBulge 0 → 1 → 0`；GLB 经 Apple 导入会匿名化骨路径、丢失 shape，且 RealityKit 不驱动测试骨，故只作交换与诊断产物。App 最低支持 macOS 14，而直接 shape API 要求 macOS 15，因此 corrective 与面部 shape 只能作为 macOS 15+ 可选增强，不能成为身体完整性的必需条件。
+
+### 7.6 桌面宠物透明动作资源与视线随动 (PetSpriteRenderer)
+
+*   **形象与动作单一来源**：大厅中央宠物、桌面悬浮宠物和跟练教练均由当前宠物选择驱动。3D clip 与桌面 strip 使用相同角色版本、DCC action、相机、灯光和发布 manifest，不混用旧形象或其他 rig。
+*   **独立动作资源**：每个动作发布一条透明横向 sprite strip。manifest 定义 `clipId`、`frameCount`、`fps`、`loopMode`、逻辑画布、anchor、事件和 Reduce Motion 替代项；新增动作只增加自己的资源，不修改无关动作。
+*   **迁移兼容**：Rig v2 切换前继续读取当前 `pet_sprout_sheet.png`。新资源加载或校验失败时回退当前正式图集或 `idle-neutral`，不得显示空白宠物。
+*   **随机调度**：静默状态每 `3–8 分钟` 从呼吸叶摆、张望/挥手、伸展轻弹中选择一项，并排除上次动作；疲劳、提醒、点击和跟练等高优先级状态可立即打断，动作图根据 manifest 的可中断窗口平滑退出。
 *   **16 方向眼珠/视线随动数学公式 (Look-Vector Mathematics)**：
     1. 获取鼠标在屏幕的全局绝对坐标 $M(x, y)$。
     2. 获取桌面宠物窗口中心点的绝对坐标 $P(x, y)$。
@@ -204,10 +211,7 @@
     4. 将弧度角转换为顺时针度数，并将朝上定义为 $0^\circ$。
     5. 通过除以 $22.5^\circ$ 进行四舍五入并取模，计算出 0 到 15 的盯人帧偏移量 `lookIndex`：
        $$\text{lookIndex} = \left( \operatorname{round}\left( \frac{\theta_{\text{degrees}}}{22.5} \right) \right) \bmod 16$$
-    6. **帧映射规则**：
-       * 若 `lookIndex` 位于 `0...7` (顺时针 0° 到 157.5°)：映射至 **Row 9** 的第 `lookIndex` 帧。
-       * 若 `lookIndex` 位于 `8...15` (顺时针 180° 到 337.5°)：映射至 **Row 10** 的第 `lookIndex - 8` 帧。
-       * 若光标静止或离开窗口敏感盲区，则无延迟平滑回退至 Row 0 的 `idle` 待机呼吸状态。
+    6. **帧映射规则**：`lookIndex` 直接选择 `look-direction` 独立资源中的第 `0...15` 帧；光标静止或离开敏感区时平滑回退 `idle-neutral`。运行时不依赖固定 Row。
 
 *   **NSPanel 浮动窗口穿透与避让配置**：
     创建类 `PetNSPanel` 继承自 `NSPanel`，配置如下物理参数：
@@ -215,7 +219,7 @@
     class PetNSPanel: NSPanel {
         init() {
             super.init(
-                contentRect: NSRect(x: 0, y: 0, width: 240, height: 240),
+                contentRect: NSRect(x: 0, y: 0, width: 196, height: 176),
                 styleMask: [.borderless, .nonactivatingPanel, .hudWindow],
                 backing: .buffered,
                 defer: false
@@ -230,7 +234,7 @@
     }
     ```
 
-### 7.6 养成持久化与内购 (SwiftData & StoreKit 2)
+### 7.7 养成持久化与内购 (SwiftData & StoreKit 2)
 
 *   **持久化**：  
     每次运动结算后，调用 `ModelContext` 向本地 SwiftData 写入一条新的 `WorkoutSession` 和 `HealthScore` 数据。
@@ -256,10 +260,18 @@
 ## 8. 实现顺序与测试基准
 
 ### 实现顺序
-1.  **第一阶段 (1-3天)**：编写 `FatigueTracker` 并连接鼠标监视，完成本地 AppStorage 偏好配置。
-2.  **第二阶段 (4-7天)**：编写 `VisionPoseProvider` 与跟练评分引擎，利用测试用例跑通 6 个动作的角度判定。
-3.  **第三阶段 (8-10天)**：实现透明 `NSPanel` 与 `PetSpriteView` 组件的挂载，并在 SwiftUI 中将所有窗口串联起来，联调 StoreKit 2。
+1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
+2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
+3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
+4. **角色生产**：重拓扑连续主身体，建立 control/export 双骨架并手工蒙皮；按 Gate 0–3 修正到全部通过。
+5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
+6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
+7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
 
 ### 技术风险防范
 *   *风险*：Vision 姿态推理在 M1 基线机型发热高。  
 *   *防范*：跟练开始时，限制摄像头捕获分辨率为 `640x480` (姿态识别不需要 4K 高清)；在 Vision 识别结果中，一旦检测到用户肩膀离场（`OutOfFrame`），立刻挂起推理，提示用户回到画面。
+*   *风险*：Blender、GLB/USD、Apple USDZ 与 RealityKit 对骨架、单位、法线或 blend shape 的解释不一致。
+*   *防范*：正式角色统一从 Blender 原生 USD 打包 USDZ；每次导出记录版本与语义合同哈希，使用 `usdchecker`、结构脚本和 RealityKit 原尺寸截图共同验收，禁止将 GLB 往返结果或发布文件覆盖 DCC master。
+*   *风险*：自动蒙皮在肩、腋下、髋部产生远端权重污染。
+*   *防范*：生产主身体重拓扑后手工蒙皮，使用命名区域 mask 阻止跨区域 influence，并按关键单关节 → 全关节 → 组合姿势顺序逐级放行。

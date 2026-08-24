@@ -4,6 +4,15 @@
 
 ---
 
+## 2026-08-12 | v1.0.0 | 建立生产级 Rig v2 与统一角色动画管线
+
+**变更内容**：将人形小草从 Meshy 24 骨自动绑骨、Swift 手写表现动作和固定整张图集，重构为视觉身份、生产骨架、变形、动作内容、运行时五层架构。锁定 Blender 4.3.2 为脚本化生产 DCC；最小往返实验选择原生 USD → USDZ → RealityKit 为主发布路径并淘汰 GLB Apple 发布路径；大厅/跟练使用有界 RealityKit 3D，桌面使用同一动作源烘焙的独立透明 sprite strip；运行时由单一 `PetAnimationGraph` 合成并提交最终姿势。
+**变更原因**：当前身份基准的单关节认证暴露跨躯干蒙皮权重污染，无法靠动作曲线或运行时限制修复。固定 Row 图集和多模块直接写关节也无法支撑持续新增动作。
+**相关 ADR**：[ADR-003](./decisions/ADR-003-production-character-animation-pipeline.md)
+**影响文档**：foundation/tech-arch/overview.md、standards/engineering/frontend.md、standards/design/DESIGN.md、versions/v1.0.0/engineering/pet-character-rig-v2.md、tech-solution.md、api-design.md、product/requirements.md、product/design-spec.md
+
+---
+
 ## 2026-07-16 | v1.0.0 | 宠物动画渲染选型变更：Rive Runtime → 原生精灵图集切帧
 
 **变更内容**：废除 Rive macOS Runtime 第三方动画依赖，桌面宠物改为基于透明 WebP 8×11 精灵图集（单帧 192×208）的原生 SwiftUI 视口裁剪切帧状态机，新增 16 方向视线随动机制；悬浮窗采用 NSPanel（hudWindow + canJoinAllSpaces）承载。
