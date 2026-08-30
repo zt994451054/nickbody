@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：v002 因非解剖拓扑失效，v003 因分件封口接缝被拒绝，v004 因全局重拓扑造成身份与 edge-flow 失真而被拒绝；v005 自动方法和 Meshy 30k/40k/60k 原生 Blend 有限候选也已按 Gate 0 止损。AI 自建的 v008-full-body-v001/v002 均实现合格结构但未通过身份审核；冻结真实躯干虽然身份精确，其 256/260 点复杂切口无法形成合格动画连接器，v003 已在 fixture 阶段止损。当前按 CHANGE-016 构建 v008-full-body-v004：从身份源只读测量规则 64 点截面，先建立严格几何通过的中央躯干 loft，再与关节安全上/下分支装配；尚无获批的最终生产网格、骨架、蒙皮或动作资产。
+> 当前状态：既有自动/局部/Meshy 路线均已止损。6×64 身份躯干 loft fixture 已通过严格门禁；单层 pelvis 分支最佳 aspect `5.254`，三层派生分支为 19 折面/15 自交/aspect `5.741`，均已拒绝。当前阻塞在直接手工 authored 的 pelvis/crotch pair-of-pants 面流；尚无获批的完整生产网格、骨架、蒙皮或动作资产。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -512,14 +512,15 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 8. ⚠️ v008-full-body-v002 已通过完整 Gate 0，但无头身体 mean/min IoU `0.8016434605 / 0.7154556240`、mean boundary P95 `46.0378 mm`，三项均劣于止损基线，原尺寸身份审核拒绝；禁止继续 profile 强度变体。
 9. 🔄 新建 v008-full-body-v003：精确保留 `V008_TorsoCoreSafe_Frozen`，只在其 `260` 点 lower 与 `256` 点 upper 边界之外构建显式颈肩/手臂、骨盆/腿部连接；通过边界 fixture、Gate 0、身体轮廓回归、八方位 AI 审核和用户静态审核后方可继续。
 10. ⚠️ v003 frozen-torso fixture 保持 `4,814` 个身份面零 mismatch，但复杂切口 reduction 的最佳面比例仍为 `9.1209`，原计数延伸产生自交；完整候选未生成，路线停止。
-11. 🔄 新建 v008-full-body-v004：从身份源提取规则 64-ring 截面并构建独立 all-quad loft fixture；通过后才与关节安全上/下分支装配，执行 Gate 0、身份指标、AI 原图和用户审核。
-12. 将固定 32 关节合同重新应用到获批 v008 候选，复核肩、肘、髋和膝关节位置、IK/FK 传播及原尺寸骨位图。
-13. 基于获批 v008 新 source hash 从零建立区域合同和手工权重，按 Gate 1 → Gate 2 → Gate 3 顺序放行，不复制任何历史候选权重。
-14. 接入最小 `PetAnimationGraph`，先只播放 `idle-neutral` 和现有六动作迁移样例。
-15. 依次制作挥手、张望、伸展；每个动作单独 Gate 4 和用户审核。
-16. 最后生成独立桌面 strips，经批准后切换正式资源。
+11. ✅ 身份源规则 64-ring 躯干 loft fixture 已通过严格几何门禁。
+12. 🚫 单层与三层派生 pelvis fixture 均已止损；下一步必须直接手工 authored 64→双 32 pair-of-pants 面流，通过后再制作 upper branch。
+13. 将固定 32 关节合同重新应用到获批 v008 候选，复核肩、肘、髋和膝关节位置、IK/FK 传播及原尺寸骨位图。
+14. 基于获批 v008 新 source hash 从零建立区域合同和手工权重，按 Gate 1 → Gate 2 → Gate 3 顺序放行，不复制任何历史候选权重。
+15. 接入最小 `PetAnimationGraph`，先只播放 `idle-neutral` 和现有六动作迁移样例。
+16. 依次制作挥手、张望、伸展；每个动作单独 Gate 4 和用户审核。
+17. 最后生成独立桌面 strips，经批准后切换正式资源。
 
-当前执行第 11 项 v008-full-body-v004 规则环躯干 loft。v001/v002 权重与区域候选、v003 分件候选、v004 全局重拓扑、v005 自动 Boolean、Meshy 30k/40k/60k、v008-full-body-v001/v002、细分后坐标拟合、宏观 profile 与冻结切口装配均已停止；禁止恢复自动拓扑、最终顶点拟合、profile 扫描、复杂切口 reducer 或 Auto-Rig 参数变体。正式 USDZ、sprite、身份基准、历史 v002 Blend 和无蒙皮 v001 Blend 继续冻结。v004 通过 loft fixture、最终 Blend Gate 0、身份指标、八方位原图和用户静态审核前，不得恢复生产骨架或蒙皮工作。
+当前阻塞在第 12 项直接手工 authored pelvis pair-of-pants 面流。既有失败路线全部停止；禁止恢复自动拓扑、最终顶点拟合、profile 扫描、复杂切口 reducer、cell 层数/prewarp/aspect 参数扫描或 Auto-Rig。正式资产继续冻结。lower/upper branch、完整 Gate 0、身份指标、八方位原图和用户静态审核通过前，不得恢复生产骨架或蒙皮工作。
 
 人工 DCC 合同包已落档到 App 工程：
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/`。其中 `README.md`
