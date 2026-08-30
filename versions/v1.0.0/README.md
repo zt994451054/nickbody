@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🔄 进行中 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；当前 24 骨小草已锁定为视觉身份基准，但旧 rig 因跨躯干权重污染未通过生产动画认证。Rig v2 主发布路径固定为 Blender USD → USDZ → RealityKit；v008-full-body-v001/v002 均通过全四边面、闭合、自交、关节环流、极点和冻结片区机器门禁，但因方盒躯干、腹部台阶与柱形腿未通过身份审核，坐标拟合和宏观 profile 均已止损。CHANGE-015 正以冻结真实躯干片区为中央真源构建 v003 显式上下边界连接。正式资源继续冻结。**待补**：Rig v2 角色生产与三组动作；养成系统段位/衰减；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🔄 进行中 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；当前 24 骨小草已锁定为视觉身份基准，但旧 rig 因跨躯干权重污染未通过生产动画认证。Rig v2 主发布路径固定为 Blender USD → USDZ → RealityKit；v008-full-body-v001/v002 均通过结构门禁但未通过身份审核，冻结真实躯干切口也已在 fixture 阶段因连接器面质量/自交止损。CHANGE-016 正从身份源只读测量多个 64 点规则截面，构建 v004 中央躯干 loft，再与关节安全分支装配。正式资源继续冻结。**待补**：Rig v2 角色生产与三组动作；养成系统段位/衰减；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🔄 v008-full-body-v003 冻结身份躯干装配中 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🔄 v008-full-body-v004 规则环躯干 loft 中 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
