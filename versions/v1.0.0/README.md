@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；自动 pelvis 与 CHANGE-018 固定 `z=0.260` 路线均失败并转为只读历史。CHANGE-019 已推导 `expandedHipMaxZ=0.3648870697`、余量 `0.0122083666` 和候选 `z=0.3770954363`，但完整 Body 在该高度仅 50/64 hits，且 shoulder expanded zone 与 hip-safe 区重叠，full-body source ring 已拒绝。当前只允许优先用只读 `V008_TorsoCoreSafe_Frozen` 在相同高度做 torso-only 64/64 验证；失败即停止 CHANGE-019 并另决 lower + central torso + upper 共同 authored，不继续升高或扫高度。正式资源继续冻结。**待补**：Rig v2 hip-safe pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-019 已证明 fully-source 水平 seam 不存在：`safeZ=0.3770954363` 时完整 Body 与冻结 torso 均仅 50/64 hits，升高到 `0.3900000000 / 0.4015120000` 仍无 64/64；clean / shoulder-expanded / gap union 为 `34/16/14`，独立 hybrid collar 亦未批准。当前等待新变更由用户选择 A）shoulder-aware shared domain + `34/16/14` masks，或 B）取消水平 seam，lower + central torso + upper 共同 authored；AI 不得擅自选择。正式资源继续冻结。**待补**：Rig v2 新架构 pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：CHANGE-019 torso-only seam 64/64 前置验证 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：等待 A/B 新架构决策 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |

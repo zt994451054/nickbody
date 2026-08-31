@@ -27,7 +27,7 @@
 | CHANGE-016 | 2026-08-30 | 开发中 | 技术方案变更 / 规则环躯干重建 | 冻结切口不可安全连接，改用身份截面测量构建规则 64-ring 躯干 loft | ⏳ 处理中 |
 | CHANGE-017 | 2026-08-30 | 开发中 | 技术方案变更 / 多环骨盆分支 | 单层 pelvis 分支面比例失败，改用三层原生 pair-of-pants 拓扑连接双腿 | ✅ 已完结（派生拓扑失败） |
 | CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
-| CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | 已推导 `z=0.3770954363`，完整 Body 仅 50/64 hits；转为 torso-only 语义源 64/64 前置验证 | ⏳ 处理中 |
+| CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | full Body 与冻结 torso 均无法形成 hip-safe 的 64/64 水平身份截面 | ✅ 已完结（fully-source 水平 seam 不存在） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -610,7 +610,9 @@
 **变更内容**：停止把 torso/lower seam 固定在 `z=0.260`。以 Rig v2 已冻结的左右 hip capsule 及其 two-ring expansion 作为三维禁入包络，解析两个 expanded hip 包络的最大世界空间 Z，再加一圈该区域真实网格边长中位数作为安全余量，即 `safeZ = expandedMaxZ + medianLocalEdgeLength`；沿身份源既定语义截面序列向上选择第一个高于 `safeZ`、且满足 64 点完整采样合同的 source-measured 身份截面作为新 seam。新 lower branch 必须把新 seam 以下的身份截面整体纳入同一张 pair-of-pants 表面；新 torso loft 从 seam 向上构建，二者只在同一条 64 点有序环精确焊接，不得与旧 `z=0.260` loft 重叠。正式构建 pelvis 前，先以隔离 fixture 证明新 torso collar、upper 接口和后续 upper branch 合同兼容。
 **变更原因**：CHANGE-018 两次直接布局证明，固定 `z=0.260` seam 落在 expanded hip 审计区内，导致每侧最多只有 3 条合格 hip rings，极点进入 joint core 扩展区；即使 pair-of-pants 组合拓扑成立，几何仍产生大量折面、自交和极差角度。继续在同一切口调点无法增加 joint-safe 纵向空间，必须先把 seam 移到完整 hip 变形区上方。
 
-**只读测量结果（2026-08-31）**：固定包络解析得到 `expandedHipMaxZ = 0.3648870697`，同一邻域一圈真实边长中位数余量为 `0.0122083666`，因此首个几何候选为 `firstCandidateZ = 0.3770954363`。但直接对完整 identity Body 做水平径向采样时仅 `50/64` rays 命中；该高度的 shoulder expanded zone 已与 hip-safe 区重叠，缺失与误命中来自语义上不属于中央躯干的肩臂表面。由此判定 full-body 水平 source ring 不可用，`0.3770954363` 不构成已批准 seam，也不得通过继续升高 Z 寻找另一个 full-body 截面。
+**只读测量结果（2026-08-31）**：固定包络解析得到 `expandedHipMaxZ = 0.3648870697`，同一邻域一圈真实边长中位数余量为 `0.0122083666`，因此 `safeZ = 0.3770954363`。完整 identity Body 与只读 `V008_TorsoCoreSafe_Frozen` 在该高度均仅 `50/64` rays 命中：full Body 的 14 个 miss 来自手臂超出中央 torso bounds；冻结 torso 的 14 个 miss 是肩部分支留下的真实几何缺口。按停止规则仅做的上界证明显示，升高到 `z=0.3900000000` 与 `z=0.4015120000` 仍无法得到 64/64。由此确认 fully-source 水平身份截面不存在，`0.3770954363` 及更高水平 ring 均不得批准。
+
+**语义 union 结论（2026-08-31）**：对原始测量命中去重后，clean measured union 只有 `34` 点；另有 `16` 个 measured 点位于 shoulder expanded zone，剩余 `14` 个方向为真实 gap。把 34 个 clean torso 点与 16 个肩区点、14 个人工补点拼成 hybrid collar 会混合不同语义域并制造非 source-measured 区域，因此独立 hybrid collar 同样不批准。
 
 **影响范围**：
 
@@ -618,27 +620,29 @@
 - [x] 变更记录 → `CHANGES.md`（已先行记录 hip-safe seam 推导、TDD 门禁和停止规则）
 - [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已同步 seam 真源、Static Gate S0 顺序和实施步骤）
 - [x] 版本进度 → `README.md`（已同步 CHANGE-019 当前阻塞）
-- [ ] seam 合同与工程工具 → `engineering/workspace/macos-app/tools/pet-model/`（纯合同先红灯；先建立 torso-only 语义测量源和 64/64 fixture，再实现 collar/upper compatibility 审计）
-- [ ] 隔离证据 → `character_pipeline/sprout/v2/`（新 seam、torso collar 和 upper compatibility 各自保存独立 Blend/report；不得覆盖历史输入）
+- [x] seam 合同与工程工具 → App 提交 `7b21b0f` 已实现确定性包络、full Body / frozen torso 探针、升高止损证明、raw 绑定与失败报告；未生成伪通过 collar
+- [x] 隔离证据 → raw 报告已绑定实际 Blend/manifest；fully-source 前置失败后按序未生成 torso collar、upper compatibility、pelvis 或正式候选 Blend
 
 测试与验收：
 - [x] 只读包络与 full-body 探针 → `expandedHipMaxZ=0.3648870697`、`medianLocalEdgeLength=0.0122083666`、`firstCandidateZ=0.3770954363` 已复算；完整 Body 仅 50/64 hits，候选已拒绝
-- [ ] TDD seam 合同红灯 → 固定 hip capsule/two-ring expansion 真源、expanded max Z、同一邻域真实边长中位数、`safeZ`、首个合格截面选择、输入哈希和禁止猜值/扫描的失败路径先覆盖
-- [ ] torso-only Blender 截面 fixture → 优先以只读 `V008_TorsoCoreSafe_Frozen` 建立中央躯干语义测量源，在 `z=0.3770954363` 重测 64 hits / 0 miss / maximum source error `0`；全部 seam 点位于左右 expanded hips 外且不命中肩臂语义面
-- [ ] torso collar / upper compatibility fixture → 新 seam、torso collar 与既有 upper 64 点接口在数量、顺序、坐标、环流和支撑路线合同上兼容；通过前不得制作 pelvis
-- [ ] 严格 loft 几何 → 单组件、全四边面、开放边界精确匹配输入，零内部非流形边、退化面、折面和自交，aspect `<= 3.5`、最小角 `>= 10°`
-- [ ] lower branch 前置放行 → 上述纯合同与两个 Blender fixture 全部通过后，才允许用 seam 以下身份截面直接 authored 新 pair-of-pants；每侧 hip rings `>= 4`、groin routes `>= 2`、joint core + one-ring valence 4 与原严格阈值不变
-- [ ] 可移植性与提交 → App 与面板分别精确暂存并 push；正式与历史资产哈希保持不变
+- [x] TDD seam 合同与失败路径 → 合同测试 `8/8`、相关聚焦测试 `21/21`、目标模块 coverage `95%`、ruff 全部通过
+- [x] torso-only Blender 截面 fixture → 冻结 torso 在 `safeZ` 同为 50/64；14 个真实 shoulder branch gaps 使 64/64 合同失败，按门禁拒绝
+- [x] torso collar / upper compatibility fixture → fully-source 64/64 前置失败，按执行顺序未进入；clean/shoulder/gap `34/16/14` hybrid 也未批准
+- [x] 严格 loft 几何 → seam 源门禁失败，按执行顺序未构建或伪报 loft 通过，原严格阈值未放宽
+- [x] lower branch 前置放行 → seam、collar 与 upper compatibility 均未放行，未制作新的 pair-of-pants/pelvis
+- [x] 可移植性与提交 → App 提交 `7b21b0f` 已精确暂存并 push；raw 报告绑定实际 Blend/manifest，正式与历史资产哈希未变化
 
-**seam 选择合同**：禁止预填或猜测 `0.35`、`0.38` 等高度，也禁止枚举高度、平滑强度或安全余量做参数扫描。实现必须从固定 hip 审计包络直接计算 expanded max Z；额外一圈安全余量固定为构建 two-ring expansion 时同一批邻域真实边长的中位数，`safeZ = expandedMaxZ + medianLocalEdgeLength`。本轮真值为 `0.3648870697 + 0.0122083666 = 0.3770954363`。完整 Body 探针因 50/64 hits 和 shoulder/hip expanded zone 重叠而拒绝后，只允许在相同 `z=0.3770954363` 上改用 torso-only 语义源重测，不得继续升高 Z 或扫描高度。torso-only 报告必须记录语义源对象/hash、64 条射线、命中组件、expanded hip 净空和 source error。
+**seam 选择结论**：确定性公式与真值保持为 `0.3648870697 + 0.0122083666 = 0.3770954363`，但 full Body / frozen torso 均为 50/64；`0.3900000000` 与 `0.4015120000` 的只读上界证明仍无 64/64。完整 source、torso-only source 和独立 hybrid collar 三条水平 seam 子路线全部关闭，不得继续升高 Z、扫描高度或拼接人工缺口。
 
-**装配边界**：旧 `z=0.260` torso loft、lower ring、CHANGE-018 合同与失败证据全部转为只读历史，不得修改、延伸或作为新候选的一部分。新 lower branch 自 seam 向下覆盖身份腹部到双腿的完整表面；新 torso loft 自 seam 向上覆盖中央躯干，两者除 seam 精确共边外不得出现重复面、重叠壳或内部封口。新 torso collar / upper 接口 fixture 通过前不得进入 pelvis 建面。
+**装配边界结论**：旧 `z=0.260` torso loft、lower ring、CHANGE-018 合同与失败证据全部转为只读历史，不得修改、延伸或作为新候选的一部分。CHANGE-019 未获得可用的新 seam，因此原计划的 lower/torso 精确共边、torso collar、upper compatibility 和 pelvis 建面均未进入；不得把这些未生成项解释为待补 fixture 后可继续的现行路线。
 
-**停止规则**：先在 `z=0.3770954363` 对 torso-only 语义源执行唯一一次 64/64 验证；优先使用只读 `V008_TorsoCoreSafe_Frozen`。若该源无法覆盖此高度、仍非 64 hits / 0 miss / source error `0`，或任一点进入 expanded hips，CHANGE-019 立即停止，不再升高 Z、替换多个源或扫描高度；后续只能另立变更，评估 lower + central torso + upper 共同 authored 的整体分区。若 torso-only seam 通过但 torso collar / upper compatibility 或严格 loft 几何失败，同样在 pelvis 前止损。任何情况下不得降低 hip/groin、valence、面质量、身份或边界精度阈值。
+**停止规则与下一步边界**：CHANGE-019 到此停止，任何 fully-source 或 hybrid 水平 seam 均不得继续。后续必须由新的变更记录让用户在两种架构之间决策，AI 不得擅自选择：A）建立 shoulder-aware shared domain，以 clean / shoulder-expanded / gap 的 `34/16/14` 显式 masks 联合 authored；B）彻底取消水平 seam，由 lower + central torso + upper 共同 authored。两案均不得降低 hip/groin、valence、面质量、身份或边界精度阈值，也不得调用外部付费 API。
 
 **冻结资产**：`pet_sprout_s2.usdz`、`pet_sprout_sheet.png`、身份基准 GLB、v002 历史 Blend、v008-full-body-v001/v002、无蒙皮 v001 Blend、旧 `z=0.260` torso loft fixture 及 CHANGE-018 全部保持原哈希和只读状态。所有新产物进入独立候选目录；不得调用 Meshy 或其他外部付费 API。
 
-**处理状态**：⏳ 处理中
+**验证与复审**：独立 code review 的 P1 问题已关闭；合同 `8/8`、相关聚焦 `21/21`、coverage `95%`、ruff 均通过。App 权威提交为 `7b21b0f`。
+
+**处理状态**：✅ 已完结（fully-source 水平 seam 不存在；等待新变更选择 A/B 架构）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：
