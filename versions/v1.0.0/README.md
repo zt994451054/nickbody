@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-019 已证明 fully-source 水平 seam 不存在：`safeZ=0.3770954363` 时完整 Body 与冻结 torso 均仅 50/64 hits，升高到 `0.3900000000 / 0.4015120000` 仍无 64/64；clean / shoulder-expanded / gap union 为 `34/16/14`，独立 hybrid collar 亦未批准。当前等待新变更由用户选择 A）shoulder-aware shared domain + `34/16/14` masks，或 B）取消水平 seam，lower + central torso + upper 共同 authored；AI 不得擅自选择。正式资源继续冻结。**待补**：Rig v2 新架构 pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。用户已在 CHANGE-020 选择 B：取消水平 torso seam，从双 ankle 经 knee/hip/torso/shoulder/elbow 到双 wrist 与 neck 共同 authored 单一开放主身体域。当前先做五边界（neck `64`、wrists `32/32`、ankles `32/32`）、Euler `-3` 的离散蓝图和 identity-free proxy；proxy 必须通过 joint rings/routes、极点净空与严格几何门禁，首次失败后仅允许一次显式 connectivity revision。通过前不做 identity fitting、冻结部件装配、骨架或蒙皮，正式资源继续冻结。**待补**：Rig v2 no-seam 主身体域与冻结部件装配；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：等待 A/B 新架构决策 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🔄 进行中：CHANGE-020 no-seam proxy |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |

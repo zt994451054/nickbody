@@ -28,6 +28,7 @@
 | CHANGE-017 | 2026-08-30 | 开发中 | 技术方案变更 / 多环骨盆分支 | 单层 pelvis 分支面比例失败，改用三层原生 pair-of-pants 拓扑连接双腿 | ✅ 已完结（派生拓扑失败） |
 | CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
 | CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | full Body 与冻结 torso 均无法形成 hip-safe 的 64/64 水平身份截面 | ✅ 已完结（fully-source 水平 seam 不存在） |
+| CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 取消水平 torso seam，从双 ankle 到 neck/wrists 共同 authored 单一开放主身体域 | ⏳ 处理中 |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -643,6 +644,43 @@
 **验证与复审**：独立 code review 的 P1 问题已关闭；合同 `8/8`、相关聚焦 `21/21`、coverage `95%`、ruff 均通过。App 权威提交为 `7b21b0f`。
 
 **处理状态**：✅ 已完结（fully-source 水平 seam 不存在；等待新变更选择 A/B 架构）
+
+## CHANGE-020 | 2026-08-31 | 技术方案变更 / no-seam joint body topology domain
+
+**变更时当前阶段**：开发中（Rig v2 阻塞）
+**用户决策**：明确选择 CHANGE-019 的 B 路线，取消任何水平 torso seam，由 lower + central torso + upper 共同 authored。A 路线 shoulder-aware shared domain 不进入本变更。
+**变更内容**：从零定义一张连续、开放、全四边面的主身体拓扑域：自左右 ankle 依次经过 knee、hip、中央 torso、shoulder、elbow，延伸至左右 wrist 与 neck。identity-free proxy 的唯一外边界为 neck `64` 点、左右 wrist 各 `32` 点、左右 ankle 各 `32` 点，共 `5` 条互不相交的有序边界；主域为单组件、genus `0`，Euler characteristic 固定为 `2 - 5 = -3`。域内不得存在任何水平 torso seam、内部 cap、重复面、重叠壳或隐藏分件焊缝。
+**变更原因**：CHANGE-019 已证明 full Body、torso-only 与 hybrid collar 均无法提供 64/64 hip-safe 水平身份截面。继续寻找或拼接 collar 会把 shoulder 与 torso 的语义冲突重新带回模型。B 路线把 hip、torso 与 shoulder 的拓扑分区放进同一个离散域中，使环流和极点可以跨中央身体整体求解，而不是被预先固定的水平切口截断。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录用户选择 B、完整门禁与一次 revision 止损规则）
+- [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已同步 no-seam 主域合同、Static Gate S0 与实施顺序）
+- [x] 版本进度 → `README.md`（已同步 CHANGE-020 当前进行项）
+- [ ] 纯拓扑合同 → `engineering/workspace/macos-app/tools/pet-model/`（先定义五边界、Euler、语义 rings/routes、极点净空与禁止操作的纯数据合同）
+- [ ] Blender identity-free proxy → `character_pipeline/sprout/v2/`（只验证 connectivity 与严格几何，不接触身份拟合或冻结部件）
+
+测试与验收：
+- [ ] TDD 纯合同红灯 → 在实现蓝图前，先覆盖边界计数/顺序/hash、Euler `-3`、组件/全四边面、joint ring/route 数量、joint core + two rings 极点、禁止操作与失败路径
+- [ ] TDD Blender 正向 fixture 红灯 → 在 proxy 存在前，正向测试必须因缺少合格 Blend/manifest 失败；不得用 mock 几何伪造通过
+- [ ] 离散拓扑蓝图 → 显式记录顶点/边/面、五条有序边界、shoulder/elbow/hip/knee rings、axilla/groin routes、joint-core scopes、允许极点及 canonical topology hash
+- [ ] identity-free proxy 结构门禁 → 单组件、全四边面、边界精确为 neck `[64]` + wrists `[32,32]` + ankles `[32,32]`，Euler `-3`，零内部 cap/重叠壳/重复面
+- [ ] joint flow 门禁 → shoulder、elbow、hip、knee 每侧各 `>= 4` 条真实 32 点定向闭环；joint core + two rings 内极点为 `0`
+- [ ] support route 门禁 → axilla 与 groin 每侧各 `>= 2` 条互斥、连续、pole-free 的 branch-crossing quad routes
+- [ ] 严格几何门禁 → aspect `<= 3.5`、最小角 `>= 10°`，fold/self-intersection/degenerate/interior non-manifold 均为 `0`
+- [ ] identity 与冻结部件阶段 → 仅在 proxy 全部门禁通过后，才允许显式 identity fitting，并分别装配冻结 head、双手、双脚和独立 crown；每个接口另做精确边界与身份回归
+- [ ] 可移植性与提交 → App 与面板分别精确暂存并 push；正式与历史资产哈希保持不变
+
+**蓝图与 proxy 边界**：第一阶段只解决离散 connectivity 与 identity-free 几何，不以身份轮廓、材质或冻结部件迁就拓扑。五条边界的计数、顺序与坐标合同在 proxy 中必须显式版本化；neck、wrist、ankle 之间不得存在额外开口。identity fitting 只能在获批 proxy 的同一 connectivity 上显式 authored 坐标，不得换拓扑或通过自动投射隐藏结构失败。
+
+**禁止操作**：不得调用 cell/domain 派生、generic reducer、profile 扫描、prewarp、relax、Voxel Remesh、Quadriflow、Boolean、自动补洞、最终顶点 shrinkwrap/nearest projection、Auto-Rig、Meshy 或其他外部付费 API。不得复用 CHANGE-018/019 的水平 seam、内部 cap 或 hybrid collar。冻结 head/hands/feet/crown 在 proxy 通过前只作只读接口参考，不得接入主域。
+
+**一次 revision 止损规则**：先提交一个完整离散蓝图及其 identity-free proxy。若首次 proxy 未通过任一结构、joint-flow、support-route 或严格几何硬门禁，只允许一次显式 connectivity revision；revision 必须列明改变的 faces/edges、修复的不变量和新旧 topology hash，不得变成参数扫描或局部 relax。唯一 revision 仍失败时立即关闭 CHANGE-020，不进行 identity fitting、冻结部件装配、骨架或蒙皮，并重新评估整体角色拓扑架构。
+
+**冻结资产与阈值**：所有正式资源、身份基准、历史 Blend/manifest/report、冻结 head/hands/feet/crown 与 CHANGE-018/019 证据继续保持原哈希和只读状态。五边界、Euler、joint rings/routes、极点净空、strict geometry、身份和后续 Gate 阈值均不得降低。
+
+**处理状态**：⏳ 处理中
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

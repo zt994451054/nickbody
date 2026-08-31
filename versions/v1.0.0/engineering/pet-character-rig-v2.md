@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：既有自动/局部/Meshy 路线均已止损。旧 6×64 身份躯干 loft fixture 通过了自身严格门禁，但固定 `z=0.260` lower seam 及 CHANGE-018 直接 pelvis 分区均已拒绝。CHANGE-019 又证明 hip-safe fully-source 水平 seam 不存在：`safeZ=0.3770954363` 时 full Body 与冻结 torso 均仅 50/64 hits，升高到 `0.3900000000 / 0.4015120000` 仍无 64/64；clean / shoulder-expanded / gap union 为 `34/16/14`，hybrid collar 同样未批准。当前等待新的架构变更，由用户在 shoulder-aware shared domain 与无水平 seam 的 lower + central torso + upper 共同 authored 之间决策；AI 不得擅自选择。尚无获批的 seam、完整生产网格、骨架、蒙皮或动作资产。
+> 当前状态：既有自动/局部/Meshy 及全部水平 torso seam 路线均已止损。用户已在 CHANGE-020 明确选择 B：不再构建 collar 或分段 torso/lower/upper，而是从双 ankle 经 knee/hip/torso/shoulder/elbow 到双 wrist 与 neck 共同 authored 一张连续开放主身体域。当前先执行纯合同红灯、离散拓扑蓝图和 identity-free proxy；proxy 通过全部结构、joint-flow、support-route 与严格几何门禁前，不进入身份拟合、冻结部件装配、骨架、蒙皮或动作。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -109,7 +109,9 @@ Rig v2 必须支撑以下长期能力，而不是只通过某一个挥手动作�
 - CHANGE-018 已证明 `z=0.260` lower 64 点切口不可继续：两次直接布局虽保持三边界坐标和 pair-of-pants Euler，但无法同时通过严格几何、每侧 hip rings `>= 4` 和 joint-core 极点净空。旧 loft、lower ring、合同和失败证据全部只读，不得恢复该切口继续调点。
 - CHANGE-019 的确定性测量为 `expandedHipMaxZ=0.3648870697`、`medianLocalEdgeLength=0.0122083666`、`safeZ=0.3770954363`。完整 Body 与只读 `V008_TorsoCoreSafe_Frozen` 在 safe Z 均仅 50/64 hits：前者 14 miss 来自手臂超出 torso bounds，后者 14 miss 是真实 shoulder branch gaps；升高到 `0.3900000000` 和 `0.4015120000` 仍无 64/64。因此 fully-source 水平 seam 路线关闭，不得继续升高、扫描或更换测量源。
 - 原始测量的 clean / shoulder-expanded / gap union 为 `34/16/14`；16 个点已经进入 shoulder expanded zone，14 个方向没有 source surface。用这些分区拼独立 hybrid collar 会混合语义域并制造非 source-measured 区域，亦不得批准。
-- 后续必须另立变更并由用户二选一，AI 不得预选：A）shoulder-aware shared domain，以 `34/16/14` 显式 masks 联合 authored；B）取消水平 seam，由 lower + central torso + upper 共同 authored。在新合同获批前不得构建 torso collar、pelvis 或 upper branch；两案均不得放宽左右 32 点腿部目标、hip/groin 数量、valence、严格几何或身份阈值。
+- 用户已在 CHANGE-020 选择 B，A 路线不进入当前实现。新主身体域必须是单组件、开放、全四边面、genus `0`，唯一五条边界为 neck `64`、左右 wrist `32/32`、左右 ankle `32/32`，因此 Euler characteristic 固定为 `2 - 5 = -3`。域从双 ankle 连续经过 knee、hip、中央 torso、shoulder、elbow 到 neck/wrists；内部水平 torso seam、cap、重复面、重叠壳和隐藏分件焊缝全部为零。
+- identity-free proxy 必须先证明 shoulder/elbow/hip/knee 每侧各 `>= 4` 条真实 32 点定向环，axilla/groin 每侧各 `>= 2` 条互斥 branch-crossing quad routes，joint core + two rings 极点为 `0`，并满足 aspect `<= 3.5`、最小角 `>= 10°`、零 fold/self-intersection/degenerate/interior non-manifold。proxy 通过前冻结 head/hands/feet/crown 只作接口参考；通过后才允许在同一 connectivity 上显式 identity fitting 和逐部件装配。
+- CHANGE-020 禁止 cell/domain 派生、generic reducer、profile、prewarp、relax、Voxel Remesh、Quadriflow、Boolean、自动补洞、最终顶点投射、Auto-Rig 和外部付费 API。首次完整 proxy 失败后只允许一次显式 connectivity revision；revision 仍失败即停止，不得进入身份阶段。
 
 ### 4.4 法线、材质与纹理
 
@@ -284,10 +286,12 @@ DCC master 可预留以下稳定名称：
 
 Static Gate S0 只审核重拓扑网格、静态装配和视觉身份，不包含 armature、vertex group、蒙皮权重、bind/rest 或动作。顺序如下：
 
-1. CHANGE-019 已证明 full Body、torso-only 与 hybrid collar 均不能提供获批的 hip-safe 水平 seam；该路线在 Static Gate S0 前停止，不生成 torso collar、pelvis 或 upper compatibility fixture。
-2. 恢复 Static Gate S0 前必须新增变更并由用户选择：A）以 clean / shoulder-expanded / gap `34/16/14` masks 建立 shoulder-aware shared domain；B）取消水平 seam，jointly author lower + central torso + upper。未获决策前不得实现任一方案。
-3. 新架构必须先定义可独立失败的静态 fixture、边界/语义分区和 source hash，再证明单组件、全四边面、零内部非流形/退化/折面/自交、最大面比例 `<= 3.5`、最小角 `>= 10°`；每侧 hip rings `>= 4`、groin routes `>= 2`、joint core + one-ring valence 4 和 expanded hip 极点净空保持不变。
-4. 静态拓扑通过后才装配冻结头、双手、双脚和独立叶冠。完整候选还须通过语义邻接、净空、UV/材质、身体轮廓止损基线、mean IoU `>= 0.85` 提交目标和八方位 AI 原尺寸审核，Static Gate S0 才通过并提交用户静态身份审核。
+1. CHANGE-019 的所有水平 seam 子路线保持停止；CHANGE-020 已选择 B，不得恢复或混入 shoulder-aware hybrid collar。
+2. 先写纯 topology contract 与 Blender 正向 fixture 红灯，再实现显式离散蓝图。蓝图必须冻结五条有序边界、Euler `-3`、面连接、joint rings/routes、joint-core scopes、允许极点和 canonical topology hash。
+3. 由同一蓝图生成 identity-free proxy，验证单组件、全四边面、边界 neck `[64]` + wrists `[32,32]` + ankles `[32,32]`、零额外开口/内部 cap/重叠壳，以及全部 joint-flow、support-route 和严格几何硬门禁。
+4. 首次 proxy 失败时只允许一次有明确 face/edge diff 与新旧 topology hash 的 connectivity revision；唯一 revision 仍失败则 CHANGE-020 停止。不得用坐标 relax、参数扫描或身份拟合修复 connectivity。
+5. proxy 全部通过后，才允许保持 connectivity 不变进行显式 identity fitting，并依次装配冻结 head、双手、双脚和独立 crown；每个接口单独验证边界精度、身份回归、UV/材质和未声明内部几何。
+6. 完整静态候选还须通过语义邻接、净空、身体轮廓止损基线、mean IoU `>= 0.85` 提交目标和八方位 AI 原尺寸审核，Static Gate S0 才通过并提交用户静态身份审核。
 
 S0 候选必须保持零 Armature modifier、零 vertex group、零父级和零 action。S0 或用户静态审核失败时不得应用生产骨架或生成权重；S0 通过只批准静态网格 source hash，不代表 Rig Gate 0、变形或动作获批。
 
@@ -532,14 +536,14 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 11. ✅ 身份源规则 64-ring 躯干 loft fixture 已通过严格几何门禁。
 12. ⚠️ CHANGE-018 两次直接手工布局均保持 pair-of-pants 组合拓扑和精确三边界，但唯一结构重排仍为 56 折面、357 自交、aspect `11.814`、最小角 `0.254°`，且每侧仅 3 条合格 hip rings；固定 `z=0.260` 分区已停止。
 13. ⚠️ CHANGE-019 已证明 `safeZ=0.3770954363` 的 full Body / frozen torso 均为 50/64，升高仍无 64/64；`34/16/14` hybrid collar 未批准，fully-source 水平 seam 路线停止。
-14. ⏳ 新变更待决策：A）shoulder-aware shared domain + `34/16/14` masks；B）无水平 seam 的 lower + central torso + upper 共同 authored。AI 不得擅自选择。
+14. 🔄 CHANGE-020 已选择 B：先构建五边界、Euler `-3` 的 no-seam joint body 离散蓝图与 identity-free proxy；首次失败后最多一次显式 connectivity revision，proxy 通过前不进入身份拟合。
 15. Static Gate S0 和用户静态审核通过后，将固定 32 关节合同重新应用到获批 v008 候选，复核肩、肘、髋和膝关节位置、IK/FK 传播及原尺寸骨位图。
 16. 基于获批 v008 新 source hash 从零建立区域合同和手工权重，先通过正式 Rig Gate 0，再按 Gate 1 → Gate 2 → Gate 3 顺序放行，不复制任何历史候选权重。
 17. 接入最小 `PetAnimationGraph`，先只播放 `idle-neutral` 和现有六动作迁移样例。
 18. 依次制作挥手、张望、伸展；每个动作单独 Gate 4 和用户审核。
 19. 最后生成独立桌面 strips，经批准后切换正式资源。
 
-当前阻塞在第 14 项新架构决策。CHANGE-019 及全部水平 seam 子路线已停止；禁止恢复自动拓扑、最终顶点拟合、profile 扫描、复杂切口 reducer、cell 层数/prewarp/aspect 参数扫描、继续升高 seam、拼接 hybrid collar 或 Auto-Rig。用户通过新变更选择 A/B 并批准对应静态合同前，不得制作 torso collar、pelvis、upper branch、骨架或蒙皮。正式资产继续冻结；后续仍须从 Static Gate S0 开始按序认证。
+当前阻塞在第 14 项 CHANGE-020 纯合同、离散蓝图与 identity-free proxy。CHANGE-019 及全部水平 seam/hybrid collar 路线保持停止；禁止 cell/reducer/profile/prewarp/relax、Voxel Remesh、Quadriflow、Boolean、自动投射、Auto-Rig 或付费 API。proxy 通过且获准进入 identity fitting 前，不得装配冻结部件、恢复骨架或蒙皮。正式资产继续冻结；后续仍须按 Static Gate S0 顺序认证。
 
 人工 DCC 合同包已落档到 App 工程：
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/`。其中 `README.md`
