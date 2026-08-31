@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；规则 64-ring 中央躯干 loft 已通过严格 fixture，但自动 pelvis 与 CHANGE-018 两次直接手工分区均失败。唯一结构重排仍为 56 折面、357 自交、aspect `11.814`、最小角 `0.254°`，且每侧仅 3 条合格 hip rings。固定 `z=0.260` 切口已停止，当前等待决定是否另立变更，把 torso/lower seam 重划到完整 hip 审计区上方。正式资源继续冻结。**待补**：Rig v2 新分区 pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；自动 pelvis 与 CHANGE-018 两次固定 `z=0.260` 直接手工分区均失败并转为只读历史。CHANGE-019 正以 `safeZ = expandedMaxZ + medianLocalEdgeLength` 确定性选择首个合格的 source-measured 64 点身份截面；纯 seam 合同、Blender 截面/严格 loft 和 torso collar / upper compatibility fixture 全部通过前不制作 pelvis。禁止猜测高度或扫描参数，正式资源继续冻结。**待补**：Rig v2 hip-safe pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：等待 torso/lower seam 重分区决策 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：CHANGE-019 hip-safe seam 选择与前置 fixture |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |

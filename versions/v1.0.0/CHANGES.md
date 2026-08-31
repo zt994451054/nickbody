@@ -27,6 +27,7 @@
 | CHANGE-016 | 2026-08-30 | 开发中 | 技术方案变更 / 规则环躯干重建 | 冻结切口不可安全连接，改用身份截面测量构建规则 64-ring 躯干 loft | ⏳ 处理中 |
 | CHANGE-017 | 2026-08-30 | 开发中 | 技术方案变更 / 多环骨盆分支 | 单层 pelvis 分支面比例失败，改用三层原生 pair-of-pants 拓扑连接双腿 | ✅ 已完结（派生拓扑失败） |
 | CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
+| CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | 从 expanded hip 包络和真实边长推导首个安全 64 点身份截面，重建 torso collar 与 lower branch 分区 | ⏳ 处理中 |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -602,6 +603,39 @@
 **冻结资产**：`pet_sprout_s2.usdz`、`pet_sprout_sheet.png`、身份基准 GLB、v002 历史 Blend、v008-full-body-v001/v002、无蒙皮 v001 Blend 和已通过的 torso loft fixture 及其 `z=0.260` lower ring 全部保持原哈希。所有新产物进入独立候选目录；不得调用 Meshy 或其他外部付费 API。
 
 **处理状态**：✅ 已完结（固定 `z=0.260` 分区失败；移动切口须另立变更）
+
+## CHANGE-019 | 2026-08-31 | 技术方案变更 / hip-safe torso/lower seam 重分区
+
+**变更时当前阶段**：开发中（Rig v2 阻塞）
+**变更内容**：停止把 torso/lower seam 固定在 `z=0.260`。以 Rig v2 已冻结的左右 hip capsule 及其 two-ring expansion 作为三维禁入包络，解析两个 expanded hip 包络的最大世界空间 Z，再加一圈该区域真实网格边长中位数作为安全余量，即 `safeZ = expandedMaxZ + medianLocalEdgeLength`；沿身份源既定语义截面序列向上选择第一个高于 `safeZ`、且满足 64 点完整采样合同的 source-measured 身份截面作为新 seam。新 lower branch 必须把新 seam 以下的身份截面整体纳入同一张 pair-of-pants 表面；新 torso loft 从 seam 向上构建，二者只在同一条 64 点有序环精确焊接，不得与旧 `z=0.260` loft 重叠。正式构建 pelvis 前，先以隔离 fixture 证明新 torso collar、upper 接口和后续 upper branch 合同兼容。
+**变更原因**：CHANGE-018 两次直接布局证明，固定 `z=0.260` seam 落在 expanded hip 审计区内，导致每侧最多只有 3 条合格 hip rings，极点进入 joint core 扩展区；即使 pair-of-pants 组合拓扑成立，几何仍产生大量折面、自交和极差角度。继续在同一切口调点无法增加 joint-safe 纵向空间，必须先把 seam 移到完整 hip 变形区上方。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录 hip-safe seam 推导、TDD 门禁和停止规则）
+- [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已同步 seam 真源、Static Gate S0 顺序和实施步骤）
+- [x] 版本进度 → `README.md`（已同步 CHANGE-019 当前阻塞）
+- [ ] seam 合同与工程工具 → `engineering/workspace/macos-app/tools/pet-model/`（纯合同先红灯，再实现包络解析、截面选择和 fixture 审计）
+- [ ] 隔离证据 → `character_pipeline/sprout/v2/`（新 seam、torso collar 和 upper compatibility 各自保存独立 Blend/report；不得覆盖历史输入）
+
+测试与验收：
+- [ ] TDD seam 合同红灯 → 固定 hip capsule/two-ring expansion 真源、expanded max Z、同一邻域真实边长中位数、`safeZ`、首个合格截面选择、输入哈希和禁止猜值/扫描的失败路径先覆盖
+- [ ] Blender 截面 fixture → seam 截面及其向上的 torso loft 每层均为 64 hits / 0 miss / maximum source error `0`；seam 全部 64 点位于左右 expanded hip 包络之外
+- [ ] torso collar / upper compatibility fixture → 新 seam、torso collar 与既有 upper 64 点接口在数量、顺序、坐标、环流和支撑路线合同上兼容；通过前不得制作 pelvis
+- [ ] 严格 loft 几何 → 单组件、全四边面、开放边界精确匹配输入，零内部非流形边、退化面、折面和自交，aspect `<= 3.5`、最小角 `>= 10°`
+- [ ] lower branch 前置放行 → 上述纯合同与两个 Blender fixture 全部通过后，才允许用 seam 以下身份截面直接 authored 新 pair-of-pants；每侧 hip rings `>= 4`、groin routes `>= 2`、joint core + one-ring valence 4 与原严格阈值不变
+- [ ] 可移植性与提交 → App 与面板分别精确暂存并 push；正式与历史资产哈希保持不变
+
+**seam 选择合同**：禁止预填或猜测 `0.35`、`0.38` 等高度，也禁止枚举高度、平滑强度或安全余量做参数扫描。实现必须从固定 hip 审计包络直接计算 expanded max Z；额外一圈安全余量固定为构建 two-ring expansion 时同一批邻域真实边长的中位数，`safeZ = expandedMaxZ + medianLocalEdgeLength`。候选只能是身份源既定顺序中首个严格高于 `safeZ` 且通过 64 点采样合同的截面。报告必须记录包络输入、max Z、边长样本、中位数、`safeZ`、全部被跳过截面及唯一选中截面的证据链。
+
+**装配边界**：旧 `z=0.260` torso loft、lower ring、CHANGE-018 合同与失败证据全部转为只读历史，不得修改、延伸或作为新候选的一部分。新 lower branch 自 seam 向下覆盖身份腹部到双腿的完整表面；新 torso loft 自 seam 向上覆盖中央躯干，两者除 seam 精确共边外不得出现重复面、重叠壳或内部封口。新 torso collar / upper 接口 fixture 通过前不得进入 pelvis 建面。
+
+**停止规则**：若确定性推导后不存在同时满足 64 hits / 0 miss / source error `0` 且完全位于 expanded hips 外的身份截面，立即停止并记录不可满足合同，不得猜高度或扫参数。若 seam 存在但 torso collar / upper compatibility 或严格 loft 几何失败，同样在 pelvis 前止损；只能通过新的变更记录重新评估整体 torso/upper/lower 分区，不得降低 hip/groin、valence、面质量、身份或边界精度阈值。
+
+**冻结资产**：`pet_sprout_s2.usdz`、`pet_sprout_sheet.png`、身份基准 GLB、v002 历史 Blend、v008-full-body-v001/v002、无蒙皮 v001 Blend、旧 `z=0.260` torso loft fixture 及 CHANGE-018 全部保持原哈希和只读状态。所有新产物进入独立候选目录；不得调用 Meshy 或其他外部付费 API。
+
+**处理状态**：⏳ 处理中
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：
