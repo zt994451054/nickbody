@@ -294,6 +294,21 @@ Static Gate S0 只审核重拓扑网格、静态装配和视觉身份，不包�
 
 S0 候选必须保持零 Armature modifier、零 vertex group、零父级和零 action。S0 或用户静态审核失败时不得应用生产骨架或生成权重；S0 通过只批准静态网格 source hash，不代表 Rig Gate 0、变形或动作获批。
 
+### 8.0.1 `nick-character-dcc` 决策 Skill
+
+App 仓库 `.agents/skills/nick-character-dcc/` 版本化一个项目专用 Codex Skill。它是 Rig v2 的非权威证据路由和阶段门禁，不生成网格、不执行 Blender 几何审计、不授予审批，也不替代本规范、ADR-003、原尺寸证据或 RealityKit 往返结果。
+
+决策脚本只接受规范化 decision report。generic Blender auditor 仍负责产生原始事实；候选 builder 或显式 normalizer 按 Skill 的 `references/decision-report-schema.md` 汇总报告，不得改写失败值。报告必须包含原始几何、八个 joint records、四个 support-route records、五接口有序点与哈希、冻结输入 before/after 哈希，以及零 Armature/Modifier/vertex group/parent/action 的 `staticState`。身份完成还须绑定 silhouette measurement 与原尺寸 review manifest 哈希。用户静态审批必须同时绑定 decision-report SHA 和 Blend SHA；CLI 通过 `--artifact` 对实际 Blend 重新哈希。
+
+2026-08-31 验证结果：
+
+- 单元/CLI 集成测试 `61/61` 通过；目标脚本 line coverage `83.58%`、branch coverage `81.72%`；`quick_validate.py` 通过。
+- CHANGE-020 真实报告 SHA-256 为 `b91698ef881632b52d7d90287096862bea1dd24eec8e190e0509a7fd4a84bf67`。连续两次只读评估均以退出码 `2` 返回 `static_gate_s0 / repair_static_topology / riggingAllowed=false`，输出一致，源报告 SHA 前后未变化。
+- 评估精确保留 `506` 自交、`48` folds、aspect `98.513`、最小角 `5.105°`、双肩 aspect、双肘 poles `23/23`、双膝 poles `26/28` 及五接口超距吸附；canonical hashes 和 support routes 通过不能抵消失败。
+- 历史报告没有 `staticState` 与 `checks.unskinned`，因此额外标记证据缺失。这不证明历史 Blend 含有骨架，只证明该旧报告不能建立“未蒙皮”不变量。
+
+效果结论：保留该 Skill 作为后续候选的防越级门禁；它成功识别真实失败、审批越级、禁用操作、同 identity 复活、细粒度回归和输入漂移。它没有改善或重建 3D 网格，CHANGE-020 继续关闭。用户明确授权新的隔离 `manual_dcc_authored` 候选之前，不得把 `repair_static_topology` 理解为继续修改旧 topology，也不得进入 identity fitting、骨架或蒙皮。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。

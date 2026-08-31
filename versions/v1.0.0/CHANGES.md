@@ -29,6 +29,7 @@
 | CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
 | CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | full Body 与冻结 torso 均无法形成 hip-safe 的 64/64 水平身份截面 | ✅ 已完结（fully-source 水平 seam 不存在） |
 | CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 五边界/Euler 合同成立，但唯一 revision 仍有 506 自交与严重面质量失败 | ✅ 已完结（no-seam proxy geometry 失败） |
+| CHANGE-021 | 2026-08-31 | 开发中 | 技术方案变更 / 项目专用 Character DCC Skill | 建立并验证 Rig v2 证据路由、阶段门禁与候选比较 Skill | ✅ 已完结（Skill 有效，3D 网格仍阻塞） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -688,6 +689,38 @@
 **下一步决策边界**：不得在 CHANGE-020 内继续同一 topology、放宽门禁或追加第二次 connectivity revision。后续须由用户在新变更中选择，AI 不得擅自决定：1）由 AI 在 Blender 中进入不设单次 revision 上限的自由手工 DCC 迭代，保持全部机器、身份与审核门禁；该路线高成本、低可预测，若未来有人类专业 DCC 可按同一合同接手；2）v1.0.0 停止 Rig v2，继续使用现有正式 sprite/USDZ 路线。当前没有外部美术支持，不得把选项 1 记录成依赖外部交付。
 
 **处理状态**：✅ 已完结（no-seam proxy geometry 失败；等待用户决定 AI 自由手工 DCC 或 v1 停止 Rig v2）
+
+## CHANGE-021 | 2026-08-31 | 技术方案变更 / 项目专用 Character DCC Skill
+
+**变更时当前阶段**：开发中（Rig v2 阻塞）
+**用户决策**：批准创建并测试项目专用 `nick-character-dcc` Codex Skill；停止继续盲装通用社区 Skill。社区知识只能作为受审输入，Rig v2 合同、真实机器报告和用户审批边界保持最高权威。
+**变更内容**：在 macOS App 仓库内版本化 `nick-character-dcc` Skill，将静态拓扑、绑定/变形、候选比较、隔离实验和回滚决策分层；新增纯 Python 候选判定与基线比较工具，直接消费现有 JSON 机器报告，不复制或改写 Blender 几何审计算法。Skill 通过后以本机 Codex 软链接启用，并在 CHANGE-020 真实失败报告、合成合格报告和回归报告上进行确定性、对抗与独立前向测试。
+**变更原因**：已实际试用并回滚 `retopology`、`rigging` 和 `rigging-animation` 社区 Skill。它们只能重复通用检查表，无法生成改善后的网格；其中部分 pole、twist、骨轴和导出建议还与项目合同冲突。项目现有 Rig v2 合同和机器门禁已比社区 Skill 更严格，但缺少一个面向 Agent 的短入口、确定性阶段路由和可测试的保留/止损决策层。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录 Skill 权威、范围和停止条件）
+- [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已补充非权威边界、decision-report schema、入口与实测结论）
+- [x] App Agent Skill → `.agents/skills/nick-character-dcc/`（入口、按需参考、规范化 schema、纯逻辑脚本与测试）
+- [x] 本机 Codex 启用 → `~/.codex/skills/nick-character-dcc`（已软链接到版本化真源，无第二份副本）
+
+测试与验收：
+- [x] TDD 红灯 → 已验证 CHANGE-020、边界吸附、审批/实际 Blend 绑定、未知门禁、禁用操作和细粒度回归均 fail-closed；最终 `61/61` 通过
+- [x] 纯逻辑覆盖率 → `candidate_decision.py` line `83.58%`、branch `81.72%`
+- [x] Skill 结构校验 → `quick_validate.py` 通过，入口无占位符，全部 reference 可发现；安装路径复验通过
+- [x] 真实基线评估 → CHANGE-020 两次均 `exit 2 / static_gate_s0 / repair_static_topology / riggingAllowed=false`；报告 SHA 前后不变、输出一致
+- [x] 独立前向测试 → 独立 Agent 未获预设答案，正确输出真实阻塞、唯一允许动作、禁止阶段与审批边界
+- [x] 独立复审 → 最终未发现可复现 P0/P1；最后一项 joint/route 新失败类型回归已复验关闭
+- [x] 可移植性与提交 → App 提交 `e25b731` 已精确暂存并 push；驱动面板由本次结项提交同步，未纳入历史 render、ZIP、`.blend1`、`meshy_output/` 或用户工作区改动
+
+**权威与边界**：Skill 不得降低 Rig v2 阈值，不得把通用社区经验覆盖版本合同，不得自行批准 identity、skeleton、weights、animation 或正式资源替换。Skill 只解释和编排现有审计结果；几何真值继续由 Blender、项目合同、原尺寸证据和 RealityKit 往返给出。
+
+**停止规则**：若 Skill 不能在真实失败报告上稳定阻断越级、不能识别相对基线的关键回归，或独立前向测试需要预先泄露答案才能正确工作，则删除本机链接并回滚本变更。即使 Skill 测试通过，也只证明 Agent 决策层有效，不证明生产级 3D 小草已经完成。
+
+**执行结论**：Skill 通过保留标准并已启用。它能把原始机器证据、候选身份、冻结输入、实际 Blend 哈希、identity evidence 和用户审批绑定成 fail-closed 阶段决策；不能生成或修复网格。CHANGE-020 继续关闭，当前仍没有通过 Static Gate S0 的生产级 3D 小草。后续只有用户明确授权新的隔离 `manual_dcc_authored` 候选后，才可重新开始静态 DCC 实验。
+
+**处理状态**：✅ 已完结（Skill 有效并保留；3D 网格与 Rig v2 仍阻塞）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：
