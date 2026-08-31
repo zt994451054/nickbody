@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：既有自动/局部/Meshy 路线均已止损。6×64 身份躯干 loft fixture 已通过严格门禁；单层 pelvis 分支最佳 aspect `5.254`，三层派生分支为 19 折面/15 自交/aspect `5.741`，均已拒绝。当前阻塞在直接手工 authored 的 pelvis/crotch pair-of-pants 面流；尚无获批的完整生产网格、骨架、蒙皮或动作资产。
+> 当前状态：既有自动/局部/Meshy 路线均已止损。6×64 身份躯干 loft fixture 已通过严格门禁；单层 pelvis 分支最佳 aspect `5.254`，三层派生分支为 19 折面/15 自交/aspect `5.741`，均已拒绝。CHANGE-018 当前先对固定 `z=0.260` 三边界执行手工 pelvis/crotch 拓扑分区可行性证明，通过后才直接 authored pair-of-pants 面流；尚无获批的完整生产网格、骨架、蒙皮或动作资产。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -106,6 +106,7 @@ Rig v2 必须支撑以下长期能力，而不是只通过某一个挥手动作�
 - 修复局部拓扑缺陷时不得对全身执行 Voxel Remesh 或全局 Quadriflow。非问题区域的顶点位置、手部轮廓和 UV 必须保持冻结；只允许在声明的肩臂重建区创建新表面。
 - 肩、腋下、肘部必须提供可识别的闭合横截面环和沿肢体轴向的定向边流。仅满足四边面比例不构成合格 edge-flow；主要弯曲区不得放置高价极点，肘内外侧必须分别具备压缩和展开环。
 - 手部不属于可自由重塑区。候选必须单独验证手部局部轮廓、表面距离、掌端厚度和腕部过渡，不能通过把整个手臂排除在身份审计之外放行手部漂移。
+- lower branch 固定使用已通过 torso loft 的 `z=0.260` lower 64 点有序环和左右 32 点腿部目标环。创建任何几何面之前，必须先提交离散拓扑分区可行性证明：每侧 hip rings `>= 4`、每侧互斥 groin support routes `>= 2`，左右 joint core 的 1-ring 顶点 valence 全为 `4`。证明不得移动三条边界、预扭曲坐标或用高价极点替代髋部/腹股沟环流；失败时停止建面并按 CHANGE-018 记录，不得扫描 cell/reducer/prewarp 参数。
 
 ### 4.4 法线、材质与纹理
 
@@ -274,9 +275,22 @@ DCC master 可预留以下稳定名称：
 
 ## 8. 极限姿势认证矩阵
 
-认证按顺序执行。前一门禁失败时立即停止，禁止继续生成大量动作来“看看是否能用”。
+认证顺序固定为 `Static Gate S0 → 用户静态审核 → Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 → Gate 4`。前一门禁失败时立即停止，禁止继续生成大量动作来“看看是否能用”。Static Gate S0 是无骨架静态候选门禁，不得记作正式 Rig Gate 0 通过。
 
-### 8.1 Gate 0：结构与静止状态
+### 8.0 Static Gate S0：无骨架静态网格与身份
+
+Static Gate S0 只审核重拓扑网格、静态装配和视觉身份，不包含 armature、vertex group、蒙皮权重、bind/rest 或动作。顺序如下：
+
+1. lower branch 先通过第 4.3 节的离散分区可行性证明，再生成隔离 pair-of-pants fixture。
+2. lower fixture 必须是单组件、全四边面开放曲面，三条有序边界精确为 `[32, 32, 64]` 并逐点匹配冻结输入；内部非流形边、退化面、折面和自交均为零，最大面比例 `<= 3.5`，最小角 `>= 10°`。
+3. lower 通过后才制作 upper branch，并与冻结头、双手、双脚和独立叶冠装配完整无蒙皮静态候选。主身体连续性、语义邻接、关节环流、极点、支撑路线、净空、UV/材质和未声明内部几何全部按第 4 节检查。
+4. 完整候选通过身体轮廓止损基线、mean IoU `>= 0.85` 提交目标和八方位 AI 原尺寸审核后，Static Gate S0 才通过并提交用户静态身份审核。
+
+S0 候选必须保持零 Armature modifier、零 vertex group、零父级和零 action。S0 或用户静态审核失败时不得应用生产骨架或生成权重；S0 通过只批准静态网格 source hash，不代表 Rig Gate 0、变形或动作获批。
+
+### 8.1 Rig Gate 0：结构、绑定与静止状态
+
+只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
 
 自动检查：
 
@@ -509,18 +523,18 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 5. ⚠️ v004 全局 Voxel Remesh + Quadriflow 候选通过单组件、闭合性、自交、邻接、净空与 GLB 重导入机器门禁，但原尺寸审核发现全身锯齿状 UV 接缝、粗直管手臂、手部轮廓丢失和缺少关节定向环流，已拒绝且不得修补后继续使用。
 6. 🚫 v005 自动方法与 Meshy 30k/40k/60k 原生 DCC 有限候选均已完成止损。最终 Blend 审计确认所有 Meshy 候选都缺少双侧肩与髋定向环流；30k/40k 有肘膝左右不对称和肩部极点，60k 进一步出现大量三角/ngon。自动拓扑和绑定对照停止，进入人工 DCC 重拓扑交付。
 7. ✅ AI 自建 v008 显式 template scaffold、冻结头手脚片区、64 点颈口、腕踝 reducer 与完整 v008-full-body-v001 装配均已通过机器门禁；v001 因方盒躯干和柱形腿未通过身份审核，细分后坐标拟合也已按平台止损。
-8. ⚠️ v008-full-body-v002 已通过完整 Gate 0，但无头身体 mean/min IoU `0.8016434605 / 0.7154556240`、mean boundary P95 `46.0378 mm`，三项均劣于止损基线，原尺寸身份审核拒绝；禁止继续 profile 强度变体。
-9. 🔄 新建 v008-full-body-v003：精确保留 `V008_TorsoCoreSafe_Frozen`，只在其 `260` 点 lower 与 `256` 点 upper 边界之外构建显式颈肩/手臂、骨盆/腿部连接；通过边界 fixture、Gate 0、身体轮廓回归、八方位 AI 审核和用户静态审核后方可继续。
+8. ⚠️ v008-full-body-v002 曾通过当时的完整静态机器门禁；按当前术语仅记为历史 Static Gate S0 结构项通过。其无头身体 mean/min IoU `0.8016434605 / 0.7154556240`、mean boundary P95 `46.0378 mm` 三项均劣于止损基线，原尺寸身份审核拒绝；禁止继续 profile 强度变体。
+9. ⚠️ v008-full-body-v003 曾尝试精确保留 `V008_TorsoCoreSafe_Frozen`，只在其 `260` 点 lower 与 `256` 点 upper 边界之外构建显式连接；该路线已在边界 fixture 阶段停止，不再处于进行中。
 10. ⚠️ v003 frozen-torso fixture 保持 `4,814` 个身份面零 mismatch，但复杂切口 reduction 的最佳面比例仍为 `9.1209`，原计数延伸产生自交；完整候选未生成，路线停止。
 11. ✅ 身份源规则 64-ring 躯干 loft fixture 已通过严格几何门禁。
-12. 🚫 单层与三层派生 pelvis fixture 均已止损；下一步必须直接手工 authored 64→双 32 pair-of-pants 面流，通过后再制作 upper branch。
-13. 将固定 32 关节合同重新应用到获批 v008 候选，复核肩、肘、髋和膝关节位置、IK/FK 传播及原尺寸骨位图。
-14. 基于获批 v008 新 source hash 从零建立区域合同和手工权重，按 Gate 1 → Gate 2 → Gate 3 顺序放行，不复制任何历史候选权重。
+12. 🔄 CHANGE-018 先对固定 `z=0.260` 的 `64→双 32` 三边界证明每侧至少 4 条 hip rings、2 条互斥 groin routes 和 joint core 1-ring valence 4，再直接手工 authored pair-of-pants 面流；lower fixture 通过后才制作 upper branch 并完成 Static Gate S0。
+13. Static Gate S0 和用户静态审核通过后，将固定 32 关节合同重新应用到获批 v008 候选，复核肩、肘、髋和膝关节位置、IK/FK 传播及原尺寸骨位图。
+14. 基于获批 v008 新 source hash 从零建立区域合同和手工权重，先通过正式 Rig Gate 0，再按 Gate 1 → Gate 2 → Gate 3 顺序放行，不复制任何历史候选权重。
 15. 接入最小 `PetAnimationGraph`，先只播放 `idle-neutral` 和现有六动作迁移样例。
 16. 依次制作挥手、张望、伸展；每个动作单独 Gate 4 和用户审核。
 17. 最后生成独立桌面 strips，经批准后切换正式资源。
 
-当前阻塞在第 12 项直接手工 authored pelvis pair-of-pants 面流。既有失败路线全部停止；禁止恢复自动拓扑、最终顶点拟合、profile 扫描、复杂切口 reducer、cell 层数/prewarp/aspect 参数扫描或 Auto-Rig。正式资产继续冻结。lower/upper branch、完整 Gate 0、身份指标、八方位原图和用户静态审核通过前，不得恢复生产骨架或蒙皮工作。
+当前阻塞在第 12 项 CHANGE-018 分区可行性先证与直接手工 authored pelvis pair-of-pants 面流。既有失败路线全部停止；禁止恢复自动拓扑、最终顶点拟合、profile 扫描、复杂切口 reducer、cell 层数/prewarp/aspect 参数扫描或 Auto-Rig。正式资产继续冻结。lower/upper branch、Static Gate S0、身份指标、八方位原图和用户静态审核通过前，不得恢复生产骨架或蒙皮工作；其后仍须从正式 Rig Gate 0 开始认证。
 
 人工 DCC 合同包已落档到 App 工程：
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/`。其中 `README.md`
