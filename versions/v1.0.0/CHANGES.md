@@ -26,7 +26,7 @@
 | CHANGE-015 | 2026-08-30 | 开发中 | 技术方案变更 / 冻结身份躯干装配 | v002 身份失败，改以冻结真实躯干为中央真源构建显式边界连接 | ✅ 已完结（fixture 失败） |
 | CHANGE-016 | 2026-08-30 | 开发中 | 技术方案变更 / 规则环躯干重建 | 冻结切口不可安全连接，改用身份截面测量构建规则 64-ring 躯干 loft | ⏳ 处理中 |
 | CHANGE-017 | 2026-08-30 | 开发中 | 技术方案变更 / 多环骨盆分支 | 单层 pelvis 分支面比例失败，改用三层原生 pair-of-pants 拓扑连接双腿 | ✅ 已完结（派生拓扑失败） |
-| CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ⏳ 处理中 |
+| CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -578,24 +578,30 @@
 - [x] 变更记录 → `CHANGES.md`（已先行记录手工 authored pelvis 路线、停止条件与审批边界）
 - [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已新增 Static Gate S0、分区先证合同，并修正 Rig Gate 0 顺序）
 - [x] 版本进度 → `README.md`（已同步 CHANGE-018 当前阻塞与下一步）
-- [ ] 工程工具 → `engineering/workspace/macos-app/tools/pet-model/`（先新增纯拓扑分区合同与拒绝测试，再新增隔离手工 fixture 审计器）
-- [ ] 候选资产 → `character_pipeline/sprout/v2/`（独立保存 partition proof、fixture Blend、机器报告和 AI review，不覆盖任何历史候选）
+- [x] 工程工具 → `engineering/workspace/macos-app/tools/pet-model/`（已新增纯声明合同、失败证据回归测试和真实网格反算；固定切口失败后未伪造通过审计器）
+- [x] 候选资产 → `character_pipeline/sprout/v2/`（两次布局的完整机器报告和 AI stop review 已独立保存；未生成可误认成候选的仓库 Blend/manifest）
 
 测试与验收：
-- [ ] TDD 红灯 → 在实现分区和建面前，先以缺失 hip rings/groin routes、joint-core 高价点、边界坐标漂移和严格几何失败样例证明测试会拒绝
-- [ ] 分区可行性先证 → 固定 `z=0.260` 64 点 torso 边界与左右 32 点 leg 边界；每侧 hip rings `>= 4`、互斥 groin routes `>= 2`、joint core 1-ring valence 全为 `4`
-- [ ] lower fixture 几何门禁 → 单组件、全四边面、边界计数精确为 `[32, 32, 64]` 且三环坐标/顺序/hash 精确匹配输入；零内部非流形边、退化面、折面和自交；aspect `<= 3.5`、最小角 `>= 10°`
-- [ ] Static Gate S0 → lower 通过后制作 upper branch，装配冻结头手脚与独立叶冠；完整无蒙皮静态候选通过拓扑、净空、身份指标和八方位 AI 原图审核
-- [ ] 用户静态审核 → 仅在 Static Gate S0 全部通过后提交完整八方位候选；批准范围只包含静态网格 source hash
-- [ ] 可移植性与提交 → App 与面板分别精确暂存并 push；正式与历史资产哈希保持不变
+- [x] TDD 红灯 → 纯合同和 Blender 正向 fixture 均先因实现/资产缺失失败；止损后转为 13 项合同与失败证据回归，纯合同 branch coverage `84%`
+- [x] 分区可行性先证 → 两次布局均保持单组件、全四边面、Euler `-1`、三条边界坐标集合精确；第二次结构重排仍只有每侧 `3` 条合格 hip rings，分区判定失败
+- [x] lower fixture 几何门禁 → 未放行：首次为 61 折面/74 自交/aspect `6.396`/最小角 `0.659°`；唯一一次结构重排为 56 折面/357 自交/aspect `11.814`/最小角 `0.254°`
+- [x] Static Gate S0 → lower 前置门禁失败，按顺序未制作 upper branch 或完整静态候选
+- [x] 用户静态审核 → 机器前置门禁失败，未向用户提交不合格模型
+- [x] 可移植性与提交 → App 提交 `1600d76` 已精确暂存并 push；Python 全量回归 `280/280` 后最终证据强化聚焦测试 `13/13`、Swift `158/158` 通过，正式与历史资产哈希未变化
 
 **分区先证边界**：可行性证明只处理顶点、边、面分区及有序边界对应，不得通过移动 `z=0.260` 切口、预先扭曲坐标或放宽 valence/route/ring 数量制造通过。证明通过只授权进入隔离 lower fixture，不批准 upper branch、完整静态候选、骨架、权重或动作。
 
 **停止规则**：分区先证失败时立即停止建面，记录不可满足的不变量；若要移动切口或更改三边界计数，必须新增变更记录。分区通过但 fixture 未通过严格几何门禁时，只允许显式局部重布线，不得恢复 cell 层数、reducer、prewarp、aspect relax、最终顶点拟合或参数扫描，也不得降低阈值。lower fixture 未通过前禁止制作 upper branch；Static Gate S0 与用户静态审核未通过前禁止恢复生产骨架、蒙皮和动作。
 
+**执行结论（2026-08-31）**：首次直接语义环布局在组合拓扑上成立（`1280V / 2498E / 1217Q`、Euler `-1`、边界 `[32,32,64]`），但产生 61 折面和 74 对自交。按计划只进行一次结构性重排，改用 front-to-back medial bridge 与显式 `34→44→54→64` saddle；结果仍为 `1250V / 2438E / 1187Q`、Euler `-1`，但恶化到 56 折面、357 对自交、aspect `11.8136`、最小角 `0.2541°`，且每侧只有 3 条合格 hip rings，新增极点进入 expanded hip zone。
+
+**边界证据**：两次布局的 torso 与双腿边界均与冻结输入逐点坐标集合精确一致、最大误差 `0`；torso 通过显式循环 shift/direction 恢复源顺序后命中冻结 ring hash `5122a6ee...162d8dd`。旧报告字段 `boundaryMatchesInputLoops=false` 仅因固定起点/绕向比较，不代表坐标漂移；App 回归测试已从 raw 顶点/面和边界数组独立重算 hash、V/E/F、三边界、组件与极点，独立 code review 的两个 P1 均已关闭。
+
+**下一步边界**：固定 `z=0.260` 的 CHANGE-018 路线已经关闭，不得再增加第三个布局。若继续 Rig v2，必须由新的变更记录重划 torso/lower seam，使切口位于完整 hip 审计区上方，并重新生成 source-measured torso loft；该动作不在 CHANGE-018 授权范围内。
+
 **冻结资产**：`pet_sprout_s2.usdz`、`pet_sprout_sheet.png`、身份基准 GLB、v002 历史 Blend、v008-full-body-v001/v002、无蒙皮 v001 Blend 和已通过的 torso loft fixture 及其 `z=0.260` lower ring 全部保持原哈希。所有新产物进入独立候选目录；不得调用 Meshy 或其他外部付费 API。
 
-**处理状态**：⏳ 处理中
+**处理状态**：✅ 已完结（固定 `z=0.260` 分区失败；移动切口须另立变更）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

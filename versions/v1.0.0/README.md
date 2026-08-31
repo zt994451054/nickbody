@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；规则 64-ring 中央躯干 loft 已通过严格 fixture，但单层与三层派生 pelvis 分支均未通过生产几何门禁。CHANGE-018 已启动：固定 `z=0.260` 的 `64→双 32` 三边界，先证明每侧 hip rings `>= 4`、groin routes `>= 2`、joint core 1-ring valence 4，再直接手工 authored crotch/hip pair-of-pants 面流；禁止用自动 cell/reducer 参数替代。正式资源继续冻结。**待补**：Rig v2 手工 pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通；规则 64-ring 中央躯干 loft 已通过严格 fixture，但自动 pelvis 与 CHANGE-018 两次直接手工分区均失败。唯一结构重排仍为 56 折面、357 自交、aspect `11.814`、最小角 `0.254°`，且每侧仅 3 条合格 hip rings。固定 `z=0.260` 切口已停止，当前等待决定是否另立变更，把 torso/lower seam 重划到完整 hip 审计区上方。正式资源继续冻结。**待补**：Rig v2 新分区 pelvis/upper branch；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：CHANGE-018 手工 pelvis 分区先证与面流 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：等待 torso/lower seam 重分区决策 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
