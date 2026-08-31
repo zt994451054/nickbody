@@ -28,7 +28,7 @@
 | CHANGE-017 | 2026-08-30 | 开发中 | 技术方案变更 / 多环骨盆分支 | 单层 pelvis 分支面比例失败，改用三层原生 pair-of-pants 拓扑连接双腿 | ✅ 已完结（派生拓扑失败） |
 | CHANGE-018 | 2026-08-31 | 开发中 | 技术方案变更 / 直接手工 pelvis/crotch 拓扑 | 固定 `z=0.260` torso 与双 32 点 leg 三边界，先证明 hip/groin 分区可行，再直接手工构建 pair-of-pants 面流 | ✅ 已完结（固定切口分区失败） |
 | CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | full Body 与冻结 torso 均无法形成 hip-safe 的 64/64 水平身份截面 | ✅ 已完结（fully-source 水平 seam 不存在） |
-| CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 取消水平 torso seam，从双 ankle 到 neck/wrists 共同 authored 单一开放主身体域 | ⏳ 处理中 |
+| CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 五边界/Euler 合同成立，但唯一 revision 仍有 506 自交与严重面质量失败 | ✅ 已完结（no-seam proxy geometry 失败） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -658,19 +658,18 @@
 - [x] 变更记录 → `CHANGES.md`（已先行记录用户选择 B、完整门禁与一次 revision 止损规则）
 - [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已同步 no-seam 主域合同、Static Gate S0 与实施顺序）
 - [x] 版本进度 → `README.md`（已同步 CHANGE-020 当前进行项）
-- [ ] 纯拓扑合同 → `engineering/workspace/macos-app/tools/pet-model/`（先定义五边界、Euler、语义 rings/routes、极点净空与禁止操作的纯数据合同）
-- [ ] Blender identity-free proxy → `character_pipeline/sprout/v2/`（只验证 connectivity 与严格几何，不接触身份拟合或冻结部件）
+- [x] 纯拓扑合同 → 已实现五边界、Euler、语义 rings/routes、极点净空与禁止操作合同；最终 manifest 绑定 v001 五接口坐标 hash
+- [x] Blender identity-free proxy → 已生成并审计 contract-correct final；基础拓扑通过但严格几何与部分 joint 门禁失败，未伪装成获批 proxy
 
 测试与验收：
-- [ ] TDD 纯合同红灯 → 在实现蓝图前，先覆盖边界计数/顺序/hash、Euler `-3`、组件/全四边面、joint ring/route 数量、joint core + two rings 极点、禁止操作与失败路径
-- [ ] TDD Blender 正向 fixture 红灯 → 在 proxy 存在前，正向测试必须因缺少合格 Blend/manifest 失败；不得用 mock 几何伪造通过
-- [ ] 离散拓扑蓝图 → 显式记录顶点/边/面、五条有序边界、shoulder/elbow/hip/knee rings、axilla/groin routes、joint-core scopes、允许极点及 canonical topology hash
-- [ ] identity-free proxy 结构门禁 → 单组件、全四边面、边界精确为 neck `[64]` + wrists `[32,32]` + ankles `[32,32]`，Euler `-3`，零内部 cap/重叠壳/重复面
-- [ ] joint flow 门禁 → shoulder、elbow、hip、knee 每侧各 `>= 4` 条真实 32 点定向闭环；joint core + two rings 内极点为 `0`
-- [ ] support route 门禁 → axilla 与 groin 每侧各 `>= 2` 条互斥、连续、pole-free 的 branch-crossing quad routes
-- [ ] 严格几何门禁 → aspect `<= 3.5`、最小角 `>= 10°`，fold/self-intersection/degenerate/interior non-manifold 均为 `0`
-- [ ] identity 与冻结部件阶段 → 仅在 proxy 全部门禁通过后，才允许显式 identity fitting，并分别装配冻结 head、双手、双脚和独立 crown；每个接口另做精确边界与身份回归
-- [ ] 可移植性与提交 → App 与面板分别精确暂存并 push；正式与历史资产哈希保持不变
+- [x] TDD 纯合同与 Blender 红灯 → 测试先于实现失败；最终 pure `5/5`、integration `9/9`、相关新增 `35/35`、目标模块 coverage `85%`、ruff 全部通过
+- [x] 离散拓扑蓝图 → manifest 显式记录真实顶点/边/面、五边界、joint rings/routes、joint scopes、允许极点与 canonical hashes；raw 证据绑定实际 Blend
+- [x] identity-free proxy 结构门禁 → `5309 V / 10528 E / 5216 F`、单组件、全四边面、Euler `-3`、边界 `[32,32,32,32,64]`、interior non-manifold `0`，基础结构通过
+- [x] joint flow 门禁 → hip 双侧通过；shoulder 环数与基础极点要求通过但 joint-zone aspect 失败；elbow/knee 的 expanded two-ring pole 门禁失败
+- [x] support route 门禁 → axilla/groin 拓扑、互斥与 branch-crossing 基础合同通过；不抵消 joint/geometry 失败
+- [x] 严格几何门禁 → 明确失败：self-intersection `506`、最大 aspect `98.513`、fold `48`、最小角 `5.105°`；阈值未放宽
+- [x] identity 与冻结部件阶段 → proxy 前置失败，按顺序未执行 identity fitting、head/hands/feet/crown 装配或视觉审核
+- [x] 可移植性与提交 → App 提交 `df52dea` 已精确暂存并 push；正式与历史资产哈希保持不变
 
 **蓝图与 proxy 边界**：第一阶段只解决离散 connectivity 与 identity-free 几何，不以身份轮廓、材质或冻结部件迁就拓扑。五条边界的计数、顺序与坐标合同在 proxy 中必须显式版本化；neck、wrist、ankle 之间不得存在额外开口。identity fitting 只能在获批 proxy 的同一 connectivity 上显式 authored 坐标，不得换拓扑或通过自动投射隐藏结构失败。
 
@@ -680,7 +679,15 @@
 
 **冻结资产与阈值**：所有正式资源、身份基准、历史 Blend/manifest/report、冻结 head/hands/feet/crown 与 CHANGE-018/019 证据继续保持原哈希和只读状态。五边界、Euler、joint rings/routes、极点净空、strict geometry、身份和后续 Gate 阈值均不得降低。
 
-**处理状态**：⏳ 处理中
+**最终接口绑定**：contract-correct final 使用 v008-full-body-v001 的五接口 canonical position hashes：neck `8690fd0d...227ca`、wrist L `f8968d7a...29d6`、wrist R `6d36f5d2...4e9e`、ankle L `d568a265...aa18`、ankle R `19bfd96a...12be`。独立 reference probe 已从真实 Blend 的 patch provenance 重算并匹配，未复制历史 faces。
+
+**执行结论（2026-08-31）**：纯合同、五边界、Euler、单组件、全四边面和 route connectivity 只证明离散基础成立，不构成 proxy 几何放行。唯一显式 connectivity revision 已消耗，final 仍有 506 对自交、48 个 folded quads、aspect `98.513`、最小角 `5.105°`，并有 shoulder aspect 与 elbow/knee expanded-pole 失败；按预定止损规则关闭，不进入 identity fitting。
+
+**验证与复审**：pure contract `5/5`、Blender integration `9/9`、相关新增 `35/35`、coverage `85%`、ruff 均通过；独立 reference/joint probe 绑定真实 Blend/manifest，独立 code review 的 P1 已关闭。App 权威提交为 `df52dea`。
+
+**下一步决策边界**：不得在 CHANGE-020 内继续同一 topology、放宽门禁或追加第二次 connectivity revision。后续须由用户在新变更中选择，AI 不得擅自决定：1）由 AI 在 Blender 中进入不设单次 revision 上限的自由手工 DCC 迭代，保持全部机器、身份与审核门禁；该路线高成本、低可预测，若未来有人类专业 DCC 可按同一合同接手；2）v1.0.0 停止 Rig v2，继续使用现有正式 sprite/USDZ 路线。当前没有外部美术支持，不得把选项 1 记录成依赖外部交付。
+
+**处理状态**：✅ 已完结（no-seam proxy geometry 失败；等待用户决定 AI 自由手工 DCC 或 v1 停止 Rig v2）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：
