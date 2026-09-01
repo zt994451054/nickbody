@@ -31,6 +31,7 @@
 | CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 五边界/Euler 合同成立，但唯一 revision 仍有 506 自交与严重面质量失败 | ✅ 已完结（no-seam proxy geometry 失败） |
 | CHANGE-021 | 2026-08-31 | 开发中 | 技术方案变更 / 项目专用 Character DCC Skill | 建立并验证 Rig v2 证据路由、阶段门禁与候选比较 Skill | ✅ 已完结（Skill 有效，3D 网格仍阻塞） |
 | CHANGE-022 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Blender Skill 隔离试验 | 在项目门禁下试验社区建模 Skill 是否能产生新的 S0 拓扑方法 | ✅ 已完结（未找到合格 S0 Skill） |
+| CHANGE-023 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Skill 兼容适配与实作试验 | 最小适配 `cc-blender-skill` 并构建隔离 topology smoke candidate | ✅ 已完结（provenance/门禁失败） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -754,6 +755,36 @@
 **执行结论**：社区检索与隔离试验已真实执行，但没有找到可直接解决当前 Static Gate S0 的成熟 Skill。`cc-blender-skill` 的有效增量仅是 reference 量测、BMesh 操作提示和迭代纪律；项目已有同等或更严格能力。PoBruno 与 dcc-mcp 的增量集中在骨架、权重和动画，必须等待 S0 通过。ClawHub 官方 Blender MCP Skill 要求 Blender 5.1+，与本机/项目锁定的 4.3.2 不兼容；其余桥与现有 `blender-mcp==1.9.0` 重复。没有社区候选进入 active 栈，也没有 3D 网格被修改。
 
 **处理状态**：✅ 已完结（社区 Skill 试验无合格 S0 候选；回到 manual DCC / v1 停止 Rig v2 决策）
+
+## CHANGE-023 | 2026-09-01 | 技术方案变更 / 社区 Skill 兼容适配与实作试验
+
+**变更时当前阶段**：开发中（Rig v2 阻塞）
+**用户决策**：批准对 `cc-blender-skill` 做最小 Codex 兼容适配，并实际尝试一轮新的隔离 S0 候选。
+**变更内容**：在 `/tmp/nick-community-dcc-trial.YeG1NI/` 中复制 `blender-modeling`、`reference-to-3d`、`quality-refinement-autoloop`，只删除 Codex 不支持的 `when_to_use` frontmatter；随后按社区 BMesh-first/失败冻结思路编写纯拓扑 smoke builder、单元测试与 Blender 集成证据测试。未向 `~/.codex/skills` 安装，未修改 App 仓库或正式资产。
+**变更原因**：CHANGE-022 证明社区 Skill 没有现成 Character TD 算法，但用户希望进一步验证其流程指导能否在真实执行中产生有效拓扑增量，而不只停留在文档审查。
+
+**影响范围**：
+
+研发域：
+- [x] 社区 Skill 兼容副本 → 三个 Skill 仅删除各一行 `when_to_use`，diff 可追溯，`quick_validate.py` 均通过
+- [x] 纯拓扑 smoke builder → `/tmp/.../candidate-v001/community_bmesh_proxy.py`，未读取 CHANGE-020 Blend/faces，生成新 topology identity
+- [x] Blender evidence builder → `/tmp/.../candidate-v001/build_candidate_blender.py`，仅在 `TemporaryDirectory` 中执行过一次，输出随测试自动删除
+- [x] 正式/历史资产保护 → App 仓库、正式 USDZ/sprite、身份源、旧 Blend/report 均未修改
+
+测试与验收：
+- [x] TDD 初始红灯 → module 缺失、面质量与语义极点按预期先失败
+- [x] 基础组合拓扑 → 单组件、Euler `-3`、五边界 `[32,32,32,32,64]`、全四边面、non-manifold `0`、新 topology hash 曾通过 smoke tests
+- [x] 覆盖率 → 进入审查前 pure module line `91.73%`、branch `85.37%`
+- [x] Blender 临时集成 → 证明确实能生成临时 Blend/report、绑定实际 Blend SHA、保持 `staticState=0` 和源报告 hash；该报告未保留、未作为 S0 证据
+- [x] 独立复审 → 发现 canonical 自比较、错误 support-route 语义、joint ring 未验轴向、缺失 strict S0 审计，以及 construction provenance 误报
+- [x] 修正后红灯 → canonical 与 support-route 自检已补强，joint-axis 投影后当前 `6/7` pure tests 通过，但最大面边长比约 `7.45 > 3.5`
+- [x] 回滚/止损 → 不运行持久 Blender audit，不生成正式 candidate/report，不创建 active Skill 链接；全部失败证据仅保留于 `/tmp`
+
+**关键否决**：源码以固定 `24×8×16` structured grid/cell trunk 和参数化 branch tubes 生成 connectivity，未使用 Blender BMesh authoring；将其标为 `manual_dcc_authored` 不真实，本质仍属项目已关闭的 procedural cell/domain 路线。社区 Skill 的 BMesh 指导未转化为真实手工 DCC 操作。`forbiddenOperationsAbsent=true` 与接口预吸附 `0.0` 也曾由 builder 直接赋值，未形成足够独立测量，因此临时 report 不具备权威性。
+
+**执行结论**：该试验产生了不同于 CHANGE-020 的新 faces/hash，不是复活旧 topology；但它同时违反 construction provenance、预计无法通过 shoulder/elbow/hip joint-flow，并缺少真实 axilla/groin 解剖 route 与完整 strict geometry 证据。按 `nick-character-dcc` 与 autoloop 的前置门禁立即停止。不能通过给社区程序化方法换名来满足用户批准的自由手工 DCC。
+
+**处理状态**：✅ 已完结（社区兼容适配可运行；topology smoke candidate 被拒绝且未落入项目）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

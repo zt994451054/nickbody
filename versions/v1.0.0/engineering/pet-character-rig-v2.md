@@ -319,6 +319,17 @@ CHANGE-022 按用户决策重新检索 SkillHub、ClawHub 和 GitHub 社区，�
 
 三个 `cc-blender-skill` 子 Skill 的隔离副本均未通过 Codex `quick_validate.py`（frontmatter 含不支持的 `when_to_use`），未进入 `~/.codex/skills`。行为测试只证明社区流程能够在项目合同约束下提出 BMesh-first 建议，没有生成 Blender 候选，也没有几何改善证据。社区 Skill 路线到此止损；后续仍只允许用户明确选择新的项目 `manual_dcc_authored` 候选，或在 v1.0.0 停止 Rig v2。
 
+### 8.0.3 社区 Skill 兼容适配实作结论
+
+CHANGE-023 经用户明确批准，对上述三个 `cc-blender-skill` 子 Skill 仅删除不兼容的 `when_to_use` frontmatter，并在 `/tmp` 中实施 topology smoke candidate。适配后的 Skill 可通过 Codex 结构校验，但实作路线不获批准：
+
+- 候选以固定 `24×8×16` structured grid/cell trunk 和参数化 branch tubes 程序生成 connectivity，没有使用真实 Blender BMesh 手工 authoring；`manual_dcc_authored` provenance 标记不成立，触碰已关闭的 cell/domain 方法边界。
+- 基础组合拓扑曾达到单组件、Euler `-3`、五个 canonical counts、全四边面和新 topology hash，但独立复审发现 canonical 自比较、support routes 误用 limb longitudinal rails、joint rings 仅按距离声明，以及缺少自交、净空、解剖邻接和权威 face metrics。
+- 修正 canonical、route 与 joint-axis 自检后，当前纯测试 `6/7`，最大面边长比约 `7.45 > 3.5`；社区流程没有给出可解除该红灯且符合 provenance 的新拓扑方法。
+- Blender 集成测试只在系统临时目录生成过一次 Blend/report并自动删除，用于验证 evidence plumbing；没有保留或批准 raw report，没有修改任何正式/历史资产。
+
+该路线被 `nick-character-dcc` 拒绝并停止。新 faces/hash 不等于合格新路线；construction method、原始证据和实际建模过程必须一致。后续不得继续该 grid/cell candidate，也不得把最小 frontmatter 适配后的社区 Skill 链接进 active Codex 栈。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
