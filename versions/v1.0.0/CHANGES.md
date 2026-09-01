@@ -33,6 +33,7 @@
 | CHANGE-022 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Blender Skill 隔离试验 | 在项目门禁下试验社区建模 Skill 是否能产生新的 S0 拓扑方法 | ✅ 已完结（未找到合格 S0 Skill） |
 | CHANGE-023 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Skill 兼容适配与实作试验 | 最小适配 `cc-blender-skill` 并构建隔离 topology smoke candidate | ✅ 已完结（provenance/门禁失败） |
 | CHANGE-024 | 2026-09-01 | 开发中 | 技术方案变更 / licensed basemesh adaptation | 以许可与源哈希绑定的 Blender Studio basemesh 建立新隔离拓扑来源 | ✅ 已完结（source intake 与框架通过；网格适配待开始） |
+| CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -830,6 +831,54 @@
 **执行结论**：CHANGE-024 已完成来源、许可、归因、audit、外部审批与 candidate provenance 的不可变证据链，并建立 v009 隔离框架。真实 source intake 已批准后续直接 BMesh/Poly Build 适配，但当前没有 adapted Blend、S0 report、身份证据、骨架、权重或动作；Rig v2 仍阻塞在 v009 拓扑适配。
 
 **处理状态**：✅ 已完结（source intake 与隔离框架有效；实际网格适配为下一阶段）
+
+## CHANGE-025 | 2026-09-01 | 技术方案变更 / v009 licensed topology adaptation
+
+**变更时当前阶段**：开发中（Rig v2 Static Gate S0 阻塞）
+**用户决策**：用户明确指令“开始”，批准执行 CHANGE-024 后的首个实际 v009 隔离适配 revision。该授权覆盖一次 source component 提取、直接 BMesh/Poly Build 拓扑适配、候选 Blend 构建及机器审计；不授权 identity fitting、冻结部件装配、骨架、蒙皮、corrective、动作或正式资源替换。
+**候选身份**：`v009-licensed-basemesh-adapted-v001`，`constructionMethod=licensed_basemesh_adapted`。source artifact、source topology/coordinate、license、attribution、source audit、source approval 与 intake manifest hashes 全部继承 CHANGE-024 并保持只读。
+**变更内容**：从 Blender Studio `Base Meshes` 的 `Stylized Female / largest_connected_component_by_face_count` 建立新隔离工作副本，移除 source-only modifier 与辅助组件，将 T-pose 直接编辑为 Rig v2 A-pose，手工建立 neck `64`、双 wrist/ankle 各 `32` 的 canonical interfaces，并检查 shoulder/axilla/elbow/hip/groin/knee 面流。随后运行项目权威 raw topology auditor，生成规范化 decision report，并与 CHANGE-020 冻结基线比较。
+**变更原因**：CHANGE-024 已证明来源、权利链与原始 component 可被可靠绑定，但它仍是完整闭合人体而非 S0 候选。只有构建真实 adapted Blend 并读取机器报告，才能验证 licensed basemesh 是否带来可执行的生产拓扑增量。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录候选身份、授权边界与止损规则）
+- [x] source topology inspection → 已记录五个切割环的完整 source IDs、计数、中心、轴向和选择依据；确认 wrist `20` 为远端手侧环，实际切口使用双侧 `22`
+- [x] mutation before-state → 已绑定 App/panel branch、HEAD、tracked/unrelated changes、Blender build、execution path、正式资产哈希与回滚边界
+- [x] v009 builder → 已完成最大组件提取、source-only 状态清理、明确 pivot A-pose、五组 unequal-count all-quad 过渡与 deterministic save
+- [x] 隔离候选 → `character_pipeline/sprout/v2/work/experiments/v009-licensed-basemesh-adapted-v001/candidate-v001/`
+- [x] raw/normalized evidence → 已生成 build report、窄 topology declaration、raw S0 audit 和 decision report
+- [x] 版本状态 → `README.md` 已移除旧二选一文案，并同步 v001 S0 拒绝和新 revision 待决状态
+- [x] Rig v2 规范 → 已追加 CHANGE-025 真实候选、raw 指标、compare 结论和下一 revision 边界，阈值与阶段顺序未变
+- [x] 技术方案 → `engineering/tech-solution.md` 已同步 licensed source 的真实能力边界
+- [x] 工具文档 → App `tools/pet-model/README.md` 已记录 open-five raw auditor 的必需参数和证据分层
+- [x] Skill 决策门禁 → 进入用户静态审核前强制实际 `--artifact` 哈希绑定；历史失败报告仍可无 artifact 只读评估
+
+测试与验收：
+- [x] TDD 红灯 → source loop、不同点数 quad annulus、开放五边界 schema/object/canonical/static-state、normalizer raw/provenance 漂移、topology hash 碰撞、orphan rig、half-ring 假 support route 和 artifact 绑定均先观察失败再实现
+- [x] source immutability → 官方 artifact、license、attribution、audit、approval、intake hashes 前后不变
+- [x] candidate provenance → source/candidate topology 分离，实际操作如实记录为 `licensed_basemesh_adapted`，无 `manual_dcc_authored` 误标
+- [x] Static Gate S0 raw evidence → 五接口、Euler、组件/四边面、strict geometry、八 joint records、四 support-route records 与 `staticState=0` 均由实际 Blend/BMesh 重算
+- [x] 正式 USDZ、sprite、身份基准、CHANGE-020 report 和既有未跟踪用户产物哈希均未修改
+
+**允许操作**：只读 source topology inspection；精确组件提取；直接选择/删除 source faces；直接 BMesh 顶点、边、面编辑；整体单位换算；以明确 pivot 将四肢改为 A-pose；局部手工 loop/quad-strip 重建；确定性保存与项目审计。
+
+**禁止操作**：Voxel Remesh、Quadriflow、Boolean repair、final Shrinkwrap/nearest projection、profile scan/prewarp/relax、cell/domain/grid trunk、Auto-Rig、Meshy、复用 CHANGE-018/019/020 topology/hash、从 source 继承 modifier/armature/vertex group/parent/action，或在 raw S0 前进入身份/绑定阶段。
+
+**单 revision 止损规则**：首个真实 raw audit 若出现 provenance/input/canonical hash/static-state/禁止操作失败，或相对基线新增任何硬失败，立即停止且不修补同一 revision。若无新硬失败但未清除 issue code、未通过完整 S0，保留有界证据并回报用户；本次“开始”不自动授权第二个 adapted revision。
+
+**source loop 结论**：neck 选择最下方连续 `36` 点颈环；双 wrist 选择前臂/手过渡处最远端 `22` 点环，另测得的 `20` 点环位于更远端手侧，不能作为保留前臂后的切口；双 ankle 选择最接近 source world `z=0.1` 的 `28` 点环。只读报告前后 source SHA-256 均为 `189b794e...c4b70`。
+
+**候选结果**：v001 Blend SHA-256 为 `4755b845...1e15f`，builder topology SHA-256 为 `48911f35...96ed4`，与 source、CHANGE-020 均不同。实际网格 `6,459 V / 12,828 E / 6,366 quads`，单组件、Euler `-3`、五边界 `[32,32,32,32,64]`，五个 frozen canonical interface 均零误差；Armature object/modifier、vertex group、parent、action 均为 0。
+
+**raw S0 结论**：报告 SHA-256 `296a01cf...1b6c`，审计进程成功但状态为 `static_gate_s0_raw_failed`。失败项为 `foldFree / selfIntersectionFree / strictGeometry / jointFlow / supportRoutes`：5 自交、9 folds、maximum aspect `25.354285`、minimum angle `2.631836°`；8 个 joint 的 accepted rings 均为 0，axilla/groin 左右四侧 accepted routes 均为 0。规范化报告 SHA-256 `452a0729...1f8f`，完整保留 5 个 raw false，`assess` 返回 `repair_static_topology / riggingAllowed=false`。
+
+**基线比较**：相对 CHANGE-020，自交改善 `99.01%`、fold 改善 `81.25%`、aspect 改善 `74.26%`，并清除 `BOUNDARY_SNAP_EXCESSIVE / CLOSED_ROUTE_REUSED / STATIC_STATE_EVIDENCE_MISSING`；但最小角从 `5.105°` 退化到 `2.632°`，新增 `SUPPORT_ROUTE_FAILED`，且全部 joint/support 记录相对基线回归。`compare` 因新硬失败返回 `reject_regression`。
+
+**执行结论**：licensed basemesh 对基础表面质量有真实增益，但不是可直接复用的生产变形模型。CHANGE-025 按首个硬失败冻结 v001，不做同 revision 修补，不进入 identity、骨架、权重或动作。后续若继续，须由用户另行明确授权新 revision，以新 topology hash 专门重建 8 个关节的 32 点环区和 4 侧 support quad strips，同时清除 strict geometry 失败。
+
+**处理状态**：✅ 已完结（v001 S0 拒绝并冻结；新 revision 未获授权）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

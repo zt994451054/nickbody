@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：既有自动/局部/Meshy、水平 seam 及 CHANGE-020 no-seam proxy 路线均已止损。CHANGE-020 的五边界、Euler `-3`、单组件和全四边面合同成立，但唯一 connectivity revision 后仍有 506 自交、48 folds、aspect `98.513`、最小角 `5.105°`，且 shoulder aspect 与 elbow/knee expanded-pole 门禁失败；未进入 identity fitting、冻结部件装配或视觉审核。CHANGE-024 已选择 Blender Studio CC BY 4.0 licensed basemesh 路线，source intake 已通过且仍为 `reference_only / riggingAllowed=false`；当前等待 v009 隔离副本完成五接口和关节面流适配。当前没有 adapted Blend 或通过 S0 的 proxy，正式资源、身份装配、骨架和蒙皮继续冻结。
+> 当前状态：既有自动/局部/Meshy、水平 seam 及 CHANGE-020 no-seam proxy 路线均已止损。CHANGE-025 已从获批 Blender Studio CC BY 4.0 source 构建首个真实 `licensed_basemesh_adapted` v009：五边界、Euler `-3`、单组件、全四边面、canonical 坐标和无蒙皮静态状态通过，但 raw S0 仍有 5 自交、9 folds、aspect `25.354`、最小角 `2.632°`，8 个 joint 均无 accepted 32 点环，四侧 support routes 均为空。评估为 `repair_static_topology`，对 CHANGE-020 比较为 `reject_regression`，v001 按单 revision 止损规则冻结。当前仍无通过 S0 的 proxy，正式资源、身份装配、骨架和蒙皮继续冻结。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -366,6 +366,41 @@ Blender Studio `Base Meshes` 的官方文件已在 Blender 4.3.2 以
 本结论只批准后续隔离拓扑适配框架；本变更没有生成 adapted Blend、S0 report、
 骨架、权重或正式资源。
 
+### 8.0.5 CHANGE-025 licensed topology adaptation v001
+
+首个真实 adapted revision 固定为
+`v009-licensed-basemesh-adapted-v001`。只读 inspector 将五个 source 切割环
+绑定为 neck `36`、双 wrist `22`、双 ankle `28`；腕部另有更远端 `20` 点环，
+但该环位于手侧 topology，不能作为保留前臂后的 wrist interface。builder 只执行
+最大组件提取、source-only 状态移除、明确 pivot A-pose、直接 BMesh/Poly Build
+编辑及局部 all-quad 过渡，没有 remesh、Boolean、最终投影、Auto-Rig 或付费 API。
+
+候选 Blend SHA-256 为
+`4755b8453230478f57a75ae2f61ec0f8966bf9bf790cb39b0a6a64810df1e15f`，
+candidate topology SHA-256 为
+`48911f355420b0b004204c4400af64cca21b1d7d204831b558c3a8ad59496ed4`。
+它由 `6,459 V / 12,828 E / 6,366 quads` 构成，单组件、Euler `-3`，五边界
+`[32,32,32,32,64]` 与冻结 canonical points/hash 全部零误差，且 Armature object/
+modifier、vertex group、parent、action 均为 0。
+
+raw S0 明确失败：self-intersection `5`、fold `9`、maximum aspect
+`25.3542852131 > 3.5`、minimum angle `2.6318361600° < 10°`。8 个 joint 的
+accepted declared ring 均为 0；双 shoulder expanded poles 为 `42/52`，双 elbow
+为 `2/4`，双 knee 为 `10/9`，双 hip 虽无 expanded pole 但 aspect 为
+`5.212/4.310`。axilla/groin 左右四侧均为 0 accepted support routes。
+
+`nick-character-dcc assess` 返回 `repair_static_topology / riggingAllowed=false`。
+相对 CHANGE-020，self-intersection 改善 `99.01%`、fold 改善 `81.25%`、aspect
+改善 `74.26%`，并解决 closed-route、excessive boundary snap 和 static-state
+缺失；但 minimum angle 从 `5.105°` 降到 `2.632°`，且新增
+`SUPPORT_ROUTE_FAILED`。compare 因该新硬失败及全部 joint/support 回归返回
+`reject_regression`。
+
+CHANGE-025 到此停止，不得修补同一 revision 或进入 identity、骨架、权重、动作。
+若用户未来明确授权新 revision，必须使用新 candidate/topology hash，重点重建 8 个
+关节每处至少 4 个真实 32 点环和 4 组解剖 support quad strips，同时清除 strict
+geometry 失败；licensed source 只能继续作为表面种子，不能被视为可直接复用的变形模型。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
@@ -613,12 +648,13 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 13. ⚠️ CHANGE-019 已证明 `safeZ=0.3770954363` 的 full Body / frozen torso 均为 50/64，升高仍无 64/64；`34/16/14` hybrid collar 未批准，fully-source 水平 seam 路线停止。
 14. ⚠️ CHANGE-020 基础 topology contract 通过，但唯一 connectivity revision 后仍有 506 自交、48 folds、aspect `98.513`、最小角 `5.105°`，并有 shoulder/elbow/knee 门禁失败；no-seam proxy 路线停止。
 15. ✅ CHANGE-024 已选择 Blender Studio CC BY 4.0 licensed basemesh source intake；源 artifact、许可、归因、对象/组件和拓扑哈希已绑定，真实 intake 返回 `approved_for_isolated_adaptation` 且 `riggingAllowed=false`。
-16. ⏳ 下一步只允许在 v009 隔离目录创建 `licensed_basemesh_adapted` 工作副本，直接重建五接口和关节面流并运行完整 S0 审计；当前没有 adapted Blend 或获批 proxy。
-17. 仅当未来新 Static Gate S0 和用户静态审核通过后，才将固定 32 关节合同应用到获批候选，复核关节位置、IK/FK 传播及原尺寸骨位图。
-18. 基于获批新 source hash 从零建立区域合同和手工权重，先通过正式 Rig Gate 0，再按 Gate 1 → Gate 2 → Gate 3 顺序放行。
-19. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
+16. 🚫 CHANGE-025 v009 adapted v001 已完成真实 S0 审计并拒绝：基础 topology/canonical/static-state 通过，strict geometry、8 个 joint flow 和 4 侧 support routes 失败；该 revision 已冻结。
+17. ⏳ 仅在用户明确授权新 revision 后，才可从同一只读 licensed source 新建 candidate，重建 8 个 32 点关节环区及 axilla/groin routes；不得原地修补 v001。
+18. 仅当未来新 Static Gate S0 和用户静态审核通过后，才将固定 32 关节合同应用到获批候选，复核关节位置、IK/FK 传播及原尺寸骨位图。
+19. 基于获批新 source hash 从零建立区域合同和手工权重，先通过正式 Rig Gate 0，再按 Gate 1 → Gate 2 → Gate 3 顺序放行。
+20. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞在第 16 项 v009 拓扑适配。CHANGE-024 source intake 已获批准，只允许在该隔离目录创建新 `licensed_basemesh_adapted` 工作副本；CHANGE-020 与既有自动、seam、hybrid collar 路线继续停止。新 proxy 通过完整 S0 前不得身份拟合、冻结部件装配、骨架或蒙皮，不得放宽门禁、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续冻结并保持当前产品路线可用。
+当前阻塞在第 17 项是否授权新的 v009 revision。CHANGE-025 v001 已按首个硬失败止损，CHANGE-020 与既有自动、seam、hybrid collar 路线继续停止。新 proxy 通过完整 S0 前不得身份拟合、冻结部件装配、骨架或蒙皮，不得放宽门禁、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续冻结并保持当前产品路线可用。
 
 人工 DCC 合同包已落档到 App 工程：
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/`。其中 `README.md`

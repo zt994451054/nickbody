@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-020 no-seam proxy 因 506 自交、48 folds、aspect `98.513` 及 shoulder/elbow/knee 门禁失败继续关闭。CHANGE-024 已批准 Blender Studio CC BY 4.0 basemesh 路线：源 artifact、许可、归因和组件拓扑哈希已绑定，真实 intake 为 `approved_for_isolated_adaptation / reference_only / riggingAllowed=false`。当前仍无 adapted Blend 或通过 S0 的 proxy，正式资源、identity fitting、骨架和蒙皮继续冻结。**待补**：v009 五接口与关节面流适配；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-025 已从 CHANGE-024 的 licensed source 构建首个真实 v009 adapted Blend：五接口、Euler `-3`、单组件、全四边面、canonical hashes 和 `staticState=0` 均通过；但 raw S0 仍有 5 自交、9 folds、aspect `25.354`、最小角 `2.632°`，8 个 joint 均为 0 accepted rings，四侧 support routes 均为 0。评估为 `repair_static_topology`，对 CHANGE-020 比较为 `reject_regression`，本 revision 已冻结且不进入 identity/rig。正式资源继续可用并冻结。**待决**：是否明确授权新的 v009 revision 专门重建关节环与 support routes；其后仍需角色身份、三组动作、养成系统、Onboarding、StoreKit、数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：等待 AI 自由手工 DCC / v1 停止 Rig v2 决策 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：CHANGE-025 v001 S0 拒绝，等待是否授权新 revision |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
