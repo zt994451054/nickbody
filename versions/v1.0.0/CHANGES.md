@@ -30,6 +30,7 @@
 | CHANGE-019 | 2026-08-31 | 开发中 | 技术方案变更 / hip-safe torso/lower seam 重分区 | full Body 与冻结 torso 均无法形成 hip-safe 的 64/64 水平身份截面 | ✅ 已完结（fully-source 水平 seam 不存在） |
 | CHANGE-020 | 2026-08-31 | 开发中 | 技术方案变更 / no-seam joint body topology domain | 五边界/Euler 合同成立，但唯一 revision 仍有 506 自交与严重面质量失败 | ✅ 已完结（no-seam proxy geometry 失败） |
 | CHANGE-021 | 2026-08-31 | 开发中 | 技术方案变更 / 项目专用 Character DCC Skill | 建立并验证 Rig v2 证据路由、阶段门禁与候选比较 Skill | ✅ 已完结（Skill 有效，3D 网格仍阻塞） |
+| CHANGE-022 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Blender Skill 隔离试验 | 在项目门禁下试验社区建模 Skill 是否能产生新的 S0 拓扑方法 | ✅ 已完结（未找到合格 S0 Skill） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -721,6 +722,38 @@
 **执行结论**：Skill 通过保留标准并已启用。它能把原始机器证据、候选身份、冻结输入、实际 Blend 哈希、identity evidence 和用户审批绑定成 fail-closed 阶段决策；不能生成或修复网格。CHANGE-020 继续关闭，当前仍没有通过 Static Gate S0 的生产级 3D 小草。后续只有用户明确授权新的隔离 `manual_dcc_authored` 候选后，才可重新开始静态 DCC 实验。
 
 **处理状态**：✅ 已完结（Skill 有效并保留；3D 网格与 Rig v2 仍阻塞）
+
+## CHANGE-022 | 2026-09-01 | 技术方案变更 / 社区 Blender Skill 隔离试验
+
+**变更时当前阶段**：开发中（Rig v2 阻塞）
+**用户决策**：不直接进入项目自建 `manual_dcc_authored` 路线，继续尝试社区成熟 Skill；失败候选必须卸载并回滚，不得因社区热度降低 Rig v2 门禁。
+**变更内容**：重新通过 SkillHub、ClawHub 与 GitHub 源码检索 Character TD、manual retopology、BMesh、weight painting、deformation 与 Blender MCP Skill。平台未发现可直接解决 S0 的 Character TD Skill；进入隔离试验的候选为 `RobLe3/cc-blender-skill` 中 `blender-modeling`、`reference-to-3d` 与 `quality-refinement-autoloop`。PoBruno `mcp-blender-agent` 与 `dcc-mcp-blender` 只保留为 S0 通过后的 rigging/weight/animation 候选，不得在本变更提前使用。
+**变更原因**：用户希望在完全转入项目自建手工 DCC 前，继续验证社区 Skill 是否能提供真实的专业建模增量。现有 `nick-character-dcc` 已能阻止越级和伪改善，可用于对社区方法执行统一合同评估。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录候选、边界与止损规则）
+- [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md`（已补充社区 Skill 隔离试验结论）
+- [x] 社区 Skill 隔离安装 → 三个子 Skill 已安装到 `/tmp/nick-community-dcc-trial.YeG1NI/installed-skills/`；未链接或复制到 Codex active 栈
+- [x] 新 S0 候选 → 行为/兼容性测试触发止损，未启动 Blender、未生成候选或 topology hash
+
+测试与验收：
+- [x] 社区检索 → SkillHub 专业关键词无有效结果；ClawHub 仅有重复/不兼容桥；GitHub 找到三个有源码与许可证的相邻候选
+- [x] 安全扫描 → 对三个隔离仓库共 `73` 个 Skill 执行只读扫描，严重/高风险/待复核均为 `0`；该结果不替代逐文件合同审查
+- [x] Codex 结构校验 → 三个子 Skill 均因不支持的 `when_to_use` frontmatter 被 `quick_validate.py` 拒绝，不能原样进入 Codex
+- [x] 合同冲突测试 → `blender-modeling` 默认推荐 Boolean/Voxel，深层文档推荐 QuadriFlow/final Shrinkwrap；排除后只剩通用原语；`reference-to-3d` 的 contour 路由产出 Delaunay 三角面/2.5D 分件
+- [x] 独立行为测试 → 候选能整理 reference manifest、BMesh-first 与失败证据冻结流程，但没有新增五接口、joint rings、support routes、pole clearance 或 strict geometry 构造算法
+- [x] 实际效果测试 → 按止损规则在 Blender 前停止；未伪造 raw report 或把流程建议冒充几何改善
+- [x] 回滚/保留 → 未创建全局链接，无 active Skill 可卸载；隔离源码保留在 `/tmp/nick-community-dcc-trial.YeG1NI/` 供追溯
+
+**权威与边界**：Rig v2 合同、真实 Blender 报告、canonical interfaces、原尺寸证据和用户审批高于所有社区 Skill。CHANGE-018/019/020 继续关闭；本变更不得修改正式 USDZ、sprite、身份基准、DCC master 或历史报告，不得进入 identity fitting、骨架、蒙皮、corrective 或动作。
+
+**止损规则**：行为测试若只能复述通用知识、依赖项目已禁止操作或承认复杂角色 retopology 仍需人工，则不进入 Blender。若实际候选出现新硬失败，立即拒绝；没有清除 issue code 或任一跟踪几何阻塞未改善至少 `20%`，停止当前 revision。连续两轮无实质改善则卸载社区 Skill并关闭本变更，不把无限搜索伪装成进展。
+
+**执行结论**：社区检索与隔离试验已真实执行，但没有找到可直接解决当前 Static Gate S0 的成熟 Skill。`cc-blender-skill` 的有效增量仅是 reference 量测、BMesh 操作提示和迭代纪律；项目已有同等或更严格能力。PoBruno 与 dcc-mcp 的增量集中在骨架、权重和动画，必须等待 S0 通过。ClawHub 官方 Blender MCP Skill 要求 Blender 5.1+，与本机/项目锁定的 4.3.2 不兼容；其余桥与现有 `blender-mcp==1.9.0` 重复。没有社区候选进入 active 栈，也没有 3D 网格被修改。
+
+**处理状态**：✅ 已完结（社区 Skill 试验无合格 S0 候选；回到 manual DCC / v1 停止 Rig v2 决策）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

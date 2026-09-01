@@ -309,6 +309,16 @@ App 仓库 `.agents/skills/nick-character-dcc/` 版本化一个项目专用 Code
 
 效果结论：保留该 Skill 作为后续候选的防越级门禁；它成功识别真实失败、审批越级、禁用操作、同 identity 复活、细粒度回归和输入漂移。它没有改善或重建 3D 网格，CHANGE-020 继续关闭。用户明确授权新的隔离 `manual_dcc_authored` 候选之前，不得把 `repair_static_topology` 理解为继续修改旧 topology，也不得进入 identity fitting、骨架或蒙皮。
 
+### 8.0.2 社区 Skill 隔离试验结论
+
+CHANGE-022 按用户决策重新检索 SkillHub、ClawHub 和 GitHub 社区，并隔离审查 `cc-blender-skill`、`mcp-blender-agent` 与 `dcc-mcp-blender`。没有候选可替代 Static Gate S0 的拓扑构造与审计：
+
+- `cc-blender-skill` 的 `blender-modeling`、`reference-to-3d`、`quality-refinement-autoloop` 能提供 BMesh 原语、参考量测和失败迭代纪律，但不包含五接口单组件全四边面、关节环、support routes、极点净空或 strict geometry 的构造算法；其默认 Boolean、Voxel、QuadriFlow、最终 Shrinkwrap 与 Delaunay 三角面/2.5D 分件路线均不允许用于本项目。
+- PoBruno `mcp-blender-agent` 与 `dcc-mcp-blender` 提供更丰富的 Blender typed tools、骨架、逐顶点权重和动画 E2E，但 retopology 仍依赖自动 remesh、基础 extrude/loop-cut 或人工布局；在 S0 通过前不得加载其 rigging/weight/animation 路线。
+- ClawHub `blender-skill` 基于 Blender 官方 MCP，要求 Blender 5.1+；项目当前为 4.3.2，且已有固定 `blender-mcp==1.9.0`，不升级 Blender、不替换执行桥。
+
+三个 `cc-blender-skill` 子 Skill 的隔离副本均未通过 Codex `quick_validate.py`（frontmatter 含不支持的 `when_to_use`），未进入 `~/.codex/skills`。行为测试只证明社区流程能够在项目合同约束下提出 BMesh-first 建议，没有生成 Blender 候选，也没有几何改善证据。社区 Skill 路线到此止损；后续仍只允许用户明确选择新的项目 `manual_dcc_authored` 候选，或在 v1.0.0 停止 Rig v2。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
