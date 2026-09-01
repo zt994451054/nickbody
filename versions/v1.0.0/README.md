@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-020 no-seam proxy 的五边界、Euler `-3`、单组件和全四边面合同成立，但唯一 connectivity revision 后仍有 506 自交、48 folds、aspect `98.513`、最小角 `5.105°`，shoulder aspect 与 elbow/knee expanded-pole 门禁失败；未进入 identity fitting、冻结部件装配或视觉审核。当前等待用户决定：1）AI 在 Blender 中进入高成本、低可预测且不设单次 revision 上限的自由手工 DCC 迭代，未来人类专业 DCC 可按同合同接手；2）v1.0.0 停止 Rig v2，继续现有正式 sprite/USDZ 路线。当前无外部美术，AI 不得擅自选择，正式资源继续冻结。**待补**：用户路线决策；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-020 no-seam proxy 因 506 自交、48 folds、aspect `98.513` 及 shoulder/elbow/knee 门禁失败继续关闭。CHANGE-024 已批准 Blender Studio CC BY 4.0 basemesh 路线：源 artifact、许可、归因和组件拓扑哈希已绑定，真实 intake 为 `approved_for_isolated_adaptation / reference_only / riggingAllowed=false`。当前仍无 adapted Blend 或通过 S0 的 proxy，正式资源、identity fitting、骨架和蒙皮继续冻结。**待补**：v009 五接口与关节面流适配；角色生产与三组动作；养成系统；Onboarding；StoreKit；数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 

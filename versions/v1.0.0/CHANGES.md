@@ -32,6 +32,7 @@
 | CHANGE-021 | 2026-08-31 | 开发中 | 技术方案变更 / 项目专用 Character DCC Skill | 建立并验证 Rig v2 证据路由、阶段门禁与候选比较 Skill | ✅ 已完结（Skill 有效，3D 网格仍阻塞） |
 | CHANGE-022 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Blender Skill 隔离试验 | 在项目门禁下试验社区建模 Skill 是否能产生新的 S0 拓扑方法 | ✅ 已完结（未找到合格 S0 Skill） |
 | CHANGE-023 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Skill 兼容适配与实作试验 | 最小适配 `cc-blender-skill` 并构建隔离 topology smoke candidate | ✅ 已完结（provenance/门禁失败） |
+| CHANGE-024 | 2026-09-01 | 开发中 | 技术方案变更 / licensed basemesh adaptation | 以许可与源哈希绑定的 Blender Studio basemesh 建立新隔离拓扑来源 | ✅ 已完结（source intake 与框架通过；网格适配待开始） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -785,6 +786,50 @@
 **执行结论**：该试验产生了不同于 CHANGE-020 的新 faces/hash，不是复活旧 topology；但它同时违反 construction provenance、预计无法通过 shoulder/elbow/hip joint-flow，并缺少真实 axilla/groin 解剖 route 与完整 strict geometry 证据。按 `nick-character-dcc` 与 autoloop 的前置门禁立即停止。不能通过给社区程序化方法换名来满足用户批准的自由手工 DCC。
 
 **处理状态**：✅ 已完结（社区兼容适配可运行；topology smoke candidate 被拒绝且未落入项目）
+
+## CHANGE-024 | 2026-09-01 | 技术方案变更 / licensed basemesh adaptation
+
+**变更时当前阶段**：开发中（Rig v2 Static Gate S0 阻塞）
+**用户决策**：批准将社区探索扩大为可商用角色基准网格与 Blender 重拓扑工具，并批准以 Blender Studio 发布的 CC BY 4.0 `Base Meshes` 作为新的隔离拓扑起点。新路线必须如实标记为 `licensed_basemesh_adapted`，不得继续把外部、自动或程序化来源冒充 `manual_dcc_authored`。
+**变更内容**：冻结官方源文件 SHA-256 `189b794efea10fcad23350b56ce22109a6247afda8f08df67b3e6e22018c4b70`，建立许可证、归因、源文件与候选哈希绑定的 source intake；只允许在新隔离候选中以直接 BMesh/Poly Build 编辑适配五个 canonical interfaces、A-pose、joint flow 和 support routes。该源资产只提供拓扑起点，不提供小草视觉身份、生产骨架、权重、动作、shape key 或审批。
+**变更原因**：CHANGE-018～020 的 seam/no-seam 路线和 CHANGE-022～023 的社区 Skill/grid-cell 路线均已止损。从许可证明确、人工制作的角色基网开始，可以减少从零构造人体分支拓扑的未知量，但不能降低任一 S0 几何、身份或审批门禁。
+
+**已确认来源**：
+
+- 资产标题：`Base Meshes`
+- 作者：Julien Kaspar
+- 发布方：Blender Studio
+- 来源页面：`https://studio.blender.org/training/stylized-character-workflow/base-meshes/`
+- 许可：CC BY 4.0（`https://creativecommons.org/licenses/by/4.0/`）
+- 官方文件 SHA-256：`189b794efea10fcad23350b56ce22109a6247afda8f08df67b3e6e22018c4b70`
+- 预审事实：Blender 4.3.2 可打开；stylized 主身体为单个闭合全四边面组件，但原始 Euler 为 `2`、无五接口，且仍有面边长比超限，因此不是 S0 候选或通过证据
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录来源、权限、边界和止损规则）
+- [x] Rig v2 规范 → `engineering/pet-character-rig-v2.md` 已增加 licensed basemesh provenance、S0 intake 顺序与归因门禁
+- [x] 技术方案 → `engineering/tech-solution.md` 已增加第三方离线内容输入与运行时依赖边界
+- [x] 版本进度 → `README.md` 已将等待路线决策更新为 CHANGE-024 source-intake 完成、适配仍阻塞
+- [x] Character DCC Skill → `.agents/skills/nick-character-dcc/` 已增加 construction/provenance schema、独立 source approval、fail-closed 校验和 TDD
+- [x] App 来源声明 → 已版本化 source-intake、license evidence、CC BY attribution/修改说明和 candidate provenance
+- [x] 隔离候选框架 → 已建立 v009 目录、来源/组件哈希、预审、状态与停止条件；未生成已适配网格或 S0 report
+
+测试与验收：
+- [x] TDD 红灯 → provenance 缺失、来源/许可/归因/audit/approval 哈希与语义漂移、未知或禁止许可、伪造 manual route 和比较回归按预期先失败
+- [x] 真实 source intake → 官方 artifact、license evidence、attribution、source audit 与外部 source approval 实际哈希通过，输出 `approved_for_isolated_adaptation / reference_only / riggingAllowed=false`
+- [x] Skill 测试 → `88/88` unittest/pytest 通过；statements `84.11%`、branches `80.22%`；`quick_validate.py`、`py_compile` 与 diff check 通过
+- [x] 独立验证 → 对抗复审无剩余 correctness/fail-closed/兼容性问题；无预设答案的前向测试正确拒绝直接 rigging，只放行 v009 隔离适配
+- [x] 正式资源保护 → USDZ `0c2f165b...273d`、sprite `5b0603f7...bdc3`、身份基准 `d8bfa4d3...ca36`、CHANGE-020 report `b91698ef...bf67` 均未变化
+- [x] 提交与推送 → App `5d1cc7c` 已推送到 `feat/v1.0.0-rig-v2-unskinned`；未纳入历史未跟踪 render、Blend、ZIP 或 `meshy_output/`
+
+**权威与边界**：Rig v2 合同、原始 Blender 报告、五接口哈希、身份证据和用户静态审批仍高于外部资产与社区 Skill。CC BY 许可只允许依法使用来源，不证明拓扑质量。S0 前继续禁止 armature、vertex group、parent、action、production weights、corrective 和动作。
+
+**止损规则**：缺少源文件、许可证文本、归因、不可变哈希或用户批准绑定时 fail-closed。若适配只能依赖 Voxel Remesh、Quadriflow、Boolean repair、final Shrinkwrap/nearest projection、cell/domain、Auto-Rig、Meshy 或已关闭 topology hash，则不创建候选。source intake 与框架通过只允许进入后续隔离适配，不构成 S0 通过或正式资产批准。
+
+**执行结论**：CHANGE-024 已完成来源、许可、归因、audit、外部审批与 candidate provenance 的不可变证据链，并建立 v009 隔离框架。真实 source intake 已批准后续直接 BMesh/Poly Build 适配，但当前没有 adapted Blend、S0 report、身份证据、骨架、权重或动作；Rig v2 仍阻塞在 v009 拓扑适配。
+
+**处理状态**：✅ 已完结（source intake 与隔离框架有效；实际网格适配为下一阶段）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

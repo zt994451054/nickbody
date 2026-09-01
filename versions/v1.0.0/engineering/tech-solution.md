@@ -24,6 +24,7 @@
 CHANGE-011 引入生产级角色动画架构，保持纯端侧和零第三方运行时不变，但调整宠物资产与动作边界：
 
 - 当前 Meshy 24 骨资产只保留为身份与回归参考；新生产资产遵循 `pet-character-rig-v2.md` 的连续网格、32 关节骨架、手工蒙皮和认证合同。
+- CHANGE-024 允许从许可证、归因、不可变 artifact/source-topology hash 均已绑定的人工 basemesh 手工适配生产网格。当前 source intake 为 Blender Studio `Base Meshes`（CC BY 4.0）；它只提供拓扑起点，不能替代小草身份或任一 S0–Gate 4 证据。
 - Blender 是固定版本的离线 DCC，不随 App 分发。Meshy 只作为候选生成器，不再决定生产 rig 和最终权重。
 - 大厅/跟练的 RealityKit 3D clip 与桌面 sprite strip 来自同一已批准 DCC action。
 - `PetAnimationGraph` 是关节姿势的唯一最终写入者，取代 `PetSceneView` 和多个 planner 直接拼装骨骼角度的模式。
@@ -41,7 +42,7 @@ CHANGE-011 引入生产级角色动画架构，保持纯端侧和零第三方运
 
 本版本**彻底实现了零第三方动画运行框架依赖 (Zero Third-Party Animation Runtime Dependency)**。
 
-App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation 负责桌面透明帧播放，不引入 Rive、Unity 或 Unreal。Blender 4.3.2 仅用于离线资产生产，不是 App 依赖。该边界消除了 C++ 动画运行时在 macOS 常驻后台时的额外发热风险，并保持最小运行时依赖面。
+App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation 负责桌面透明帧播放，不引入 Rive、Unity 或 Unreal。Blender 4.3.2 仅用于离线资产生产，不是 App 依赖。CHANGE-024 的 CC BY basemesh 同样是离线内容输入，不是软件包或运行时依赖；若衍生资源发布，须随发布 manifest 保留归因、许可链接和修改说明。该边界消除了 C++ 动画运行时在 macOS 常驻后台时的额外发热风险，并保持最小运行时依赖面。
 
 ---
 
@@ -191,7 +192,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 
 ### 7.5 角色资产与统一动画图 (PetAnimationGraph)
 
-*   **生产资产**：人形小草 Rig v2 的网格、32 关节导出骨架、蒙皮、动作 manifest、坐标和认证门禁统一由 `pet-character-rig-v2.md` 定义。当前 24 骨资产只作为迁移期正式回退和视觉参考。
+*   **生产资产**：人形小草 Rig v2 的网格、32 关节导出骨架、蒙皮、动作 manifest、坐标和认证门禁统一由 `pet-character-rig-v2.md` 定义。当前 24 骨资产只作为迁移期正式回退和视觉参考。licensed basemesh 必须先通过独立 source intake，再以 `licensed_basemesh_adapted` 新版本进入完整 S0；源文件既有拓扑质量、modifier、rig 或动作不能继承审批。
 *   **动作来源**：挥手、张望、伸展、庆祝等表现动作在 Blender control rig 中制作并逐帧烘焙到固定导出骨架。Swift 不再定义这些动作的具体关节角度；现有 `PetIdleMotionPlanner` 迁移后只保留随机动作调度职责并更名为 `PetIdleActionScheduler`。
 *   **唯一姿势写入者**：`PetAnimationGraph` 按 Base → Action → Additive → IK → Secondary → Corrective 顺序合成完整姿势，一次性写入 `jointTransforms`。`PetSceneView` 只负责场景、相机、灯光、生命周期和最终提交。
 *   **可保留能力**：六个头颈教学动作语义、`PlantedFootSolver`、叶片受限弹簧和 Rig probe 保留；教学动作的具体姿势逐步迁移为采样 clip。
@@ -263,7 +264,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：重拓扑连续主身体，建立 control/export 双骨架并手工蒙皮；按 Gate 0–3 修正到全部通过。
+4. **角色生产**：CHANGE-024 已完成 licensed basemesh source intake；下一步在 v009 隔离副本中直接适配五接口和关节面流，完整通过 S0 与用户静态审核后，才建立 control/export 双骨架并手工蒙皮；按 Gate 0–3 修正到全部通过。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
@@ -275,3 +276,5 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 *   *防范*：正式角色统一从 Blender 原生 USD 打包 USDZ；每次导出记录版本与语义合同哈希，使用 `usdchecker`、结构脚本和 RealityKit 原尺寸截图共同验收，禁止将 GLB 往返结果或发布文件覆盖 DCC master。
 *   *风险*：自动蒙皮在肩、腋下、髋部产生远端权重污染。
 *   *防范*：生产主身体重拓扑后手工蒙皮，使用命名区域 mask 阻止跨区域 influence，并按关键单关节 → 全关节 → 组合姿势顺序逐级放行。
+*   *风险*：外部 basemesh 许可、来源文件或归因在适配与发布之间漂移，或来源身份被误当作拓扑通过。
+*   *防范*：source intake 绑定 artifact、source topology、license evidence、attribution 和 manifest hashes；候选比较禁止 provenance 原地变更，发布前重新校验归因与修改说明。许可通过与 S0 几何/身份门禁分别判定。
