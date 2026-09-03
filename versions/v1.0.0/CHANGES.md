@@ -34,7 +34,7 @@
 | CHANGE-023 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Skill 兼容适配与实作试验 | 最小适配 `cc-blender-skill` 并构建隔离 topology smoke candidate | ✅ 已完结（provenance/门禁失败） |
 | CHANGE-024 | 2026-09-01 | 开发中 | 技术方案变更 / licensed basemesh adaptation | 以许可与源哈希绑定的 Blender Studio basemesh 建立新隔离拓扑来源 | ✅ 已完结（source intake 与框架通过；网格适配待开始） |
 | CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
-| CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ⏳ 处理中 |
+| CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ✅ 已完结（R0 失败后按止损条件关闭；不创建 v002） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -921,11 +921,11 @@
 - [x] R0 静态门 → scoped 局部机器门通过；该结果不等于 formal S0、静态身份审批或 rigging 授权
 - [x] R0 变形诊断 → `430/430` 样本与 `448 + 448` 张原尺寸/无重采样证据完整生成，但机器门失败；有界人工复核支持拒绝，不作为全量人工审核
 - [x] 正式资产保护 → 所有冻结输入和正式资源哈希前后不变，临时 rig/权重清零且未保存、导出或复用
-- [ ] 提交与推送 → App 与面板各自按分支策略完成提交和远端同步
+- [x] 提交与推送 → App `56477f8` 已推送至 `feat/v1.0.0-rig-v2-unskinned`；面板 `e0f49ab` 已推送至 `feat/v1.0.0-rig-v2-unskinned-docs`
 
 **当前允许的下一步**：只允许收口证据、执行完整回归并提交推送。若未来选择 materially different production route，须重新明确决策和授权；本变更不创建或授权 v002。
 
-**处理状态**：⏳ 处理中
+**处理状态**：✅ 已完结
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：
