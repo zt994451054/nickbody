@@ -5,7 +5,7 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-08-12
+> 最后更新：2026-09-02
 
 ---
 
@@ -25,7 +25,7 @@
 | 姿态识别备选 | RTMPose/MoveNet 转 CoreML | Apache 2.0 | M1 bake-off 不达标时启用；V2 跨平台用 MediaPipe |
 | 宠物 3D 渲染 | RealityKit | 系统内置 | 大厅和跟练窗口有界渲染；使用生产 Rig v2、采样 clip 和统一 `PetAnimationGraph` |
 | 桌面宠物渲染 | Core Animation + 独立透明 sprite strip | 系统内置 | strip 与 3D 共用已批准 DCC 动作源，manifest 描述帧数/FPS/循环/事件；零第三方运行时，详见 ADR-002、ADR-003 |
-| 角色资产 DCC | Blender | 4.3.2（生产版本锁定）| 离线重拓扑、手工蒙皮、控制 rig 和动作烘焙；主发布路径为原生 USD → USDZ → RealityKit，GLB 仅作交换/诊断产物 |
+| 角色资产 DCC | Blender | 4.3.2（生产版本锁定）| 离线重拓扑、手工蒙皮、控制 rig 和动作烘焙；静态拓扑由版本化机器合同治理，scoped WIP/diagnostic 不可晋级；主发布路径为原生 USD → USDZ → RealityKit，GLB 仅作交换/诊断产物 |
 | 数据库 | SwiftData（本地）| 系统内置 | V1 无账号无云同步 |
 | 缓存 | 无 | — | 单机无需 |
 | 消息队列 | 无 | — | 单机无需 |
@@ -147,7 +147,7 @@ graph TB
 | 跟练时姿态推理帧率 | 待 M1 实测（目标 ≥15fps）| MacBook Air M1 基线机型 | v1.0.0 |
 | 后台常驻 CPU 占用 | 待实测（目标 <1%）| 宠物闲时动画 | v1.0.0 |
 | Vision 肩部关键点稳定性 | 待 M1 bake-off | 坐姿近距（0.5–1m）| v1.0.0 |
-| Rig v2 变形质量 | Gate 0–4 全部通过 | RealityKit 八方位原尺寸逐帧审核 | v1.0.0 |
+| Rig v2 变形质量 | 生产 Rig 尚未建立；CHANGE-026 R0 一次性变形诊断失败，当前 licensed-basemesh AI 施工路线关闭 | Blender 430 个逐度样本 + 有界原尺寸复核；production Gate 0–4 均未通过 | v1.0.0 |
 
 ---
 

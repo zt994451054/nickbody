@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：既有自动/局部/Meshy、水平 seam 及 CHANGE-020 no-seam proxy 路线均已止损。CHANGE-025 已从获批 Blender Studio CC BY 4.0 source 构建首个真实 `licensed_basemesh_adapted` v009：五边界、Euler `-3`、单组件、全四边面、canonical 坐标和无蒙皮静态状态通过，但 raw S0 仍有 5 自交、9 folds、aspect `25.354`、最小角 `2.632°`，8 个 joint 均无 accepted 32 点环，四侧 support routes 均为空。评估为 `repair_static_topology`，对 CHANGE-020 比较为 `reject_regression`，v001 按单 revision 止损规则冻结。当前仍无通过 S0 的 proxy，正式资源、身份装配、骨架和蒙皮继续冻结。
+> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结。CHANGE-026 已将实验 WIP、开放五接口 S0、闭合身份装配和生产 Rig Gate 0 分层，并以版本化机器合同统一关节环、support route 和严格几何规则；合同与工具 TDD 已完成，下一步仅为获批的左肩/腋下 R0 scoped experiment。R0 不是候选，不占用 v002 编号，也不能解锁身份装配、生产骨架或蒙皮。当前仍无通过 S0 的 proxy，正式资源继续冻结。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -298,11 +298,26 @@ DCC master 可预留以下稳定名称：
 
 ## 8. 极限姿势认证矩阵
 
-认证顺序固定为 `Static Gate S0 → 用户静态审核 → Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 → Gate 4`。前一门禁失败时立即停止，禁止继续生成大量动作来“看看是否能用”。Static Gate S0 是无骨架静态候选门禁，不得记作正式 Rig Gate 0 通过。
+认证顺序固定为 `open_five_s0 → closed_static_identity → 用户静态审核 → production_rig_gate_0 → Gate 1 → Gate 2 → Gate 3 → Gate 4`。前一门禁失败时立即停止，禁止继续生成大量动作来“看看是否能用”。`open_five_s0` 是无骨架开放五接口拓扑门禁，不得记作身份完成、用户审批或正式 Rig Gate 0 通过。
 
-### 8.0 Static Gate S0：无骨架静态网格与身份
+静态拓扑阶段使用四个不可混用的 profile。机器真源为 App 仓库
+`character_pipeline/sprout/v2/contract/sprout-rig-v2-static-topology-contract-v2.json`，
+SHA-256 固定为
+`4cc50d3c1f31b34d3347835995379d5e6c38bd7a84fa49077b3bcc08f5247377`。
+报告、handoff 和项目 Skill 必须绑定同一合同版本和哈希，不得各自复制并修改阈值。
 
-Static Gate S0 只审核重拓扑网格、静态装配和视觉身份，不包含 armature、vertex group、蒙皮权重、bind/rest 或动作。顺序如下：
+| Profile | 产物性质 | 可通过 S0 | 进入条件与退出边界 |
+|---------|---------|-----------|------------------|
+| `scoped_wip` | 局部、一次性实验 | 否 | 只验证已声明局部；结果只能继续/停止 scoped 实验，不能进入 formal decision、identity 或 rig |
+| `open_five_s0` | 正式开放五接口候选 | 是 | 单组件、Euler `-3`、五边界 `[32,32,32,32,64]`、完整语义声明与零静态 rig 状态 |
+| `closed_static_identity` | S0 后闭合身份装配 | 否 | 仅从已通过 `open_five_s0` 的同一 connectivity 派生；闭合为 Euler `2`，补齐身份证据与用户审批 |
+| `production_rig_gate_0` | 生产 rig 入口工作副本 | 否 | 仅接受用户批准的 `closed_static_identity`；进入并不代表骨架、权重或变形通过 |
+
+关节环点数不是固定的 `32`；`32` 只属于腕踝 canonical interface 和生产导出骨架语义。每个 shoulder/elbow/hip/knee 至少声明 4 个真实闭环，同一关节相邻环点数必须一致并形成连续一对一 quad strip，最小纵向 connector alignment 为 `0.85`。左右同名关节环数差不得超过 `1`，环点数中位差不得超过 `10%`。axilla、shoulder over-cap 和 groin 每侧至少各有 2 条连续、无极点且满足解剖 waypoint 的 support route。关节核心及相邻一环极点数为 `0`；最大面比例为 `3.5`。最小面角 `10°` 在 CHANGE-026 中只保留为诊断值，不作为静态硬门槛。
+
+### 8.0 Static Gate S0：无骨架开放五接口网格
+
+Static Gate S0 只审核开放五接口重拓扑网格，不包含闭合静态装配、视觉身份、用户审核、armature、vertex group、蒙皮权重、bind/rest 或动作。通过后还必须派生并审核 `closed_static_identity`，顺序如下：
 
 1. CHANGE-019 的水平 seam 与 hybrid collar 子路线保持停止。
 2. CHANGE-020 的纯合同和 reference/joint probes 已证明五边界、Euler `-3`、单组件、全四边面及 route connectivity，但严格几何、shoulder aspect 和 elbow/knee expanded-pole 门禁失败。
@@ -317,7 +332,7 @@ S0 候选必须保持零 Armature modifier、零 vertex group、零父级和零 
 
 App 仓库 `.agents/skills/nick-character-dcc/` 版本化一个项目专用 Codex Skill。它是 Rig v2 的非权威证据路由和阶段门禁，不生成网格、不执行 Blender 几何审计、不授予审批，也不替代本规范、ADR-003、原尺寸证据或 RealityKit 往返结果。
 
-决策脚本只接受规范化 decision report。generic Blender auditor 仍负责产生原始事实；候选 builder 或显式 normalizer 按 Skill 的 `references/decision-report-schema.md` 汇总报告，不得改写失败值。报告必须包含原始几何、八个 joint records、四个 support-route records、五接口有序点与哈希、冻结输入 before/after 哈希，以及零 Armature/Modifier/vertex group/parent/action 的 `staticState`。身份完成还须绑定 silhouette measurement 与原尺寸 review manifest 哈希。用户静态审批必须同时绑定 decision-report SHA 和 Blend SHA；CLI 通过 `--artifact` 对实际 Blend 重新哈希。
+决策脚本只接受规范化 decision report。generic Blender auditor 仍负责产生原始事实；候选 builder 或显式 normalizer 按 Skill 的 `references/decision-report-schema.md` 汇总报告，不得改写失败值。正式报告必须绑定机器合同版本/哈希，包含原始几何、八个 joint records、axilla/shoulder-cap/groin 六侧 support-route records、五接口有序点与哈希、冻结输入 before/after 哈希，以及零 Armature object/modifier、mesh modifier、vertex group、parent、shape key 和 action 的 `staticState`。身份完成还须绑定 silhouette measurement 与原尺寸 review manifest 哈希。用户静态审批必须同时绑定 decision-report SHA 和 Blend SHA；CLI 通过 `--artifact` 对实际 Blend 重新哈希。`scoped_wip` 使用独立局部报告，不得送入 normalizer、formal compare 或正式审批链。
 
 2026-08-31 验证结果：
 
@@ -398,12 +413,41 @@ accepted declared ring 均为 0；双 shoulder expanded poles 为 `42/52`，双 
 
 CHANGE-025 到此停止，不得修补同一 revision 或进入 identity、骨架、权重、动作。
 若用户未来明确授权新 revision，必须使用新 candidate/topology hash，重点重建 8 个
-关节每处至少 4 个真实 32 点环和 4 组解剖 support quad strips，同时清除 strict
-geometry 失败；licensed source 只能继续作为表面种子，不能被视为可直接复用的变形模型。
+关节每处至少 4 个真实连续环和 axilla/shoulder-cap/groin 解剖 support quad strips，
+同时清除 strict geometry 失败；licensed source 只能继续作为表面种子，不能被视为
+可直接复用的变形模型。
+
+### 8.0.6 CHANGE-026 合同治理与 R0
+
+CHANGE-026 修复了 v001 施工范围与正式 S0 声明不一致的问题。builder 在生成任何
+产物前必须拒绝空 formal joint/support declaration；审计器和 Skill 从同一合同读取
+可变环点数、真实环间 quad strip、双侧一致性及 shoulder over-cap 规则。历史 schema v1
+报告继续只读兼容，但不能被静默升级为 schema v2 或解锁 rigging。
+
+获批 R0 只覆盖左肩、上胸、肩胛、腋下和近端上臂。实际构造保留源 provenance 与冻结区，
+并以至少 4 个 shoulder rings、2 条 axilla U-routes、2 条 shoulder over-cap routes、
+连续 quad strips、关节核心/相邻一环无 pole 和零新增硬几何失败通过
+`scoped_wip_static_passed`。该结果仍明确为 `formalCandidate=false / s0Eligible=false /
+staticGateS0Passed=false / riggingAllowed=false`，不能解释为正式 S0 或静态身份审批。
+
+随后只在一次性 disposable 副本中应用披露的三骨诊断结构和线性测试权重。baseline-aware
+诊断完整执行 `430/430` 个逐度样本：肩带升降 `21/21`、前伸/后收 `31/31` 通过；
+上臂前举 `0/121`、外展 `119/136`、轴向旋转 `117/121` 通过，累计新增
+`131` 个 folded-face、`101` 个 orientation-flip、`138` 个 self-intersection 失败；
+bind pose 原有 `3` 个 frozen folded faces 未重复计为姿态新增失败。权威报告位于 App 仓库
+`character_pipeline/sprout/v2/work/experiments/r0-left-shoulder/diagnostics/disposable-deformation-baseline-aware/report.json`，
+SHA-256 为 `5d89945cf746617c61ba88f1a67901def4df11ab19016df8cc956a3da3853fff`。
+AI 仅实际复核权威新目录中的 `15` 张原图和 `19` 张无重采样裁图，不声称完成全部
+`448 + 448` 张人工审核。临时 rig/权重已清理且未保存、导出或复用，正式资产与冻结输入未变。
+
+一次性变形机器门失败后，当前 licensed-basemesh AI 施工路线按止损条件关闭，不创建或
+授权 v002，不进入 production Rig Gate 0，不生成生产骨架、正式权重、动作或正式资产替换。
+此结论只否决“当前 R0 网格 + 披露的临时三骨 + 线性测试权重”组合，不独立否决 immutable
+licensed source topology。任何 materially different production route 均须新的明确决策与授权。
 
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
-只有 Static Gate S0 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
+只有 `open_five_s0`、由其派生的 `closed_static_identity` 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
 
 自动检查：
 
@@ -502,7 +546,9 @@ geometry 失败；licensed source 只能继续作为表面种子，不能被视�
 ```text
 character_pipeline/sprout/v2/
 ├── source/              # DCC master、输入哈希和纹理
-├── contract/            # skeleton、mesh region、action schema
+├── contract/            # 版本化机器合同；阈值单一真源
+├── handoff/             # 当前执行说明与不可变历史归档
+├── work/experiments/    # route/scoped WIP/formal candidate 隔离工作区
 ├── actions/             # 动作源与 manifest
 ├── build/               # 可删除的 GLB/FBX/USD/USDZ 中间产物
 ├── review/              # 门禁报告和原尺寸审核证据
@@ -649,15 +695,16 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 14. ⚠️ CHANGE-020 基础 topology contract 通过，但唯一 connectivity revision 后仍有 506 自交、48 folds、aspect `98.513`、最小角 `5.105°`，并有 shoulder/elbow/knee 门禁失败；no-seam proxy 路线停止。
 15. ✅ CHANGE-024 已选择 Blender Studio CC BY 4.0 licensed basemesh source intake；源 artifact、许可、归因、对象/组件和拓扑哈希已绑定，真实 intake 返回 `approved_for_isolated_adaptation` 且 `riggingAllowed=false`。
 16. 🚫 CHANGE-025 v009 adapted v001 已完成真实 S0 审计并拒绝：基础 topology/canonical/static-state 通过，strict geometry、8 个 joint flow 和 4 侧 support routes 失败；该 revision 已冻结。
-17. ⏳ 仅在用户明确授权新 revision 后，才可从同一只读 licensed source 新建 candidate，重建 8 个 32 点关节环区及 axilla/groin routes；不得原地修补 v001。
-18. 仅当未来新 Static Gate S0 和用户静态审核通过后，才将固定 32 关节合同应用到获批候选，复核关节位置、IK/FK 传播及原尺寸骨位图。
-19. 基于获批新 source hash 从零建立区域合同和手工权重，先通过正式 Rig Gate 0，再按 Gate 1 → Gate 2 → Gate 3 顺序放行。
-20. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
+17. ✅ CHANGE-026 已建立四 profile 机器合同、当前 handoff、Skill fail-closed 路由及合同驱动审计规则；历史 v001 与 schema v1 证据未改写。
+18. 🚫 CHANGE-026 左肩/腋下 R0 已完成：`scoped_wip` 静态机器门通过，但一次性三骨与线性测试权重变形诊断失败；当前 licensed-basemesh AI 施工路线关闭。
+19. ⏳ 不创建或授权 formal v002。若未来选择 materially different production route，须先作新的明确决策；不得从 R0 或 v001 直接晋升。
+20. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
+21. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞在第 17 项是否授权新的 v009 revision。CHANGE-025 v001 已按首个硬失败止损，CHANGE-020 与既有自动、seam、hybrid collar 路线继续停止。新 proxy 通过完整 S0 前不得身份拟合、冻结部件装配、骨架或蒙皮，不得放宽门禁、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续冻结并保持当前产品路线可用。
+当前阻塞点是第 19 项的 materially different production route 决策。CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
 
-人工 DCC 合同包已落档到 App 工程：
-`character_pipeline/sprout/v2/handoff/manual-dcc-v001/`。其中 `README.md`
-是美术执行说明，`manifest.json` 是输入哈希、坐标、拓扑阈值、禁止操作、
-交付物和审批边界的机器清单。当前由 AI 直接按同一合同执行；该目录继续作为
-可恢复归档，不再要求产品负责人寻找美术或判断环流、极点和 DCC 参数。
+`character_pipeline/sprout/v2/handoff/manual-dcc-v001/` 保持 CHANGE-025 的不可变
+历史归档。CHANGE-026 的当前说明位于
+`character_pipeline/sprout/v2/handoff/static-topology-contract-v2/`，只引用上述机器
+合同与哈希，不创建或授权 candidate v002。产品负责人只审批阶段结果和可见证据，
+不需要代替 DCC 专业判断环流、极点或工具参数。

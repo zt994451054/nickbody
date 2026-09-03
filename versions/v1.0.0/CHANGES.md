@@ -34,6 +34,7 @@
 | CHANGE-023 | 2026-09-01 | 开发中 | 技术方案变更 / 社区 Skill 兼容适配与实作试验 | 最小适配 `cc-blender-skill` 并构建隔离 topology smoke candidate | ✅ 已完结（provenance/门禁失败） |
 | CHANGE-024 | 2026-09-01 | 开发中 | 技术方案变更 / licensed basemesh adaptation | 以许可与源哈希绑定的 Blender Studio basemesh 建立新隔离拓扑来源 | ✅ 已完结（source intake 与框架通过；网格适配待开始） |
 | CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
+| CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ⏳ 处理中 |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -879,6 +880,52 @@
 **执行结论**：licensed basemesh 对基础表面质量有真实增益，但不是可直接复用的生产变形模型。CHANGE-025 按首个硬失败冻结 v001，不做同 revision 修补，不进入 identity、骨架、权重或动作。后续若继续，须由用户另行明确授权新 revision，以新 topology hash 专门重建 8 个关节的 32 点环区和 4 侧 support quad strips，同时清除 strict geometry 失败。
 
 **处理状态**：✅ 已完结（v001 S0 拒绝并冻结；新 revision 未获授权）
+
+## CHANGE-026 | 2026-09-02 | 技术方案变更 / DCC 合同治理与 R0 局部验证
+
+**变更时当前阶段**：开发中（Rig v2 Static Gate S0 阻塞）
+**用户决策**：用户批准“CHANGE-026 合同与治理修正 + 工具 TDD + 一次有界 R0 肩部实验”。本授权不包含完整 `v009-licensed-basemesh-adapted-v002`、生产骨架、正式权重、动作制作或正式资源替换。
+**变更内容**：修正 CHANGE-025 暴露的合同漂移和实验治理缺陷，将 experiment route、可修订 WIP 与不可变 formal candidate 分层；统一开放五接口 proxy、闭合身份装配和 Rig Gate 0 的合同；先以单侧肩部/腋下 R0 验证静态面流及一次性变形诊断，技术通过后再决定是否申请完整 v002。
+**变更原因**：v001 builder 未施工关节环与 support routes，却以正式 candidate 身份接受完整 S0 并在失败后要求新编号；同时审计器新增了无上位依据的全关节 32 点环约束，并漏审 shoulder over-cap、环间 quad strip 和双侧一致性。继续原流程会形成编号驱动的重复试错。
+
+**执行结论**：R0 静态局部门返回 `scoped_wip_static_passed`，但该产物仍为 `formalCandidate=false / s0Eligible=false / staticGateS0Passed=false / riggingAllowed=false`，不能解释为正式 S0 或静态审批通过。随后一次性三骨与线性测试权重的 baseline-aware 变形诊断完整执行 `430/430` 个逐度样本并失败：肩带升降 `21/21`、前伸/后收 `31/31` 通过；上臂前举 `0/121`、外展 `119/136`、轴向旋转 `117/121` 通过，累计新增 `131` 个 folded-face、`101` 个 orientation-flip、`138` 个 self-intersection 失败。bind pose 原有 `3` 个 frozen folded faces 未重复记为姿态新增失败。
+
+权威报告为 App 仓库 `character_pipeline/sprout/v2/work/experiments/r0-left-shoulder/diagnostics/disposable-deformation-baseline-aware/report.json`，SHA-256 `5d89945cf746617c61ba88f1a67901def4df11ab19016df8cc956a3da3853fff`。AI 在该权威新目录实际复核 `15` 张 2048px 原图和 `19` 张无重采样肩部裁图；这是有界抽样，不是对 `448 + 448` 张证据的全量人工审核。临时 rig/权重已清理且未保存、导出或复用，冻结输入和正式资产哈希保持不变。
+
+本结果只否决“当前 R0 网格 + 披露的一次性三骨 + 线性测试权重”组合，不独立否决 immutable licensed source topology。按既定止损条件，当前 licensed-basemesh AI 施工路线关闭；不创建或授权 v002，不进入 production Rig Gate 0，不生成生产骨架、正式权重、动作或正式资源替换。
+
+**授权边界**：
+
+- v001 与 CHANGE-018～025 全部历史证据保持只读，不回写、不重新判定。
+- 先更新版本合同、ADR-003、manual DCC handoff、项目 Skill 和机器 schema，再进行任何 R0 建模。
+- R0 不是 formal candidate，不占用 v002 编号，不能输出 S0 pass 或解锁生产 rig。
+- R0 初作后最多两轮定向修正；仍失败即停止当前 licensed-basemesh AI 施工路线，不创建 v002/v003。
+- 临时骨架与测试权重仅允许在 R0 静态通过后进入一次性 diagnostic 副本；不得继承、导出或晋升到正式候选，不得使用 corrective/shape key 掩盖失败。
+- 正式 USDZ、sprite、身份基准、DCC master、历史 Blend/report 与用户未跟踪文件全部冻结。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录授权、合同冲突、R0 与止损边界）
+- [x] Rig v2 规范 → 统一 R0 / open-five S0 / closed identity / Rig Gate 0 分层及临时 diagnostic 例外
+- [x] ADR-003 / 技术方案 → 同步角色生产阶段、审批节点和未来宠物复用边界
+- [x] manual DCC handoff → 修正 closed/open profile、关节环点数策略、shoulder cap 与 Gate 命名
+- [x] Character DCC Skill → 区分 WIP 与 formal candidate，并绑定新合同版本/哈希
+- [x] App 拓扑审计工具 → 支持 scoped R0、柔性环点数、shoulder cap、环间 strip、双侧一致性和空声明 fail-fast
+- [x] R0 shoulder/axilla fixture → 隔离构建与静态审计完成；一次性 baseline-aware 变形诊断完整执行并按机器失败停止
+- [x] 版本状态 → `README.md` 同步 CHANGE-026 当前结果
+
+测试与验收：
+- [x] TDD 红灯 → 合同哈希漂移、柔性环点数、空正式声明、scoped 不可晋级、shoulder cap、环间 strip 与双侧一致性均先观察失败再实现
+- [x] 工具回归 → 项目 Skill `103/103`、pet-model 全量 `424/424`、CHANGE-026 Python/Blender 专项 `130/130`、R0 evidence `4/4`、Swift `158/158` 与 `git diff --check` 均通过；Python 3.11/3.12/3.14 环境均未安装 `coverage`，未新增依赖且本次未复算覆盖率
+- [x] R0 静态门 → scoped 局部机器门通过；该结果不等于 formal S0、静态身份审批或 rigging 授权
+- [x] R0 变形诊断 → `430/430` 样本与 `448 + 448` 张原尺寸/无重采样证据完整生成，但机器门失败；有界人工复核支持拒绝，不作为全量人工审核
+- [x] 正式资产保护 → 所有冻结输入和正式资源哈希前后不变，临时 rig/权重清零且未保存、导出或复用
+- [ ] 提交与推送 → App 与面板各自按分支策略完成提交和远端同步
+
+**当前允许的下一步**：只允许收口证据、执行完整回归并提交推送。若未来选择 materially different production route，须重新明确决策和授权；本变更不创建或授权 v002。
+
+**处理状态**：⏳ 处理中
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

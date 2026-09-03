@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-025 已从 CHANGE-024 的 licensed source 构建首个真实 v009 adapted Blend：五接口、Euler `-3`、单组件、全四边面、canonical hashes 和 `staticState=0` 均通过；但 raw S0 仍有 5 自交、9 folds、aspect `25.354`、最小角 `2.632°`，8 个 joint 均为 0 accepted rings，四侧 support routes 均为 0。评估为 `repair_static_topology`，对 CHANGE-020 比较为 `reject_regression`，本 revision 已冻结且不进入 identity/rig。正式资源继续可用并冻结。**待决**：是否明确授权新的 v009 revision 专门重建关节环与 support routes；其后仍需角色身份、三组动作、养成系统、Onboarding、StoreKit、数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-026 已完成单一静态拓扑合同、四 profile、Skill/审计 TDD 与 handoff；左肩/腋下 R0 的 scoped 静态机器门通过，但一次性三骨与线性测试权重的变形诊断失败，当前 licensed-basemesh AI 施工路线已按止损条件关闭。该结果不等于正式 S0，也不独立否决 licensed source topology；v002、production Rig Gate 0、生产骨架/权重/动作均未授权。下一阻塞是另行选择并授权 materially different production route。正式 USDZ、sprite、身份基准和历史证据继续可用并冻结；其后仍需角色身份、三组动作、养成系统、Onboarding、StoreKit、数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 阻塞：CHANGE-025 v001 S0 拒绝，等待是否授权新 revision |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-026 R0 静态局部门通过、一次性变形门失败；当前施工路线关闭，v002 未授权 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |

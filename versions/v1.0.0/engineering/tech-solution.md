@@ -24,7 +24,7 @@
 CHANGE-011 引入生产级角色动画架构，保持纯端侧和零第三方运行时不变，但调整宠物资产与动作边界：
 
 - 当前 Meshy 24 骨资产只保留为身份与回归参考；新生产资产遵循 `pet-character-rig-v2.md` 的连续网格、32 关节骨架、手工蒙皮和认证合同。
-- CHANGE-024 允许从许可证、归因、不可变 artifact/source-topology hash 均已绑定的人工 basemesh 手工适配生产网格。CHANGE-025 首个 v009 revision 已证明该 source 可显著降低基础自交和折面，但仍缺少项目要求的 8 个关节 32 点环与 4 组 axilla/groin support routes，strict geometry 也未通过；它是已冻结的 S0 失败证据，不能替代小草身份或任一 Rig Gate 证据。
+- CHANGE-024 允许从许可证、归因、不可变 artifact/source-topology hash 均已绑定的人工 basemesh 手工适配生产网格。CHANGE-025 首个 v009 revision 已证明该 source 可显著降低基础自交和折面，但没有施工完整关节环与 support routes，strict geometry 也未通过；它是已冻结的 S0 失败证据，不能替代小草身份或任一 Rig Gate 证据。CHANGE-026 统一合同和 WIP/formal 分层后完成左肩 R0：scoped 静态机器门通过，但一次性三骨与线性测试权重的变形诊断失败，当前 licensed-basemesh AI 施工路线已关闭。该结果只否决本次 R0/临时 rig/测试权重组合，不独立否决 licensed source topology；v002 与 production Rig Gate 0 均未授权。
 - Blender 是固定版本的离线 DCC，不随 App 分发。Meshy 只作为候选生成器，不再决定生产 rig 和最终权重。
 - 大厅/跟练的 RealityKit 3D clip 与桌面 sprite strip 来自同一已批准 DCC action。
 - `PetAnimationGraph` 是关节姿势的唯一最终写入者，取代 `PetSceneView` 和多个 planner 直接拼装骨骼角度的模式。
@@ -193,6 +193,8 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 ### 7.5 角色资产与统一动画图 (PetAnimationGraph)
 
 *   **生产资产**：人形小草 Rig v2 的网格、32 关节导出骨架、蒙皮、动作 manifest、坐标和认证门禁统一由 `pet-character-rig-v2.md` 定义。当前 24 骨资产只作为迁移期正式回退和视觉参考。licensed basemesh 必须先通过独立 source intake，再以 `licensed_basemesh_adapted` 新版本进入完整 S0；源文件既有拓扑质量、modifier、rig 或动作不能继承审批。
+*   **静态拓扑合同**：App 的 `sprout-rig-v2-static-topology-contract-v2.json` 是 profile、关节环、support route 和严格几何阈值的机器真源。`scoped_wip` 永远不能产生 S0 pass；只有绑定合同版本/哈希且语义声明完整的 `open_five_s0` formal candidate 可进入静态审核。关节环点数可按局部形态变化，但同一关节相邻环必须等点数并构成连续 quad strip，左右结构须满足合同差值；生产 32 关节骨架不等于每个变形环固定 32 点。
+*   **多宠物复用边界**：后续宠物复用的是骨架语义、动作 ID、认证流程、导出格式和运行时动画图，而不是强制复用同一身体网格、脸型或蒙皮权重。比例和拓扑兼容时可重定向同一动作源；体型、肢体粗细或脸部结构差异超过合同容差时，必须为该宠物单独重拓扑、蒙皮和通过变形门禁，避免套模造成塌陷或不自然表情。
 *   **动作来源**：挥手、张望、伸展、庆祝等表现动作在 Blender control rig 中制作并逐帧烘焙到固定导出骨架。Swift 不再定义这些动作的具体关节角度；现有 `PetIdleMotionPlanner` 迁移后只保留随机动作调度职责并更名为 `PetIdleActionScheduler`。
 *   **唯一姿势写入者**：`PetAnimationGraph` 按 Base → Action → Additive → IK → Secondary → Corrective 顺序合成完整姿势，一次性写入 `jointTransforms`。`PetSceneView` 只负责场景、相机、灯光、生命周期和最终提交。
 *   **可保留能力**：六个头颈教学动作语义、`PlantedFootSolver`、叶片受限弹簧和 Rig probe 保留；教学动作的具体姿势逐步迁移为采样 clip。
@@ -264,7 +266,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-024 已完成 licensed basemesh source intake；CHANGE-025 v009 v001 已完成五接口适配和真实 S0 审计，但 strict geometry、8 个 joint flow 与 4 侧 support routes 失败，compare 为 `reject_regression`，该 revision 已冻结。当前下一步不是继续改网格，而是等待用户是否明确授权新的 revision；只有新候选完整通过 S0 与用户静态审核后，才建立 control/export 双骨架并手工蒙皮，再按 Gate 0–3 放行。
+4. **角色生产**：CHANGE-024 source intake 与 CHANGE-025 v001 失败证据均已冻结；CHANGE-026 的合同、handoff、Skill 和审计 TDD 已收口。获批左肩/腋下 `scoped_wip` R0 虽通过局部静态机器门，但一次性变形诊断失败，当前 licensed-basemesh AI 施工路线停止且不创建 v002。下一步须先另行选择并授权 materially different production route；未来 formal candidate 仍须依次通过 open-five S0、闭合身份装配与用户静态审核，之后才能建立 control/export 双骨架并手工蒙皮，再按 Gate 0–3 放行。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。

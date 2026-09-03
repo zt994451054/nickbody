@@ -13,7 +13,7 @@
 | **决策时间** | 2026-08-12 |
 | **引入版本** | v1.0.0 |
 | **决策人** | winston（创始人）|
-| **关联变更** | `versions/v1.0.0/CHANGES.md` CHANGE-011 |
+| **关联变更** | `versions/v1.0.0/CHANGES.md` CHANGE-011、CHANGE-026 |
 
 ---
 
@@ -55,6 +55,21 @@ Blender 的使用必须满足：
 - 导入、建骨、烘焙、导出和结构审计由固定版本脚本驱动；人工工作限于拓扑、权重和动作艺术调整。
 - 每次候选导出均在隔离目录生成 GLB、FBX 和 USDZ 验证产物，不把任何往返文件重新导入 DCC master。
 - 通过结构哈希、原尺寸多方位截图和 RealityKit 实机加载共同验收，不以“Blender 中看起来正常”作为发布依据。
+
+#### DCC 合同与实验治理补充（CHANGE-026）
+
+- 静态拓扑 profile、几何阈值和阶段转换由版本化机器合同及其 SHA-256 统一定义；builder、auditor、handoff 和项目 Skill 不得维护互相漂移的副本。
+- `scoped_wip`、`open_five_s0`、`closed_static_identity`、`production_rig_gate_0` 四类产物分层。局部 WIP 不可输出 formal S0 pass、不可占候选编号，也不可直接晋升。
+- 每次从 route 到 formal candidate、从 open S0 到闭合身份、从用户静态审批到 Rig Gate 0、从认证资产到正式替换，均是独立审批节点；上一步通过不自动授权下一步。
+- 局部路线实验使用明确修订上限。CHANGE-026 的 R0 初作后最多两次定向修正；失败即关闭该施工路线，不以 v002/v003 编号循环重试。
+- 静态通过后的 deformation diagnostic 只能存在于一次性副本，禁止导出、晋升、复用或使用 corrective/shape key 掩盖问题。
+- 后续宠物复用生产骨架语义、动作合同、认证工具和运行时动画图；身体网格、脸部拓扑与蒙皮权重按体型分别生产。只有满足拓扑和比例兼容性时才允许重定向动作，不能用统一网格牺牲自然变形。
+
+#### CHANGE-026 R0 实证结果
+
+左肩/腋下 R0 的 `scoped_wip` 静态机器门通过，但该产物不是 formal candidate，不能输出 S0 pass 或解锁 rigging。随后披露的一次性三骨与线性测试权重完整执行 `430/430` 个逐度样本，baseline-aware 机器门因新增 folded faces、orientation flips 和 self-intersections 失败；有界原尺寸复核也观察到低位前举/外展的腋下夹死、尖折和不自然肩部轮廓。临时 rig/权重已清理且未保存、导出或复用，正式资产及冻结输入未变。
+
+因此当前 licensed-basemesh AI 施工路线按修订上限关闭，不创建或授权 v002，也不进入 production Rig Gate 0。该结论只约束“当前 R0 网格 + 披露的临时三骨 + 线性测试权重”组合，不是对 immutable licensed source topology 的独立否决。任何 materially different production route 都需要新的明确决策，并重新经历 formal candidate、open-five S0、closed static identity、用户静态审批与 production rig 门禁。
 
 ### 3. Meshy 降级为候选生成器
 
@@ -139,6 +154,8 @@ Unity/Unreal 可以提供成熟的角色动画工具，但把游戏引擎嵌入�
 - Blender、Apple USD 工具和 RealityKit 之间存在格式差异，必须维护往返测试。
 - 原生 USD 可保留 blend shape，但直接运行时访问不覆盖 macOS 14；面部和 corrective 方案仍需保留降级设计。
 - 角色 DCC master 是重要源资产，后续需建立适合大文件的版本化存储策略；在该策略确定前，必须至少保存不可变哈希、发布 manifest 和本地备份，不得只保留最终 USDZ。
+- 机器合同与报告 schema 需要随管线演进维护兼容；历史报告只读解析，不能静默升级或据此解锁新门禁。
+- 共享骨架和动作语义不能消除不同体型的重拓扑、蒙皮与变形验证成本；强行共用网格会把成本转化为可见变形缺陷。
 
 ---
 
@@ -146,13 +163,14 @@ Unity/Unreal 可以提供成熟的角色动画工具，但把游戏引擎嵌入�
 
 1. **合同阶段**：冻结视觉身份，完成 Rig v2、动作 manifest、导出和认证规范。
 2. **最小往返阶段（已完成）**：隔离测试已淘汰 GLB Apple 发布路径并选择 Blender USD → USDZ → RealityKit。
-3. **角色生产阶段**：重拓扑小草、建立 32 关节导出骨架、完成手工蒙皮与极限姿势修正。
+3. **角色生产阶段**：先以不可晋级 scoped WIP 验证高风险局部结构；路线成立并单独获批后，才创建 formal candidate、重拓扑小草、建立 32 关节导出骨架并完成手工蒙皮与极限姿势修正。
 4. **认证阶段**：依次通过结构、关键单关节、全关节、组合姿势和 RealityKit 往返门禁。
 5. **运行时阶段**：引入统一动画图，迁移现有教学动作和脚底/叶片后处理。
 6. **内容阶段**：按“挥手 → 张望 → 伸展”逐个制作、八方位逐帧审核并发布独立 sprite strip。
 7. **切换阶段**：用户批准候选后才替换正式 USDZ 和桌面资源；旧资产保留可回滚版本。
 
 每一阶段均可独立停止，不允许为了推进后续动作跳过前一阶段门禁。
+当前 CHANGE-026 licensed-basemesh AI 施工路线已在第 3 阶段的 scoped R0 变形诊断停止，尚无 formal candidate 或 production rig 可进入第 4 阶段。
 
 ---
 
@@ -161,6 +179,7 @@ Unity/Unreal 可以提供成熟的角色动画工具，但把游戏引擎嵌入�
 - 运行时仍使用 RealityKit 和 Core Animation，因此可以按角色逐个迁移，不需要一次性替换全部宠物。
 - 正式资源使用不可变版本号和哈希；若 Rig v2 运行时发生回归，可回退到当前已发布 USDZ 和桌面图集。
 - 32 关节合同发布后不可原地改名或改层级。需要破坏性调整时创建 Rig v3，并显式迁移动作。
+- scoped WIP 和 deformation diagnostic 均不可晋升；它们失败时删除活动引用并回到冻结输入，不会污染 formal candidate 或正式资源。
 
 ---
 
