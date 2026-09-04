@@ -917,13 +917,14 @@
 
 测试与验收：
 - [x] TDD 红灯 → 合同哈希漂移、柔性环点数、空正式声明、scoped 不可晋级、shoulder cap、环间 strip 与双侧一致性均先观察失败再实现
-- [x] 工具回归 → 项目 Skill `103/103`、pet-model 全量 `424/424`、CHANGE-026 Python/Blender 专项 `130/130`、R0 evidence `4/4`、Swift `158/158` 与 `git diff --check` 均通过；Python 3.11/3.12/3.14 环境均未安装 `coverage`，未新增依赖且本次未复算覆盖率
+- [x] 工具回归 → 项目 Skill `106/106`、v009 normalizer `21/21`、pet-model 全量 `428/428`、schema-v1 合同 `11/11`、历史 v008 Blender 集成 `9/9`、CHANGE-026 Python/Blender 专项 `130/130`、R0 evidence `4/4`、Swift `158/158`、Skill `quick_validate.py` 与 `git diff --check` 均通过；Python 3.11/3.12/3.14 环境均未安装 `coverage`，未新增依赖且本次未复算覆盖率
+- [x] Codex Skill 同步 → 本机安装副本与版本化 Skill 的源文件 SHA-256 一致，安装目录 `quick_validate.py` 通过；安装脚本对真实 CHANGE-020 报告保持 `exit 2 / repair_static_topology / riggingAllowed=false`
 - [x] R0 静态门 → scoped 局部机器门通过；该结果不等于 formal S0、静态身份审批或 rigging 授权
 - [x] R0 变形诊断 → `430/430` 样本与 `448 + 448` 张原尺寸/无重采样证据完整生成，但机器门失败；有界人工复核支持拒绝，不作为全量人工审核
 - [x] 正式资产保护 → 所有冻结输入和正式资源哈希前后不变，临时 rig/权重清零且未保存、导出或复用
-- [x] 提交与推送 → App `56477f8` 已推送至 `feat/v1.0.0-rig-v2-unskinned`；面板 `e0f49ab` 已推送至 `feat/v1.0.0-rig-v2-unskinned-docs`
+- [x] 提交与推送 → App `56477f8`、schema-v1 兼容修复 `14a067c`、schema-v2 原始证据校验修复 `0e52e0c` 已推送至 `feat/v1.0.0-rig-v2-unskinned`；面板前序 `e0f49ab` 已推送，本次结项同步随当前文档提交推送至 `feat/v1.0.0-rig-v2-unskinned-docs`
 
-**当前允许的下一步**：只允许收口证据、执行完整回归并提交推送。若未来选择 materially different production route，须重新明确决策和授权；本变更不创建或授权 v002。
+**当前允许的下一步**：CHANGE-026 收口、完整回归与提交推送均已完成，当前没有已授权的 DCC 施工步骤。若未来选择 materially different production route，须重新明确决策和授权；本变更不创建或授权 v002。
 
 **处理状态**：✅ 已完结
 

@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结。CHANGE-026 已将实验 WIP、开放五接口 S0、闭合身份装配和生产 Rig Gate 0 分层，并以版本化机器合同统一关节环、support route 和严格几何规则；合同与工具 TDD 已完成，下一步仅为获批的左肩/腋下 R0 scoped experiment。R0 不是候选，不占用 v002 编号，也不能解锁身份装配、生产骨架或蒙皮。当前仍无通过 S0 的 proxy，正式资源继续冻结。
+> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结。CHANGE-026 已完成实验 WIP、开放五接口 S0、闭合身份装配和 production Rig Gate 0 分层，并以版本化机器合同统一关节环、support route 和严格几何规则。左肩/腋下 R0 scoped 静态门通过，但一次性三骨与线性测试权重的变形诊断失败，当前 licensed-basemesh AI 施工路线已按止损条件关闭。R0 不是候选，不占用 v002 编号，也不能解锁身份装配、生产骨架或蒙皮；当前仍无通过 S0 的 proxy，v002 与 production Rig Gate 0 均未授权，正式资源继续冻结。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
