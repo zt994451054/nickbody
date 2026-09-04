@@ -266,7 +266,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-024 source intake 与 CHANGE-025 v001 失败证据均已冻结；CHANGE-026 的合同、handoff、Skill 和审计 TDD 已收口。获批左肩/腋下 `scoped_wip` R0 虽通过局部静态机器门，但一次性变形诊断失败，当前 licensed-basemesh AI 施工路线停止且不创建 v002。下一步须先另行选择并授权 materially different production route；未来 formal candidate 仍须依次通过 open-five S0、闭合身份装配与用户静态审核，之后才能建立 control/export 双骨架并手工蒙皮，再按 Gate 0–3 放行。
+4. **角色生产**：CHANGE-024 source intake 与 CHANGE-025 v001 失败证据均已冻结；CHANGE-026 的合同、handoff、Skill 和审计 TDD 已收口。获批左肩/腋下 `scoped_wip` R0 虽通过局部静态机器门，但一次性变形诊断失败，当前 licensed-basemesh AI 施工路线停止且不创建 v002。CHANGE-027 已选择 Tripo P1 作为 materially different scoped WIP 路线，但 `Head=0.90`、双上臂 `45°` 的输入捕获在曝光修复后仍有与旧 24 骨权重污染一致的肩腋/躯干拉扯，故付费前停止；Tripo 未提交、未评估，消费 `0 credits`。下一步须另行决定未变形 rest 输入或独立几何域重姿态，并解决 `<=50 credits` 无 CLI 提交级硬限制的问题。未来 formal candidate 仍须依次通过 open-five S0、闭合身份装配与用户静态审核，之后才能建立 control/export 双骨架并手工蒙皮，再按 Gate 0–3 放行。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。

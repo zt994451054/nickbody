@@ -35,6 +35,7 @@
 | CHANGE-024 | 2026-09-01 | 开发中 | 技术方案变更 / licensed basemesh adaptation | 以许可与源哈希绑定的 Blender Studio basemesh 建立新隔离拓扑来源 | ✅ 已完结（source intake 与框架通过；网格适配待开始） |
 | CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
 | CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ✅ 已完结（R0 失败后按止损条件关闭；不创建 v002） |
+| CHANGE-027 | 2026-09-04 | 开发中 | 技术方案变更 / Tripo P1 隔离静态生成实验 | 以冻结身份的 A-pose 四视图单次验证 Tripo P1 静态网格能力 | ✅ 已完结（付费前输入变形门失败；0 task / 0 credits） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -927,6 +928,47 @@
 **当前允许的下一步**：CHANGE-026 收口、完整回归与提交推送均已完成，当前没有已授权的 DCC 施工步骤。若未来选择 materially different production route，须重新明确决策和授权；本变更不创建或授权 v002。
 
 **处理状态**：✅ 已完结
+
+## CHANGE-027 | 2026-09-04 | 技术方案变更 / Tripo P1 隔离静态生成实验
+
+**变更时当前阶段**：开发中（Rig v2 materially different production route 阻塞）
+**用户决策**：用户批准使用自有 Tripo API profile 执行首次 P1 多视图静态生成，单次消费上限为 `50 credits`。本授权只包含 1 个静态网格任务，不包含自动重抽、第二候选、Pre-rig Check、骨架、权重、动作、USDZ 转换或正式资源替换。
+**变更内容**：从只读冻结身份 GLB 在 Blender 4.3.2 中捕获一致的 A-pose 正、左、背、右四视图；源 rest 双上臂实测为约 `52.6°/55.6°`，因此捕获副本只允许以模型空间最小旋转校正至 `45°`，并应用已批准的 `Head=0.90` 视觉比例。输入原尺寸复核通过后，以固定 P1 版本和 seed 提交一次 Tripo multiview-to-model；下载结果只进入隔离实验目录并先执行静态证据审核。
+**变更原因**：CHANGE-026 已关闭当前 licensed-basemesh AI 施工路线。Tripo P1 是来源、建模算法和拓扑生成方式均不同的外部候选生成路线，适合用一次有界实验判断是否值得继续，但其厂商输出不能替代 Rig v2 机器门禁和用户审批。
+
+**授权边界**：
+
+- 输入身份固定为 `character_pipeline/sprout/v2/source/identity-baseline/sprout-identity-reference.glb`，SHA-256 `d8bfa4d395a97c13839188d9c5d7f2212ae3c6e346262f874eee985f38deca36`；只允许读取其视觉身份并在一次性捕获副本中将双上臂校正至 `45°`、应用 `Head=0.90`，不得复制其 24 骨、bind、权重或 clips 到 Rig v2。旧 rig 存在已知跨区域权重污染，任何可见头脸、肩腋或躯干拉扯都会在付费前停止。
+- 只提交 1 次 `P1-20260311` multiview-to-model，带 texture/PBR，固定单一 seed，实际消费不得超过 `50 credits`；失败、错图或效果不佳均停止，不调用 `redo` 或新 seed。
+- 产物属于隔离 `scoped_wip` 路线证据，不分配 candidate version，不创建或暗示 `v002`，不得运行 formal normalizer、`candidate_decision.py assess/compare` 或宣称 Static Gate S0 通过。
+- 本次禁止 Pre-rig Check、Auto-Rig、正式骨架/权重、动作、corrective、USDZ 发布转换和 App 接入。静态结果通过有界审核后，任何下一阶段均需新的明确授权。
+- 正式 USDZ、sprite、身份基准、DCC master、CHANGE-018～026 历史证据和用户既有未跟踪文件全部冻结。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录授权、预算、输入身份和停止边界）
+- [x] Rig v2 规范 → 已记录付费前输入门失败、Tripo 未评估及后续输入策略边界
+- [x] 技术方案 → `engineering/tech-solution.md` 已同步 Tripo 路线的实际停止位置
+- [x] 版本状态 → `README.md` 已同步 CHANGE-027 结果，开发阻塞未解除
+- [x] App 隔离实验 → 已记录 before-state、三次本地捕获、两组完整四视图、Tripo `not_submitted` 与 `0 credits`
+- [x] 提交与推送 → App 证据提交 `74cf577` 已推送至 `feat/v1.0.0-rig-v2-unskinned`；本变更文档随当前面板提交推送至 `feat/v1.0.0-rig-v2-unskinned-docs`
+
+测试与验收：
+- [x] 输入捕获与付费前审核 → 两组完整四视图均通过顺序、`2048×2048 RGBA`、透明边距、非空包围盒和输入哈希检查；首组过曝，`-2 EV` 复拍曝光通过但肩腋/躯干变形审核失败
+- [x] 付费任务保护 → 未提交 Tripo task、未生成 task ID、未重抽，余额 `600`、冻结 `0`、实际消费 `0 credits`
+- [x] Tripo 输出静态审核 → 因输入门失败而不适用；没有 Tripo 网格、纹理、下载产物或 formal candidate
+- [x] 正式资产保护 → USDZ `0c2f165b...273d`、sprite `5b0603f7...bdc3`、身份 GLB `d8bfa4d3...ca36`、身份 source/report 与静态合同的已绑定哈希保持不变；排除本实验后的 70 个既有未跟踪路径清单指纹仍为 `fafcec15...171c`
+
+**实际执行结论**：`0 EV` 首组四视图的可见像素平均 RGB 为 `0.912–0.963`，高光占比为 `42.989%–68.933%`，无法提供可靠表面证据。固定灯光后以 `-2 EV` 复拍，高光占比降至 `0.012%–0.411%`，脸、材质和叶冠恢复可读；但原尺寸复核仍在 front 发现双侧肩根/躯干侧面拉痕，在 left/right 发现肩臂交界凹陷，在 back 发现从后腋下延伸进躯干的锯齿状纵向深沟。该形态与冻结身份旧 24 骨跨躯干权重污染一致，触发本变更预先定义的付费前硬停止。
+
+权威 scoped WIP manifest 位于 App 仓库 `character_pipeline/sprout/v2/work/experiments/tripo-p1-static-wip-20260904/experiment-manifest.json`，SHA-256 为 `bb13e0f98c33766160bc11b42bc7cb8e2a4d86b5ab128b6cf1e5fdb491a857a1`。捕获脚本已改为只声明“等待原尺寸视觉审核”，不再把像素/边距机器通过写成可直接付费提交。两组失败输入均禁止提交；本结果未评估 Tripo 的生成能力。
+
+**预算补充**：Tripo CLI `0.3.1` 没有提交级 `--max-credits` 参数，公开计费信息也未提供该请求的精确提交前价格。因此未来即使输入通过，在“实际消费不得超过 `50 credits`”仍为硬条件时，也必须先取得可验证价格或由用户重新明确风险边界。
+
+**当前允许的下一步**：等待用户另行选择并授权新输入策略。推荐以完全未施加 pose bone/head scale 变形的冻结 rest 几何重新捕获，接受本次能力验证使用 `Head=1.0` 与实测双上臂约 `52.6°/55.6°`；另一选择是单独设计并授权带语义 mask、裂缝/翻面/自交/轮廓门禁的几何域重姿态。任何新输入及付费提交都不由本变更自动授权。
+
+**处理状态**：✅ 已完结（付费前输入门失败；Tripo 未提交、未评估）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

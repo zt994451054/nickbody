@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结。CHANGE-026 已完成实验 WIP、开放五接口 S0、闭合身份装配和 production Rig Gate 0 分层，并以版本化机器合同统一关节环、support route 和严格几何规则。左肩/腋下 R0 scoped 静态门通过，但一次性三骨与线性测试权重的变形诊断失败，当前 licensed-basemesh AI 施工路线已按止损条件关闭。R0 不是候选，不占用 v002 编号，也不能解锁身份装配、生产骨架或蒙皮；当前仍无通过 S0 的 proxy，v002 与 production Rig Gate 0 均未授权，正式资源继续冻结。
+> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结，CHANGE-026 licensed-basemesh AI 施工路线已按止损条件关闭。CHANGE-027 选择 Tripo P1 作为 materially different scoped WIP 路线，但两组四视图均在付费前被拒绝：首组过曝，`-2 EV` 复拍解决曝光后仍出现与旧 24 骨权重污染一致的肩腋/躯干拉扯。Tripo task 从未提交，生成能力尚未评估，消费为 `0 credits`。当前仍无通过 S0 的 proxy，R0/Tripo scoped WIP 均不是候选且不占用 v002 编号；v002、production Rig Gate 0、生产骨架、权重和动作均未授权，正式资源继续冻结。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -445,6 +445,35 @@ AI 仅实际复核权威新目录中的 `15` 张原图和 `19` 张无重采样�
 此结论只否决“当前 R0 网格 + 披露的临时三骨 + 线性测试权重”组合，不独立否决 immutable
 licensed source topology。任何 materially different production route 均须新的明确决策与授权。
 
+### 8.0.7 CHANGE-027 Tripo P1 付费前输入门
+
+CHANGE-027 只授权一次 `P1-20260311` multiview-to-model 静态任务，最多 `50 credits`，
+且明确排除重抽、第二 seed、Pre-rig Check、骨架、权重、动作、USDZ 和正式资源替换。
+外部产物即使生成也只能保留为 `scoped_wip`，不得进入 formal normalizer、
+`candidate_decision.py assess/compare` 或占用 v002 编号。
+
+冻结身份 rest 双上臂相对躯干向下轴实测约为 `52.6°/55.6°`。获批输入捕获通过旧
+24 骨 pose 将双上臂最小校正至 `45°`，并应用 `Head=0.90`。第一次完整四视图通过
+顺序、`2048×2048 RGBA`、透明边距、非空包围盒和冻结哈希检查，但 `0 EV` 下可见
+像素平均 RGB 为 `0.912–0.963`，高光占比为 `42.989%–68.933%`，因过曝拒绝。
+固定世界光与三点灯后以 `-2 EV` 复拍，高光占比降至 `0.012%–0.411%`，曝光不再
+阻断；原尺寸审核仍在 front 发现双侧肩根/躯干侧面拉痕，在 left/right 发现肩臂交界
+凹陷，在 back 发现从后腋下延伸进躯干的锯齿状纵向深沟。该形态与既有跨躯干权重
+污染一致，触发“任何可见头脸、肩腋或躯干拉扯均在付费前停止”的硬规则。
+
+权威 scoped WIP manifest 为 App 仓库
+`character_pipeline/sprout/v2/work/experiments/tripo-p1-static-wip-20260904/experiment-manifest.json`，
+SHA-256 `bb13e0f98c33766160bc11b42bc7cb8e2a4d86b5ab128b6cf1e5fdb491a857a1`。
+Tripo 状态为 `not_submitted`，task 数 `0`、task ID 数 `0`、消费 `0 credits`，余额仍为
+`600` 且冻结为 `0`；没有模型、纹理或下载产物。因此本结论只否决当前两组输入，
+不构成 Tripo 生成失败或 Tripo 能力结论。
+
+后续如继续，须新授权以下输入路线之一：优先使用完全未施加 pose bone/head scale
+变形的冻结 rest 几何，接受本次供应商能力验证采用 `Head=1.0` 和实测上臂角；或单独
+设计几何域重姿态，并在提交前完成语义 mask、裂缝、翻面、自交、肩腋轮廓和四视图
+一致性审核。Tripo CLI `0.3.1` 不能提交级硬限制 credits，精确提交前价格也尚未确认；
+当 `<=50 credits` 仍为硬条件时，付费调用前还必须解决该预算门禁。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 `open_five_s0`、由其派生的 `closed_static_identity` 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
@@ -697,14 +726,16 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 16. 🚫 CHANGE-025 v009 adapted v001 已完成真实 S0 审计并拒绝：基础 topology/canonical/static-state 通过，strict geometry、8 个 joint flow 和 4 侧 support routes 失败；该 revision 已冻结。
 17. ✅ CHANGE-026 已建立四 profile 机器合同、当前 handoff、Skill fail-closed 路由及合同驱动审计规则；历史 v001 与 schema v1 证据未改写。
 18. 🚫 CHANGE-026 左肩/腋下 R0 已完成：`scoped_wip` 静态机器门通过，但一次性三骨与线性测试权重变形诊断失败；当前 licensed-basemesh AI 施工路线关闭。
-19. ⏳ 不创建或授权 formal v002。若未来选择 materially different production route，须先作新的明确决策；不得从 R0 或 v001 直接晋升。
-20. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
-21. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
+19. 🚫 CHANGE-027 Tripo P1 scoped WIP 在付费前输入门停止：曝光修复后仍有肩腋/躯干拉扯；Tripo 未提交、未评估，`0 credits`，不创建 v002。
+20. ⏳ 等待新输入策略与预算门禁决策；不得提交已拒绝四视图，也不得从 R0、v001 或 Tripo WIP 直接晋升 formal candidate。
+21. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
+22. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞点是第 19 项的 materially different production route 决策。CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
+当前阻塞点是第 20 项的新输入策略与预算门禁决策。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
 
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/` 保持 CHANGE-025 的不可变
 历史归档。CHANGE-026 的当前说明位于
 `character_pipeline/sprout/v2/handoff/static-topology-contract-v2/`，只引用上述机器
-合同与哈希，不创建或授权 candidate v002。产品负责人只审批阶段结果和可见证据，
+合同与哈希，不创建或授权 candidate v002。CHANGE-027 付费前证据保留在 App 仓库
+`character_pipeline/sprout/v2/work/experiments/tripo-p1-static-wip-20260904/`。产品负责人只审批阶段结果和可见证据，
 不需要代替 DCC 专业判断环流、极点或工具参数。
