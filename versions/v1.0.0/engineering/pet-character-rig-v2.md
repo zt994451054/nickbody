@@ -495,23 +495,34 @@ animation data；其顶点相对原始 mesh data 的最大位移必须为 `0`。
 阶段 0 不得上传图片或创建 Tripo task；报告只可声明本地进程的网络请求、上传和 task
 创建请求均为 `0`，账户侧 task/credits 未查询。完成本地审核后只可交用户复核并停止。
 
-阶段 1 仅是尚未授权的候选计划：单次 `v3.1-20260211` multiview-to-model，参数固定为
+阶段 0 的四张原始 PNG 已获用户批准；批准记录只绑定 reviewed manifest 与四图哈希，
+不授权凭证读取、余额查询、上传、task 创建或付费调用。阶段 1 仍是尚未授权的候选计划：
+单次 `v3.1-20260211` multiview-to-model，参数固定为
 `texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、
 `geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。
-按尚未绑定到本次精确请求的外部价目假设，计划估算为 H3.1 无纹理多视图 `20` +
-Quad `5` + Smart Low-poly `10` = `35 credits`；该数字不是调用前价格证据。只有四视图
-通过用户复核、调用前实际价格可验证且预计单次消费不超过
-`50 credits` 后，才可请求新的明确执行授权；CLI `0.3.1` 没有 `dry-run`、`estimate`
-或 `max-credits`，不得用真实生成请求试价。
+官方公开价目响应与参数文档已按原始 bytes 保存并绑定到精确请求：H3.1 无纹理多视图
+`20` + Quad `5` + Smart Low-poly `10` = `35 credits`。`50 credits` 只是用户审批阈值，
+不是服务端消费上限；实际扣费未观察，且提交前必须重新验证同一官方价目。CLI `0.3.1`
+没有 `dry-run`、`estimate`、提交级 `max-credits` 或远端幂等键，不得用真实生成请求试价。
 
-禁止使用 `tripo ai`、`make`、MCP `tripo_make`、batch、redo、多候选或自动重试；
-阶段 1 获批后也只允许通过显式锁定模型和全部参数的 CLI
-`generate multiview-to-model` 创建一次任务。API Key 只能通过本机 `nick-custom` profile
-使用，禁止读取回显或写入仓库/日志；未来即使阶段 1 获批，也只
-允许上传用户批准的 PNG，不上传 GLB、Blend、代码或项目文档。任何未来输出仍属于
+禁止使用默认 CLI `generate`、`tripo ai`、`make`、MCP `tripo_make`、batch、redo、
+多候选或自动重试。默认 CLI 的上传和 task POST 存在重试，并在图片上传后才执行其普通
+余额预检；阶段 1 获批后唯一允许路径是 App commit `7c87e8c` 中的项目守卫执行器，
+以 `claim → balance → upload front/left/back/right → durable create_intent → single createTask`
+顺序运行，client `maxRetries=0`。API Key 只能由守卫从本机 `nick-custom` profile 的私有
+普通文件经 descriptor-bound 单次读取，禁止回显或写入仓库/日志；只允许上传用户批准且
+哈希锁定的 PNG，不上传 GLB、Blend、代码或项目文档。`https://cdn.tripo3d.ai` 仅作
+provisional 产物 allowlist；任何 URL 规则或 origin 偏离都须在下载前 hash-only 停止，
+本地产物恢复必须先通过单文件 `512 MiB`、总集 `1 GiB` 的全量大小预检。任何未来输出仍属于
 `scoped_wip`，不得分配 candidate version、创建或暗示 v002、进入 formal normalizer、
 `candidate_decision.py assess/compare` 或宣称 Static Gate S0 通过。纹理、Rig Check、
 Auto Rig、权重、动作、corrective、USDZ 转换与 App 正式替换均属独立且未授权阶段。
+
+单次执行授权还必须显式接受三项残余风险：第三方转售且曾披露的凭证无法保证账户独占；
+provisional CDN 偏离可能导致已扣费但停止下载；claim 消费后即使余额或后续步骤失败也不会
+自动重试。优先轮换为用户独占凭证；若继续使用现有凭证，须由用户明确接受该账户风险。
+守卫已通过独立安全复审、Stage 1 `111/111`（line `82.59%` / branch `84.35%` /
+function `90.55%`）及 Stage 0 Python/Blender `27/27`，但测试通过不构成付费授权。
 
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
@@ -766,11 +777,11 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 17. ✅ CHANGE-026 已建立四 profile 机器合同、当前 handoff、Skill fail-closed 路由及合同驱动审计规则；历史 v001 与 schema v1 证据未改写。
 18. 🚫 CHANGE-026 左肩/腋下 R0 已完成：`scoped_wip` 静态机器门通过，但一次性三骨与线性测试权重变形诊断失败；当前 licensed-basemesh AI 施工路线关闭。
 19. 🚫 CHANGE-027 Tripo P1 scoped WIP 在付费前输入门停止：曝光修复后仍有肩腋/躯干拉扯；Tripo 未提交、未评估，`0 credits`，不创建 v002。
-20. 🔄 CHANGE-028 阶段 0 已完成未变形 rest mesh-data 四视图及本地审核，未上传或创建 task，账户侧用量未查询；现须交用户复核并停止。H3.1 阶段 1 计划估值约 `35 credits`，尚未授权，且仍受提交前可验证价格与单次 `<=50 credits` 硬门限制。
+20. 🔄 CHANGE-028 阶段 0 与输入用户批准已完成；精确 H3.1 请求的官方公开价目为 `35 credits`，项目单次守卫已通过独立复审和全量测试。阶段 1 仍未授权，当前等待一次性执行授权与凭证轮换/非独占风险决策；未读取凭证、查询账户、上传或创建 task。
 21. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
 22. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞点是第 20 项的 CHANGE-028 阶段 0 输入审核与用户复核。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
+当前阻塞点是第 20 项的 CHANGE-028 一次性阶段 1 执行授权与凭证风险决策。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或在独立授权前调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
 
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/` 保持 CHANGE-025 的不可变
 历史归档。CHANGE-026 的当前说明位于
