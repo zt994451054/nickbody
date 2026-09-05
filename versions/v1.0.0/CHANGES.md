@@ -36,6 +36,7 @@
 | CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
 | CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ✅ 已完结（R0 失败后按止损条件关闭；不创建 v002） |
 | CHANGE-027 | 2026-09-04 | 开发中 | 技术方案变更 / Tripo P1 隔离静态生成实验 | 以冻结身份的 A-pose 四视图单次验证 Tripo P1 静态网格能力 | ✅ 已完结（付费前输入变形门失败；0 task / 0 credits） |
+| CHANGE-028 | 2026-09-05 | 开发中 | 技术方案变更 / Tripo H3.1 分阶段质量优先实验 | 以未变形 rest 四视图和独立价格门禁验证单次 H3.1 静态网格能力 | ⏳ 处理中（阶段 0 已完成，等待用户复核） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -969,6 +970,55 @@
 **当前允许的下一步**：等待用户另行选择并授权新输入策略。推荐以完全未施加 pose bone/head scale 变形的冻结 rest 几何重新捕获，接受本次能力验证使用 `Head=1.0` 与实测双上臂约 `52.6°/55.6°`；另一选择是单独设计并授权带语义 mask、裂缝/翻面/自交/轮廓门禁的几何域重姿态。任何新输入及付费提交都不由本变更自动授权。
 
 **处理状态**：✅ 已完结（付费前输入门失败；Tripo 未提交、未评估）
+
+## CHANGE-028 | 2026-09-05 | 技术方案变更 / Tripo H3.1 分阶段质量优先实验
+
+**变更时当前阶段**：开发中（Rig v2 materially different production route 阻塞）
+**用户决策**：用户批准按质量优先、成本受控的分阶段路线继续验证 Tripo。当前授权只包含计划落档、零积分制作未变形 rest 四视图、机器检查、逐张原尺寸人工审核及交付用户复核；用户复核前不得上传输入、创建 Tripo task 或消耗积分。
+**变更内容**：废止 CHANGE-027 中带旧 24 骨 pose correction 与 `Head=0.90` 的输入策略。新输入从冻结身份 GLB 的 `char1` 原始 mesh data 建立完全静态的隔离副本，保持 `Head=1.0` 与 rest 双上臂约 `52.6°/55.6°`，不施加 pose bone、head scale 或 evaluated armature deformation；副本须解除 parent、移除所有 modifier，并证明其顶点相对原始 mesh data 的最大位移为 0。四视图经用户复核后，才可另行评估一次 H3.1 无纹理多视图静态网格任务。
+**变更原因**：CHANGE-027 在付费前发现旧骨架跨区域权重污染已被烘入截图，因此只能判定输入失败，不能判定 Tripo 能力失败。使用未经骨架求值的原始 rest 网格可隔离该变量；先审输入、再按阶段付费，可在优先保障结果质量的同时避免把积分浪费在已知有缺陷的输入上。
+
+**阶段与预算门禁**：
+
+- 阶段 0（本变更当前授权）：只做本地 input preflight，计划预算上限为 `0 credits`。本地捕获/审核进程不具备 Tripo 提交能力，实测执行路径中的 Tripo 网络请求、输入上传和 task 创建请求均为 `0`；阶段 0 禁止查询账户任务或余额，因此不伪造账户侧 credits 差额。输出只能标记为 `scoped_wip`，不得分配 candidate version、创建或暗示 `v002`。
+- 阶段 1（尚未授权）：候选任务固定为 `v3.1-20260211` 的 multiview-to-model，`texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、`geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。外部未绑定价目假设为 H3.1 无纹理多视图 `20` + Quad `5` + Smart Low-poly `10` = `35 credits`；本机 Tripo CLI `0.3.1` 不含数值价目表，因此 `35 credits` 只是未核验规划估值，不是调用前价格证据。
+- 阶段 1 只有在四视图通过用户复核、为上述精确请求绑定官方或账户可见的价格快照且预计单次消费不超过 `50 credits` 后，才能请求新的明确执行授权。Tripo CLI `0.3.1` 没有 `dry-run`、`estimate` 或 `max-credits`，不得用实际生成请求试价。
+- 禁止使用 `tripo ai`、`make`、MCP `tripo_make`、batch、redo、多候选或自动重试；`make` 会在余额检查前上传图片，MCP 又不能完整绑定四视图、任意参数和 seed，均不得用于本实验。未来获批后只允许使用显式锁定模型和全部参数的 CLI `generate multiview-to-model`；`quad=true` 会强制产出 FBX。API Key 只允许经本机 `nick-custom` profile 使用，禁止读取回显、写入仓库或日志。因凭证来自第三方渠道，只允许未来上传已批准且哈希锁定的渲染 PNG，不得上传 GLB、Blend、代码或项目文档。
+- 后续纹理、Rig Check、Auto Rig、权重、动作均为独立阶段；即使静态网格通过，也不自动授权下一阶段。正式 USDZ、sprite、身份基准、DCC master、CHANGE-018～027 历史证据及用户既有未跟踪文件继续冻结。
+
+**阶段 0 输入与验收合同**：
+
+- 输入固定为 `character_pipeline/sprout/v2/source/identity-baseline/sprout-identity-reference.glb`，SHA-256 `d8bfa4d395a97c13839188d9c5d7f2212ae3c6e346262f874eee985f38deca36`；旧 CHANGE-027 四视图和 manifest 只读保留，禁止复用或覆盖。
+- 只渲染 `char1` 的静态 mesh-data 副本；原 armature、原 mesh 及所有其他对象均不得参与渲染。副本须 `parent=None`、无 modifier、无 animation data，且必须记录源/副本顶点数、三角面数、矩阵与最大顶点位移。
+- 固定输出 `front / left / back / right`，每张 `2048×2048 RGBA`、透明背景、`-2 EV`、相同正交相机尺度与世界空间灯光。必须记录输入、脚本、正式资源和旧 manifest 的 before/after SHA-256。
+- 机器门至少检查视图顺序、尺寸/通道、非空 alpha、透明边距、语义视图字节唯一、静态副本零顶点位移、原对象不参与渲染及受保护资产哈希不变；机器通过只表示可进入逐张原尺寸视觉审核。
+- 人工审核逐张检查脸、叶冠、肩腋、躯干、曝光和轮廓；contact sheet 只作总览。允许视角造成的自然自遮挡；任一视图出现非设计拉痕、异常凹陷/深沟、过曝，或因异常融合、穿插、跨视图不一致而使关键肢体/身份轮廓无法判断时即停止，不得提交 Tripo。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录阶段、输入、成本与停止边界）
+- [x] Rig v2 规范 → 已补充 CHANGE-028 未变形 rest 输入、证据结果与 H3.1 分阶段门禁
+- [x] 技术方案 → 已同步角色生产顺序、候选参数、执行路径与成本审批点
+- [x] 版本状态 → `README.md` 已同步阶段 0 完成并等待用户复核
+- [x] App 隔离实验 → 已新建 `tripo-h31-input-preflight-20260905`，未覆盖 CHANGE-027
+- [x] TDD 与输入捕获 → 已按红灯→绿灯完成静态 mesh-data 副本与 fail-closed 证据工具，目标测试 `27/27` 通过（含 Blender 4.3.2 集成）；网格身份、相机矩阵、授权边界与可重放审核命令均已绑定
+- [x] 机器与原尺寸审核 → 已生成四张原图、contact sheet、机器报告和 agent 原尺寸审核报告
+- [x] 正式资产保护 → 输入、身份依据、正式 USDZ/sprite 与 CHANGE-027 manifest 哈希均保持不变
+
+测试与验收：
+- [x] Tripo 付费保护 → 阶段 0 本地进程无提交能力，Tripo 网络/上传/task 创建请求均为 `0`；账户侧用量未查询，未上传任何输入
+- [ ] 用户复核 → 向用户提交四张原图、contact sheet、机器指标和人工审核结论；用户决定是否进入阶段 1
+
+**阶段 0 实际结果**：机器门通过。`char1` raw→REST 最大世界坐标偏差为 `3.939321344506007e-08 m`（上限 `1e-6 m`），raw→静态捕获副本局部顶点偏差与 matrix world 偏差均为 `0`；捕获副本为 `0 parent / 0 modifier / 0 vertex group / 0 shape key / 0 animation data`。四张最终原图均为 `2048×2048 RGBA`，最小透明边距 `170 px`，mean visible RGB 为 `0.710–0.818`，highlight fraction 为 `0.0014%–0.0603%`。agent 逐张原尺寸审核通过，旧输入的肩腋拉痕、躯干拉扯和 back 锯齿纵沟均消失，未发现新的付费前视觉硬阻断。
+
+残余风险不被通过结论掩盖：`Head=1.0` 与此前批准的自然站姿比例不同；左右上臂 rest 角为 `52.573735° / 55.619303°`，相差约 `3.05°`；严格侧视图存在手臂遮挡躯干、双腿互相遮挡，Tripo 仍可能错误粘连或简化；源资产的头部浅色环状细节、轻微表面颗粒、手指团块和叶冠层叠也可能被误判为几何或被简化。本机离线 request builder 已验证显式 `v3.1-20260211` 参数可完整保留；若不显式锁模型，CLI 会自动选择 P1 并移除 Quad/Smart Low-poly。MCP `tripo_make` 不能表达本任务合同，禁止使用。
+
+权威证据位于 App 仓库 `character_pipeline/sprout/v2/work/experiments/tripo-h31-input-preflight-20260905/`：`experiment-manifest.json` SHA-256 为 `2ddd942e89a14452a10f74d6c2b01f63af6e6fc9e4f8a75e94503d9d895b07cf`，机器报告为 `894f0b4c8dfe519df528acb0c4df7534c386db5569903b513aa709358b4ceef9`，agent 原尺寸审核为 `c6453ca467f95035599a397eab87c23b3a36727b7f1944df40452f405c912176`，离线 Tripo 能力/成本审计为 `ac73b628d0c184c5c4551407673eb481b8dd5a68aad735031c6146951766f693`。阶段 0 未查询 Tripo 账户任务或余额；只能证明本地执行路径未包含提交能力且未发出网络、上传或 task 创建请求。
+
+**当前允许的下一步**：只向用户交付四张最终原图、contact sheet、机器报告与 agent 原尺寸审核报告并等待复核。用户明确批准前不得上传或调用 Tripo；阶段 1 仍未授权。即使用户批准输入，仍须先取得精确请求的可验证价格证据并确认单次不超过 `50 credits`，再单独请求执行授权。
+
+**处理状态**：🔄 进行中（阶段 0 本地预检与 agent 原尺寸审核已完成；等待用户复核，Tripo 未联系）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

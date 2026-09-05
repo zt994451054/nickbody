@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结，CHANGE-026 licensed-basemesh AI 施工路线已按止损条件关闭。CHANGE-027 选择 Tripo P1 作为 materially different scoped WIP 路线，但两组四视图均在付费前被拒绝：首组过曝，`-2 EV` 复拍解决曝光后仍出现与旧 24 骨权重污染一致的肩腋/躯干拉扯。Tripo task 从未提交，生成能力尚未评估，消费为 `0 credits`。当前仍无通过 S0 的 proxy，R0/Tripo scoped WIP 均不是候选且不占用 v002 编号；v002、production Rig Gate 0、生产骨架、权重和动作均未授权，正式资源继续冻结。
+> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结，CHANGE-026 licensed-basemesh AI 施工路线已按止损条件关闭。CHANGE-027 的 Tripo P1 四视图因旧 24 骨权重污染在付费前被拒绝，Tripo task 从未提交、生成能力尚未评估、消费为 `0 credits`。CHANGE-028 已完成阶段 0，只从 `char1` 原始 mesh data 制作未变形 rest 四视图并交用户复核；本地执行路径未上传、未创建 task，账户侧用量未查询。H3.1 阶段 1 尚未授权。当前仍无通过 S0 的 proxy，R0/Tripo scoped WIP 均不是候选且不占用 v002 编号；v002、production Rig Gate 0、生产骨架、权重和动作均未授权，正式资源继续冻结。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -474,6 +474,45 @@ Tripo 状态为 `not_submitted`，task 数 `0`、task ID 数 `0`、消费 `0 cre
 一致性审核。Tripo CLI `0.3.1` 不能提交级硬限制 credits，精确提交前价格也尚未确认；
 当 `<=50 credits` 仍为硬条件时，付费调用前还必须解决该预算门禁。
 
+### 8.0.8 CHANGE-028 Tripo H3.1 分阶段质量优先实验
+
+CHANGE-028 废止 CHANGE-027 中通过旧 24 骨 pose correction 将双上臂校正至 `45°`、
+并应用 `Head=0.90` 的输入策略。阶段 0 只允许从冻结身份 GLB
+`character_pipeline/sprout/v2/source/identity-baseline/sprout-identity-reference.glb`
+（SHA-256 `d8bfa4d395a97c13839188d9c5d7f2212ae3c6e346262f874eee985f38deca36`）
+读取 `char1` 原始 mesh data，在隔离目录创建未经 armature 求值的静态副本。副本保持
+`Head=1.0` 和 rest 双上臂约 `52.6°/55.6°`，必须解除 parent、移除全部 modifier 和
+animation data；其顶点相对原始 mesh data 的最大位移必须为 `0`。原 armature、原 mesh
+及其他对象不得参与渲染，CHANGE-027 的四视图和 manifest 只读保留且禁止复用或覆盖。
+
+阶段 0 固定输出 `front / left / back / right` 四张 `2048×2048 RGBA` 透明背景正交图，
+使用相同相机尺度、世界空间灯光和 `-2 EV`。报告必须绑定源/副本顶点数、三角面数、
+矩阵、最大顶点位移，以及输入、脚本、正式资源和旧 manifest 的 before/after SHA-256。
+机器门检查顺序、尺寸/通道、非空 alpha、透明边距、四视图字节唯一、零顶点位移、
+原对象未参与渲染和受保护哈希不变；机器通过后仍须逐张原尺寸检查脸、叶冠、肩腋、
+躯干、曝光和轮廓。允许正交视角产生的自然自遮挡；任一非设计拉痕、异常凹陷/深沟、
+过曝，或因异常融合、穿插、跨视图不一致而使关键肢体/身份轮廓无法判断时立即停止。
+阶段 0 不得上传图片或创建 Tripo task；报告只可声明本地进程的网络请求、上传和 task
+创建请求均为 `0`，账户侧 task/credits 未查询。完成本地审核后只可交用户复核并停止。
+
+阶段 1 仅是尚未授权的候选计划：单次 `v3.1-20260211` multiview-to-model，参数固定为
+`texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、
+`geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。
+按尚未绑定到本次精确请求的外部价目假设，计划估算为 H3.1 无纹理多视图 `20` +
+Quad `5` + Smart Low-poly `10` = `35 credits`；该数字不是调用前价格证据。只有四视图
+通过用户复核、调用前实际价格可验证且预计单次消费不超过
+`50 credits` 后，才可请求新的明确执行授权；CLI `0.3.1` 没有 `dry-run`、`estimate`
+或 `max-credits`，不得用真实生成请求试价。
+
+禁止使用 `tripo ai`、`make`、MCP `tripo_make`、batch、redo、多候选或自动重试；
+阶段 1 获批后也只允许通过显式锁定模型和全部参数的 CLI
+`generate multiview-to-model` 创建一次任务。API Key 只能通过本机 `nick-custom` profile
+使用，禁止读取回显或写入仓库/日志；未来即使阶段 1 获批，也只
+允许上传用户批准的 PNG，不上传 GLB、Blend、代码或项目文档。任何未来输出仍属于
+`scoped_wip`，不得分配 candidate version、创建或暗示 v002、进入 formal normalizer、
+`candidate_decision.py assess/compare` 或宣称 Static Gate S0 通过。纹理、Rig Check、
+Auto Rig、权重、动作、corrective、USDZ 转换与 App 正式替换均属独立且未授权阶段。
+
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
 只有 `open_five_s0`、由其派生的 `closed_static_identity` 和用户静态审核均通过、固定 32 关节合同已重新应用且首版权重已生成后，才执行本门禁。
@@ -727,11 +766,11 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 17. ✅ CHANGE-026 已建立四 profile 机器合同、当前 handoff、Skill fail-closed 路由及合同驱动审计规则；历史 v001 与 schema v1 证据未改写。
 18. 🚫 CHANGE-026 左肩/腋下 R0 已完成：`scoped_wip` 静态机器门通过，但一次性三骨与线性测试权重变形诊断失败；当前 licensed-basemesh AI 施工路线关闭。
 19. 🚫 CHANGE-027 Tripo P1 scoped WIP 在付费前输入门停止：曝光修复后仍有肩腋/躯干拉扯；Tripo 未提交、未评估，`0 credits`，不创建 v002。
-20. ⏳ 等待新输入策略与预算门禁决策；不得提交已拒绝四视图，也不得从 R0、v001 或 Tripo WIP 直接晋升 formal candidate。
+20. 🔄 CHANGE-028 阶段 0 已完成未变形 rest mesh-data 四视图及本地审核，未上传或创建 task，账户侧用量未查询；现须交用户复核并停止。H3.1 阶段 1 计划估值约 `35 credits`，尚未授权，且仍受提交前可验证价格与单次 `<=50 credits` 硬门限制。
 21. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
 22. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞点是第 20 项的新输入策略与预算门禁决策。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
+当前阻塞点是第 20 项的 CHANGE-028 阶段 0 输入审核与用户复核。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
 
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/` 保持 CHANGE-025 的不可变
 历史归档。CHANGE-026 的当前说明位于
