@@ -36,7 +36,8 @@
 | CHANGE-025 | 2026-09-01 | 开发中 | 技术方案变更 / v009 licensed topology adaptation | 从已批准 source 构建并审计首个真实 `licensed_basemesh_adapted` proxy | ✅ 已完结（v001 S0 拒绝并冻结） |
 | CHANGE-026 | 2026-09-02 | 开发中 | 技术方案变更 / DCC 合同治理与 R0 局部验证 | 统一拓扑合同并以有界肩部实验验证 licensed basemesh 路线 | ✅ 已完结（R0 失败后按止损条件关闭；不创建 v002） |
 | CHANGE-027 | 2026-09-04 | 开发中 | 技术方案变更 / Tripo P1 隔离静态生成实验 | 以冻结身份的 A-pose 四视图单次验证 Tripo P1 静态网格能力 | ✅ 已完结（付费前输入变形门失败；0 task / 0 credits） |
-| CHANGE-028 | 2026-09-05 | 开发中 | 技术方案变更 / Tripo H3.1 分阶段质量优先实验 | 以未变形 rest 四视图和独立价格门禁验证单次 H3.1 静态网格能力 | ⏳ 处理中（阶段 1 守卫已通过；等待一次性执行授权） |
+| CHANGE-028 | 2026-09-05 | 开发中 | 技术方案变更 / Tripo H3.1 分阶段质量优先实验 | 未变形 rest 四视图获批后完成单次 H3.1 生成，实际消费 35 credits | ✅ 已完结（输出评审见 CHANGE-029） |
+| CHANGE-029 | 2026-09-06 | 开发中 | 技术方案变更 / Tripo 已知任务一次性产物恢复 | 同一任务已恢复并完成结构/原尺寸评审，追加 0 credits；生产动画未放行 | ✅ 已完结（保留 scoped WIP 参考） |
 
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
@@ -974,15 +975,15 @@
 ## CHANGE-028 | 2026-09-05 | 技术方案变更 / Tripo H3.1 分阶段质量优先实验
 
 **变更时当前阶段**：开发中（Rig v2 materially different production route 阻塞）
-**用户决策**：用户批准按质量优先、成本受控的分阶段路线继续验证 Tripo。当前授权只包含计划落档、零积分制作未变形 rest 四视图、机器检查、逐张原尺寸人工审核及交付用户复核；用户复核前不得上传输入、创建 Tripo task 或消耗积分。
-**阶段 0 后续决策**：用户已批准由 manifest `2ddd942e...b07cf` 绑定的四张原始 PNG，批准记录 SHA-256 为 `b843ec39...b973`。该输入批准不授权读取凭证、查询余额、上传图片、创建 task 或付费调用；阶段 1 仍须单独的短期、单次执行授权。
+**立项时用户决策**：用户批准按质量优先、成本受控的分阶段路线继续验证 Tripo；最初只授权阶段 0 本地输入审核，未授权付费。**后续执行决策**：用户随后明确接受风险并授权阶段 1；2026-09-05 已创建且完成固定 H3.1 任务，实际消费 35 credits。该执行授权已消费，不可复用；产物恢复与最终离线评审见 CHANGE-029。
+**阶段 0 后续决策**：用户已批准由 manifest `2ddd942e...b07cf` 绑定的四张原始 PNG，批准记录 SHA-256 为 `b843ec39...b973`。输入批准本身不授权账户或付费操作；阶段 1 随后依据独立的单次执行授权完成。
 **变更内容**：废止 CHANGE-027 中带旧 24 骨 pose correction 与 `Head=0.90` 的输入策略。新输入从冻结身份 GLB 的 `char1` 原始 mesh data 建立完全静态的隔离副本，保持 `Head=1.0` 与 rest 双上臂约 `52.6°/55.6°`，不施加 pose bone、head scale 或 evaluated armature deformation；副本须解除 parent、移除所有 modifier，并证明其顶点相对原始 mesh data 的最大位移为 0。四视图经用户复核后，才可另行评估一次 H3.1 无纹理多视图静态网格任务。
 **变更原因**：CHANGE-027 在付费前发现旧骨架跨区域权重污染已被烘入截图，因此只能判定输入失败，不能判定 Tripo 能力失败。使用未经骨架求值的原始 rest 网格可隔离该变量；先审输入、再按阶段付费，可在优先保障结果质量的同时避免把积分浪费在已知有缺陷的输入上。
 
 **阶段与预算门禁**：
 
-- 阶段 0（本变更当前授权）：只做本地 input preflight，计划预算上限为 `0 credits`。本地捕获/审核进程不具备 Tripo 提交能力，实测执行路径中的 Tripo 网络请求、输入上传和 task 创建请求均为 `0`；阶段 0 禁止查询账户任务或余额，因此不伪造账户侧 credits 差额。输出只能标记为 `scoped_wip`，不得分配 candidate version、创建或暗示 `v002`。
-- 阶段 1（尚未授权）：候选任务固定为 `v3.1-20260211` 的 multiview-to-model，`texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、`geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。官方公开价目响应与参数文档已逐字节保存并绑定，当前价目为 H3.1 无纹理多视图 `20` + Quad `5` + Smart Low-poly `10` = `35 credits`。`50 credits` 只是审批阈值，不是服务端消费上限；实际扣费仍未观察，提交前必须重新验证同一官方价目。
+- 阶段 0（立项时授权，现已完成）：只做本地 input preflight，预算 0 credits；该阶段网络请求、上传和 task 创建均为 0，未查询账户用量。之后阶段 1 的真实任务和消费独立记录，不回写或伪造阶段 0 结果。输出仍为 scoped WIP，不分配 candidate version。
+- 阶段 1（后续获批并已执行）：固定 `v3.1-20260211` multiview-to-model，`texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、`geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。官方价格为无纹理多视图 20 + Quad 5 + Smart Low-poly 10 = 35 credits，任务报告实际消费也是 35 credits。50 credits 是原审批阈值，不是服务端上限。
 - 阶段 1 只有在短期、单次授权显式接受全部风险后才可执行。Tripo CLI `0.3.1` 没有 `dry-run`、`estimate`、提交级 `max-credits` 或远端幂等键；claim 一经消费，即使余额或后续步骤失败也不得复用。凭证来自第三方转售且曾在对话披露，优先轮换为用户独占凭证；若不轮换，必须明确接受无法证明账户独占和账户侧消费归属的残余风险。
 - 禁止使用默认 CLI `generate`、`tripo ai`、`make`、MCP `tripo_make`、batch、redo、多候选或自动重试。默认 CLI 对上传和 task POST 存在重试，并在本地图片上传后才执行其普通余额预检；未来获批后唯一允许路径是已锁定十文件 import closure 的项目执行器，以 `claim → balance → upload front/left/back/right → durable create_intent → single createTask` 顺序运行，client `maxRetries=0`。`quad=true` 会强制产出 FBX。API Key 只允许由守卫从本机 `nick-custom` profile 的私有普通文件经 descriptor-bound 单次读取，禁止回显、写入仓库或日志；只允许上传已批准且哈希锁定的四张 PNG，不得上传 GLB、Blend、代码或项目文档。
 - 产物域名 `https://cdn.tripo3d.ai` 仅有非规范示例证据，故只作 provisional allowlist。任何其他 origin、HTTP、带凭证 URL、大小写协议、FTP 或协议相对 URL 都必须在下载前停止，只记录 task ID、字段、origin 与完整 URL 的 SHA-256；不得下载或创建替代 task。恢复本地产物时先对全量 manifest 完成单文件 `512 MiB`、总集 `1 GiB` 预检，再读取文件。
@@ -1015,7 +1016,7 @@
 - [x] Tripo 付费保护 → 阶段 0 本地进程无提交能力，Tripo 网络/上传/task 创建请求均为 `0`；账户侧用量未查询，未上传任何输入
 - [x] 用户复核 → 用户已批准四张原始 PNG；批准记录绑定 reviewed manifest 与四个输入哈希，但未扩大到阶段 1 执行
 - [x] 执行器安全与回归 → 独立安全复审无 High/Medium 阻断；固定 Node 24.13.0 下 Stage 1 `111/111`，覆盖率 line `82.59%` / branch `84.35%` / function `90.55%`，Stage 0 Python/Blender `27/27`
-- [ ] 阶段 1 一次性执行授权 → 待用户选择轮换凭证，或明确接受第三方已披露凭证的非独占风险，并批准一次 `35 credits` 请求
+- [x] 阶段 1 一次性执行授权 → 后续用户明确接受并批准固定 35 credits 请求；2026-09-05 任务已成功执行，授权已消费；同一任务的恢复与输出审核见 CHANGE-029
 
 **阶段 0 实际结果**：机器门通过。`char1` raw→REST 最大世界坐标偏差为 `3.939321344506007e-08 m`（上限 `1e-6 m`），raw→静态捕获副本局部顶点偏差与 matrix world 偏差均为 `0`；捕获副本为 `0 parent / 0 modifier / 0 vertex group / 0 shape key / 0 animation data`。四张最终原图均为 `2048×2048 RGBA`，最小透明边距 `170 px`，mean visible RGB 为 `0.710–0.818`，highlight fraction 为 `0.0014%–0.0603%`。agent 逐张原尺寸审核通过，旧输入的肩腋拉痕、躯干拉扯和 back 锯齿纵沟均消失，未发现新的付费前视觉硬阻断。
 
@@ -1023,9 +1024,40 @@
 
 权威证据位于 App 仓库 `character_pipeline/sprout/v2/work/experiments/tripo-h31-input-preflight-20260905/`：用户批准时的 reviewed manifest SHA-256 为 `2ddd942e89a14452a10f74d6c2b01f63af6e6fc9e4f8a75e94503d9d895b07cf`，最终 pre-execution manifest 为 `45b445d2c53f0d168a99cc7f7135788c10d1d0997e511ce110019adf3ca9b433`；输入批准为 `b843ec39...b973`，价格证据为 `79da91a1...e5b61`，精确请求合同为 `dede6b9d...2a4b`。机器报告 `894f0b4c...e6ef9`、agent 原尺寸审核 `c6453ca4...12176` 与离线能力/成本审计 `ac73b628...6f693` 保持不变。到 App 提交 `7c87e8c` 为止，未读取真实凭证、未查询账户余额、未上传图片、未创建 task、未产生 Tripo 输出或积分消费。
 
-**当前允许的下一步**：只请求一份短期、单次阶段 1 执行授权，绑定 App commit `7c87e8c`、manifest `45b445d2...9b433`、固定四图、H3.1 请求合同和当前官方 `35 credits` 价目。授权前用户还须选择轮换为独占凭证，或明确接受第三方已披露凭证的非独占账户风险；同时接受 provisional CDN 可能在扣费后停止下载，以及 claim 后任一步失败都不会自动重试。收到并落盘该授权前，不得读取凭证、查询余额、上传或创建 task。
+**执行后结果**：固定任务 `a9797bba-4e95-439c-baf5-7824799d7184` 已成功，消费 35 credits；原下载因 regional CDN 偏离而停止。CHANGE-029 已恢复同一任务并完成离线评审，没有重复上传、重抽或新增消费。上述“到 App 7c87e8c 为止未执行”仅描述该提交时的历史状态。
 
-**处理状态**：🔄 进行中（阶段 0、输入批准、官方价格证据和阶段 1 守卫均已完成；等待独立的一次性执行授权，Tripo 未联系）
+**处理状态**：✅ 已完结（单次 H3.1 生成成功，35 credits；产物恢复与评审已由 CHANGE-029 完成，未通过生产动画认证）
+
+## CHANGE-029 | 2026-09-06 | 技术方案变更 / Tripo 已知任务一次性产物恢复
+
+**变更时当前阶段**：开发中（Rig v2 materially different production route 阻塞）
+**用户决策**：用户批准只恢复 Tripo 任务 `a9797bba-4e95-439c-baf5-7824799d7184` 的 `model_url` 与 `rendered_image_url`。本授权不允许创建、重试或重抽任务，不允许产生新的 Tripo 积分，不允许纹理、Rig Check、Auto Rig、骨架、权重、动作、formal candidate、v002 或正式资源替换。
+**变更内容**：阶段 1 任务已于 2026-09-05 成功完成，Tripo 报告实际消费 `35 credits`。原执行器因产物 origin 从 provisional `https://cdn.tripo3d.ai` 偏离为 `https://tripo-data.rg1.data.tripo3d.com` 而按设计在下载前停止。新增仅面向该已知任务的一次性恢复路径：从固定官方 API 以 GET 查询任务，在同一响应内验证任务身份、状态与两个输出字段，将完整签名 URL 的 SHA-256 持久绑定后，才以无认证 GET 下载；精确 origin、禁止跳转、文件大小、文件头、私有目录、原子落盘与 one-shot 状态均须 fail closed。
+**变更原因**：保住已支付的阶段 1 结果，同时不把运行时发现的区域 CDN 升格为全局或通配 allowlist，也不因下载失败触发第二个付费任务。公开与 TLS/DNS 证据强支持该主机属于 Tripo 当前交付基础设施，但官方公开规范没有承诺它是 H3.1 的固定 origin，因此仅允许 task-scoped provisional recovery。
+
+**影响范围**：
+
+研发域：
+- [x] 变更记录 → `CHANGES.md`（已先行记录任务、用户授权及恢复边界）
+- [x] App 隔离实验 → 已新增 GET-only、task-scoped、one-shot 恢复器；仅执行已知任务查询与两个产物下载
+- [x] TDD 与安全复审 → 恢复器已完成独立复核，最终 Node 144/144；审计器新增漂移及启动边界回归，Blender 集成 12/12
+- [x] scoped WIP 产物 → 私有隔离目录已保存 FBX、预览、manifest、审计 Blend 与两组渲染；非敏感结果证据已落档
+- [x] Rig v2 规范与技术方案 → 已同步真实生成/消费、下载恢复、结构与原尺寸评审结果
+- [x] 版本状态 → `README.md` 已同步输出已评审、生产动画仍阻塞及本地可修复性评估建议
+- [x] App 提交与推送 → 恢复器、审计器、测试及非敏感结果证据已随 `c80fd05` 推送至 `feat/v1.0.0-rig-v2-unskinned`；面板同步随本次文档提交推送至 `feat/v1.0.0-rig-v2-unskinned-docs`
+
+测试与验收：
+- [x] 文件级门禁 → 两个产物容器/大小、零跳转与私有原子落盘均通过；FBX 699,276 bytes，WebP 7,744 bytes
+- [x] Blender 静态审计 → 4.3.2 禁网/禁自动执行环境中已完成结构审计；结果仍为 scoped WIP，不宣称 S0 pass
+- [x] 原尺寸视觉审核 → 已逐张审查 16 张 1800×1800 八方位素模/布线图；首组过曝保留，最终仅校正本地曝光至 -2 EV
+
+**实际结果（2026-09-08）**：已于 2026-09-06 恢复同一任务的 FBX 和预览，恢复及离线审核追加 0 credits。原生网格为 12,637 顶点、13,307 面，含 11,092 四边形（83.35%）、2,215 三角形、0 ngons；开放边 856，非边界非流形边 4。37 个组件实际为覆盖全身的主组件（9,894 顶点，173 开放边、3 非流形边），以及 36 个头部小组件，并非四肢断开。没有骨架、权重、动作或 shape keys，这是原定静态任务的边界。
+
+原尺寸实图保留小草大轮廓与肢体间隙，但手部末端、叶背和头部浅斑有几何粗糙；身体虽有较规整四边形布线，关节环线、自交、面比例与变形能力尚未经过完整认证。当前结果仅保留作参考，暂不追加贴图或 Auto Rig，生产动画阻塞未解除。建议下一步先零积分评估身体拓扑的局部修整范围与单次止损条件；该建议不授权实际网格施工、新付费或 v002。
+
+证据位于 App `character_pipeline/sprout/v2/work/experiments/tripo-h31-input-preflight-20260905/stage1-result-evidence.json`，用户实图入口为同目录 `stage1-result-review.md`。原始下载 manifest/claim/completion 不改写；正式 USDZ、sprite、身份 GLB 与静态合同哈希未变。最终回归 Node 144/144（line 85.33% / branch 82.82% / function 91.82%），Python/Blender 39/39（阶段 0 为 27、FBX 审计为 12）。
+
+**处理状态**：✅ 已完结（同一任务恢复与离线评审完成；保留参考，生产动画仍阻塞）
 
 <!--
 变更记录模板（每次变更复制以下格式追加）：

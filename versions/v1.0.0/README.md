@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-026 licensed-basemesh AI 施工路线已关闭；CHANGE-027 的 Tripo P1 四视图因旧 24 骨权重污染在付费前被拒绝，Tripo 未提交、未评估且消费 `0 credits`。CHANGE-028 的 `Head=1.0` 未变形 rest 四视图已通过机器、原尺寸和用户审核；精确 H3.1 请求已绑定官方公开价目 `35 credits`，默认 CLI/MCP 已禁用，项目单次守卫通过独立安全复审、Stage 1 `111/111` 与 Stage 0 `27/27`。当前等待独立的一次性执行授权及凭证轮换/非独占风险决策；到 App `7c87e8c` 为止仍未读取凭证、查询账户、上传或创建 task。`50 credits` 仅为审批阈值而非服务端上限；v002、正式 S0、骨架、权重、动作和正式资源替换均未授权。正式 USDZ、sprite 和身份基准继续可用并冻结；其后仍需正式静态候选、生产骨架/权重/动作、养成系统、Onboarding、StoreKit、数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-026 licensed-basemesh AI 路线关闭；CHANGE-027 在付费前停止（0 credits）。CHANGE-028 后续获批的 H3.1 单次任务已成功，实际消费 35 credits；CHANGE-029 已完成同一任务下载恢复、Blender 检查和 16 张原尺寸评审，追加 0 credits。模型轮廓可辨，但仍有开放边、非流形连接及手部/叶冠/头部细节问题，只保留为 scoped WIP 参考。Node 144/144、Python/Blender 39/39 为工具通过；正式 S0、自然变形和生产动作仍未验证。下一步建议先零积分评估身体拓扑修复范围；未创建 v002 或生产 rig，正式资源冻结。其后仍需生产网格/权重/动作、养成、Onboarding、StoreKit 和数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-028 阶段 1 守卫已就绪，等待一次性执行授权与凭证风险决策；Tripo 未访问，v002 未授权 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-029 离线评审完成：Tripo 生成已成功，35 credits；几何细节待处理，生产动画仍阻塞（见 §8.0.9） |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |

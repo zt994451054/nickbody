@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-025 的 `licensed_basemesh_adapted` v001 已作为 S0 失败证据冻结，CHANGE-026 licensed-basemesh AI 施工路线已按止损条件关闭。CHANGE-027 的 Tripo P1 四视图因旧 24 骨权重污染在付费前被拒绝，Tripo task 从未提交、生成能力尚未评估、消费为 `0 credits`。CHANGE-028 已完成阶段 0，只从 `char1` 原始 mesh data 制作未变形 rest 四视图并交用户复核；本地执行路径未上传、未创建 task，账户侧用量未查询。H3.1 阶段 1 尚未授权。当前仍无通过 S0 的 proxy，R0/Tripo scoped WIP 均不是候选且不占用 v002 编号；v002、production Rig Gate 0、生产骨架、权重和动作均未授权，正式资源继续冻结。
+> 当前状态：CHANGE-025/026 的失败证据与关闭路线保持冻结。CHANGE-027 在付费前停止（0 task / 0 credits）；CHANGE-028 后续获批并已于 2026-09-05 成功生成 H3.1 静态网格，实际消费 35 credits。CHANGE-029 已于 2026-09-08 完成同一任务产物恢复、Blender 结构检查和 16 张原尺寸评审，新增消费为 0。模型轮廓可辨、身体有规整布线，但全模型含 2,215 个三角面、856 条开放边及 4 条非流形边，手部/叶冠/头部细节需处理；当前结果仅保留作 scoped WIP，未通过正式 S0，也未验证自然变形。下一步建议先做本地身体拓扑可修复性评估；v002、production rig、权重、动作及正式替换仍未开启。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
 ---
@@ -496,13 +496,14 @@ animation data；其顶点相对原始 mesh data 的最大位移必须为 `0`。
 创建请求均为 `0`，账户侧 task/credits 未查询。完成本地审核后只可交用户复核并停止。
 
 阶段 0 的四张原始 PNG 已获用户批准；批准记录只绑定 reviewed manifest 与四图哈希，
-不授权凭证读取、余额查询、上传、task 创建或付费调用。阶段 1 仍是尚未授权的候选计划：
+不授权凭证读取、余额查询、上传、task 创建或付费调用。以下为阶段 1 立项时的固定请求；
+用户随后已明确接受并授权执行，实际生成与恢复结果见 §8.0.9：
 单次 `v3.1-20260211` multiview-to-model，参数固定为
 `texture=false`、`pbr=false`、`quad=true`、`smart_low_poly=true`、`face_limit=10000`、
 `geometry_quality=standard`、`generate_parts=false`、`model_seed=424242`。
 官方公开价目响应与参数文档已按原始 bytes 保存并绑定到精确请求：H3.1 无纹理多视图
 `20` + Quad `5` + Smart Low-poly `10` = `35 credits`。`50 credits` 只是用户审批阈值，
-不是服务端消费上限；实际扣费未观察，且提交前必须重新验证同一官方价目。CLI `0.3.1`
+不是服务端消费上限；立项时尚未观察扣费，提交前须重新验证价目，执行后实际消费为 35 credits。CLI `0.3.1`
 没有 `dry-run`、`estimate`、提交级 `max-credits` 或远端幂等键，不得用真实生成请求试价。
 
 禁止使用默认 CLI `generate`、`tripo ai`、`make`、MCP `tripo_make`、batch、redo、
@@ -523,6 +524,53 @@ provisional CDN 偏离可能导致已扣费但停止下载；claim 消费后即�
 自动重试。优先轮换为用户独占凭证；若继续使用现有凭证，须由用户明确接受该账户风险。
 守卫已通过独立安全复审、Stage 1 `111/111`（line `82.59%` / branch `84.35%` /
 function `90.55%`）及 Stage 0 Python/Blender `27/27`，但测试通过不构成付费授权。
+
+### 8.0.9 CHANGE-029 已知 Tripo 任务恢复与离线结果评审
+
+已知任务 `a9797bba-4e95-439c-baf5-7824799d7184` 的状态为 `success`，
+模型为 `v3.1-20260211`，实际消费 `35 credits`。原执行器在发现产物来自
+`https://tripo-data.rg1.data.tripo3d.com`、不同于 provisional CDN 后于下载前停止；
+这不是生成失败。经用户授权，恢复器只查询该任务一次并下载两个既有产物，
+没有新建、重试、重抽或追加积分。恢复于 2026-09-06 完成，离线评审于 2026-09-08 完成。
+
+FBX 为 `699,276 bytes`，SHA-256
+`8eb06e5914fe82247cd04ac51bb5b5de0edf8bd25859a4582d8693ef7f435283`；
+私有审计 Blend 的 SHA-256 为
+`f707123909e8c6e0ff92be354d981bdbbfebafbee74a4febe2da6821676e8cc9`。
+Blender 4.3.2 在干净环境、禁用自动执行及禁止网络条件下读取隔离文件，得到：
+
+| 项目 | 实测值 |
+|---|---|
+| 网格 / 顶点 / 边 | 1 / 12,637 / 25,932 |
+| 原生面 / 四边形 / 三角形 / ngons | 13,307 / 11,092（83.35%）/ 2,215 / 0 |
+| 展开为三角形后的数量 | 24,399（不可与原生面数混用） |
+| 连通组件 | 37：一个覆盖全身的 9,894 顶点主组件，另 36 个 45–98 顶点小组件位于头部 |
+| 开放边 / 非边界非流形边 | 全模型 856 / 4；主组件 173 / 3 |
+| 退化面 | 0（面积阈值 1e-12） |
+| Armature / vertex groups / actions / modifiers / shape keys | 全部 0；这是无纹理静态任务，不是自动绑定测试 |
+| 材质 / UV 层 | 1 / 1；未请求纹理或 PBR |
+
+四条非流形边有 3 或 4 个相邻面，均位于头部/叶冠高度范围。组件数量不能等同于断开的
+身体块数，开放边也不等同于可见破洞。请求中的 `face_limit=10000` 未精确约束输出。
+全模型包括头、手、足和叶冠，不是 `open_five_s0` 的开放五接口身体 proxy；
+本次没有执行 formal normalizer、assess/compare 或完整关节/自交认证，不给 S0 结论。
+
+使用既有 renderer 生成并逐张审查八方位素模与布线共 16 张 `1800×1800 RGBA`。
+首组曝光过高，保留原图后只将本地曝光设为 `-2 EV`，未修改模型。
+文件名的 `textured` 实际为无纹理素模；导入后的正面为 yaw +90°，背面为 -90°。
+整体大头、双叶与四肢保留；手部末端粗糙、叶背沟痕与厚边不规则，输入中浅环状斑点在
+输出中呈突出小片。身体存在较规整的四边形带，但这不证明关节受力时能自然变形。
+
+本次保留结果作几何/拓扑参考，暂不追加贴图或自动绑骨。建议下一步先零积分评估身体
+肩腋、肘、髋、膝的布线及开放边归属，形成局部修整范围与单次尝试的停止条件，再决定
+新的有界施工路线。该建议不恢复历史关闭路线，也不把 WIP 晋升为 v002；
+`assetUsabilityVerified`、`staticGateS0Passed`、`riggingAllowed` 继续为 false。
+
+App 非敏感证据位于
+`character_pipeline/sprout/v2/work/experiments/tripo-h31-input-preflight-20260905/stage1-result-evidence.json`；
+用户可读实图入口为同目录 `stage1-result-review.md`。下载、原图和审计 Blend 留在本机私有目录，
+历史 manifest/claim/completion 不改写。Node 144/144，Python/Blender 39/39（Stage 0 27 + 审计 12）；
+工具测试通过不代表角色变形通过。正式资源、身份基准和静态合同哈希保持不变。
 
 ### 8.1 Rig Gate 0：结构、绑定与静止状态
 
@@ -777,11 +825,11 @@ Rig v2 只有同时满足以下条件才可称为“生产 rig 已批准”：
 17. ✅ CHANGE-026 已建立四 profile 机器合同、当前 handoff、Skill fail-closed 路由及合同驱动审计规则；历史 v001 与 schema v1 证据未改写。
 18. 🚫 CHANGE-026 左肩/腋下 R0 已完成：`scoped_wip` 静态机器门通过，但一次性三骨与线性测试权重变形诊断失败；当前 licensed-basemesh AI 施工路线关闭。
 19. 🚫 CHANGE-027 Tripo P1 scoped WIP 在付费前输入门停止：曝光修复后仍有肩腋/躯干拉扯；Tripo 未提交、未评估，`0 credits`，不创建 v002。
-20. 🔄 CHANGE-028 阶段 0 与输入用户批准已完成；精确 H3.1 请求的官方公开价目为 `35 credits`，项目单次守卫已通过独立复审和全量测试。阶段 1 仍未授权，当前等待一次性执行授权与凭证轮换/非独占风险决策；未读取凭证、查询账户、上传或创建 task。
+20. ✅ CHANGE-028 H3.1 单次生成与 CHANGE-029 产物恢复、离线结构/原尺寸评审已完成；任务实际消费 35 credits，恢复及评审追加 0。当前网格保留为 scoped WIP 参考，尚不能进入贴图/自动绑定或生产认证。建议先本地评估身体拓扑的有界修整范围；没有 v002、S0 pass 或生产骨架。
 21. 仅当未来新路线产出的 `open_five_s0`、闭合身份装配和用户静态审核全部通过后，才应用固定 32 关节导出骨架，建立正式区域合同和手工权重，并按 Rig Gate 0 → Gate 1 → Gate 2 → Gate 3 放行。
 22. 接入最小 `PetAnimationGraph`，再依次制作并单独审核挥手、张望、伸展和桌面 strips。
 
-当前阻塞点是第 20 项的 CHANGE-028 一次性阶段 1 执行授权与凭证风险决策。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有自动、seam、hybrid collar 路线均冻结；不得提交被拒绝输入、继续调 R0 权重追求通过、创建 v002、身份拟合、正式绑定、恢复 Auto-Rig 或在独立授权前调用付费 API。现有正式 sprite/USDZ 继续可用并保持原哈希。
+当前阻塞点是生产网格与自然变形能力，已不再是 Tripo 执行或产物下载。第 20 项的单次生成及离线评审已经完成；下一路线应先明确身体拓扑可修复性与有界修整范围。CHANGE-027 的两组四视图、CHANGE-026 R0、CHANGE-025 v001、CHANGE-020 与既有关闭路线均冻结，不因本次评审重新开放。当前 Tripo WIP 不晋升为 v002，不进入正式绑定或自动绑骨；新的付费及网格施工按各自路线授权推进。现有正式 sprite/USDZ 继续可用并保持原哈希。
 
 `character_pipeline/sprout/v2/handoff/manual-dcc-v001/` 保持 CHANGE-025 的不可变
 历史归档。CHANGE-026 的当前说明位于
