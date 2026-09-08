@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路「疲劳→邀请→跟练→评分」已跑通。CHANGE-026 licensed-basemesh AI 路线关闭；CHANGE-027 在付费前停止（0 credits）。CHANGE-028 后续获批的 H3.1 单次任务已成功，实际消费 35 credits；CHANGE-029 已完成同一任务下载恢复、Blender 检查和 16 张原尺寸评审，追加 0 credits。模型轮廓可辨，但仍有开放边、非流形连接及手部/叶冠/头部细节问题，只保留为 scoped WIP 参考。Node 144/144、Python/Blender 39/39 为工具通过；正式 S0、自然变形和生产动作仍未验证。下一步建议先零积分评估身体拓扑修复范围；未创建 v002 或生产 rig，正式资源冻结。其后仍需生产网格/权重/动作、养成、Onboarding、StoreKit 和数据统计页 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-030 Tripo 整轮验证完成：两个新模型、三次绑定、十段预设动作及 28 张局部姿势/清理对照，净消费 260 credits，余额 305。H3.1 外形优于 P1；通用 v2.5 动作变形失败，人形 v1.0 骨架改善但肩腋/躯干问题未解决，Mixamo retarget 被服务拒绝；未提供表情控制。未通过生产验收，条件性贴图/减面/RealityKit 接入未开始。证据和工具测试 7/7（行覆盖 84.39%）已归档；正式资产及 S0/32 关节合同不变。其后仍需生产网格/权重/动作、养成、Onboarding、StoreKit 和数据统计页 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,7 +68,7 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-029 离线评审完成：Tripo 生成已成功，35 credits；几何细节待处理，生产动画仍阻塞（见 §8.0.9） |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-030 整轮完成：生成/绑定已有实际对照，自然动作和表情未通过；260 credits，见 §8.0.10 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
