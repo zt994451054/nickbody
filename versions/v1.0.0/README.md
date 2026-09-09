@@ -69,6 +69,7 @@
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
 | 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-036 二阶边界未解决左膝褶皱，本轮不采纳；保留腰部基准，下一处检查目标/固定表面匹配，0 credits，见 §8.0.16 |
+| 研发 | [膝部修复计划](./engineering/pet-knee-repair-plan.md) | CHANGE-037 计划已制定，实施 ⏳；先诊断、有限试修，再按证据扩展或切换办法 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
