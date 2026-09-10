@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-038 两版已归档：第二版下缘改善，内侧凹折仍在，左膝未通过；P2 已用 2/2。下一项选择内侧上缘局部权重修整，尚未实施。GLB 加工基准仍为 CHANGE-033 腰部中间态。工具 11/11、模块行覆盖 84.25% / 86.32% / 88.72%，不代表美术通过；0 credits，最后核实余额 190。腰髋/全身、表情、生产认证及养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-039 蒙皮首版归档：单膝目标边改善，横向折线仍在且转身新增相交，不采纳，左膝未通过。P2 2/2、S 1/2，第二次未使用；当前配方停止，下一项为修复计划 §8 的跨姿势局部 DCC 方案。加工 GLB 仍为 CHANGE-033 腰部中间态。工具 8/8、行覆盖 100% / 91.87%，不代表美术通过；0 credits，最后核实余额 190。腰髋/全身、表情、生产认证及养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,8 +68,8 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-038 下缘改善、内侧未通过；P2 两版归档，下一项内侧局部权重，0 credits，见 §8.0.17 |
-| 研发 | [膝部修复计划](./engineering/pet-knee-repair-plan.md) | CHANGE-038 P1/P2 已归档，P2 2/2；S 内侧上缘权重方案已选、未实施，P3/P4 未开始 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 CHANGE-039 首版不采纳、左膝未通过；局部 DCC 制作要求已归档，0 credits，见 §8.0.18 |
+| 研发 | [膝部修复计划](./engineering/pet-knee-repair-plan.md) | P2 2/2、S 1/2，第二次未使用；首版结论与 DCC 制作要求见 §8，P3/P4 未开始 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
