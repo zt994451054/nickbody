@@ -26,7 +26,7 @@
 | 宠物 3D 渲染 | RealityKit | 系统内置 | 大厅和跟练窗口有界渲染；使用生产 Rig v2、采样 clip 和统一 `PetAnimationGraph` |
 | 桌面宠物渲染 | Core Animation + 独立透明 sprite strip | 系统内置 | strip 与 3D 共用已批准 DCC 动作源，manifest 描述帧数/FPS/循环/事件；零第三方运行时，详见 ADR-002、ADR-003 |
 | 角色资产 DCC | Blender | 4.3.2（生产版本锁定）| 离线重拓扑、手工蒙皮、控制 rig 和动作烘焙；静态拓扑由版本化机器合同治理，scoped WIP/diagnostic 不可晋级；主发布路径为原生 USD → USDZ → RealityKit，GLB 仅作交换/诊断产物 |
-| DCC 隔离约束工具 | Python / NumPy / SciPy + OSQP / IPC Toolkit | 工程内按 wheel 指纹锁定 | 仅用于有界离线实验；OSQP 为 Apache-2.0、IPC Toolkit 为 MIT，NumPy/SciPy 主许可证为 BSD 系；不随 App 发布、不进入运行时，具体依赖及附带许可证见下文 |
+| DCC 隔离约束工具 | Python / NumPy / SciPy + OSQP / IPC Toolkit / Clarabel | 工程内按 wheel 指纹锁定 | 仅用于有界离线实验；OSQP / Clarabel 为 Apache-2.0、IPC Toolkit 为 MIT，NumPy/SciPy 主许可证为 BSD 系；不随 App 发布、不进入运行时，具体依赖及附带许可证见下文 |
 | 数据库 | SwiftData（本地）| 系统内置 | V1 无账号无云同步 |
 | 缓存 | 无 | — | 单机无需 |
 | 消息队列 | 无 | — | 单机无需 |
@@ -46,6 +46,12 @@ Tight-Inclusion/SimpleBVH/spdlog/robin-map（MIT）、pybind11（BSD）及可选
 `character_pipeline/sprout/v2/work/experiments/tripo-knee-constrained-solver-20260911/`。
 预编译 wheel 的可选 C++ 构建开关不由包元数据完整证明，因此该环境只作本机离线工具，不把它作为可重新分发的依赖包。
 本次没有新增基础设施服务，`local-env.md` 的纯本地模式保持适用。
+
+CHANGE-048 另建隔离环境加入 Clarabel 0.11.1（Apache-2.0），用于同一凸子问题的独立内点法交叉验证。
+新增 cffi 2.0.0（MIT）和 pycparser 2.23（BSD-3-Clause）；只读复用 C1 已锁定的 NumPy/SciPy/OSQP，
+不改旧实验环境。新增 wheel 哈希、许可证及 Clarabel 的 Cargo.toml/Cargo.lock/pyproject.toml
+由 App `tripo-knee-qp-diagnostic-20260911/` 证据绑定。Rust 可选构建依赖随配方保留，不以主许可证替代全部依赖声明；
+该环境仅本机诊断，不随 App 分发。仍沿用 ADR-003 的离线职责，不变更运行时或基础设施。
 
 ---
 
