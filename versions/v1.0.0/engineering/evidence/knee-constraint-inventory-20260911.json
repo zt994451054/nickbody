@@ -1,0 +1,624 @@
+{
+  "kind": "read_only_constraint_inventory_index",
+  "date": "2026-09-11",
+  "artifactClass": "vendor_capability_trial",
+  "productionPassed": false,
+  "newWeightsConstructed": false,
+  "newTrialStarted": false,
+  "appEvidenceCommit": "4560188",
+  "privateRoot": "/Users/zhoutong/Library/Application Support/nick/tripo-knee-constraint-plan-20260911",
+  "verifiedInputCount": 95,
+  "method": "unchanged S2 comparison faces; classification uses all corners of both adjacent faces",
+  "auditor": "tripo-knee-target-20260910/surface_diagnosis.py::measure_patch",
+  "sourcePoseCount": 5,
+  "comparisonFaces": 2383,
+  "affectedFaces": 2198,
+  "comparisonEdges": 3708,
+  "frozenJumpSharpEdges": [
+    {
+      "vertices": [
+        20102,
+        20235
+      ],
+      "faces": [
+        43765,
+        43900
+      ],
+      "angleDegrees": 118.03782659454296,
+      "length": 0.0022058559115976095,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        20235,
+        21562
+      ],
+      "faces": [
+        44021,
+        44172
+      ],
+      "angleDegrees": 144.83947523729466,
+      "length": 0.008288056589663029,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        24459,
+        25613
+      ],
+      "faces": [
+        44159,
+        44160
+      ],
+      "angleDegrees": 82.52097951426005,
+      "length": 0.00811208225786686,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        25714,
+        26490
+      ],
+      "faces": [
+        43880,
+        44011
+      ],
+      "angleDegrees": 74.01074822353176,
+      "length": 0.00612951535731554,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        26490,
+        27465
+      ],
+      "faces": [
+        43879,
+        43948
+      ],
+      "angleDegrees": 71.78239217662593,
+      "length": 0.004078933037817478,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        28449,
+        29268
+      ],
+      "faces": [
+        44007,
+        44008
+      ],
+      "angleDegrees": 154.11388858293148,
+      "length": 0.008071446791291237,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    },
+    {
+      "vertices": [
+        30067,
+        31329
+      ],
+      "faces": [
+        43751,
+        43946
+      ],
+      "angleDegrees": 66.90970107179298,
+      "length": 0.009198758751153946,
+      "editableCorners": [],
+      "endpointOnlyWouldMiss": false
+    }
+  ],
+  "summary": {
+    "0": {
+      "source": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 16.926766046422358,
+          "worst": {
+            "vertices": [
+              21097,
+              21888
+            ],
+            "faces": [
+              44335,
+              44588
+            ],
+            "angleDegrees": 16.926766046422358,
+            "length": 0.004320263862609863,
+            "editableCorners": [
+              20971,
+              21097,
+              21888
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 15.072437988655597,
+          "worst": {
+            "vertices": [
+              32163,
+              33074
+            ],
+            "faces": [
+              61457,
+              61733
+            ],
+            "angleDegrees": 15.072437988655597,
+            "length": 0.009800989180803299,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "S2": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 16.926766046422358,
+          "worst": {
+            "vertices": [
+              21097,
+              21888
+            ],
+            "faces": [
+              44335,
+              44588
+            ],
+            "angleDegrees": 16.926766046422358,
+            "length": 0.004320263862609863,
+            "editableCorners": [
+              20971,
+              21097,
+              21888
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 15.072437988655597,
+          "worst": {
+            "vertices": [
+              32163,
+              33074
+            ],
+            "faces": [
+              61457,
+              61733
+            ],
+            "angleDegrees": 15.072437988655597,
+            "length": 0.009800989180803299,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      }
+    },
+    "15": {
+      "source": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 34.19484347585943,
+          "worst": {
+            "vertices": [
+              13917,
+              14643
+            ],
+            "faces": [
+              46175,
+              46251
+            ],
+            "angleDegrees": 34.19484347585943,
+            "length": 0.004619418643414974,
+            "editableCorners": [
+              13917,
+              14066,
+              14643,
+              14698
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 15.072335535818048,
+          "worst": {
+            "vertices": [
+              32163,
+              33074
+            ],
+            "faces": [
+              61457,
+              61733
+            ],
+            "angleDegrees": 15.072335535818048,
+            "length": 0.009800992906093597,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "S2": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 23.607691677408237,
+          "worst": {
+            "vertices": [
+              8753,
+              8924
+            ],
+            "faces": [
+              52399,
+              52971
+            ],
+            "angleDegrees": 23.607691677408237,
+            "length": 0.006476644426584244,
+            "editableCorners": [
+              8623,
+              8753,
+              8924,
+              9326
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 15.072335535818048,
+          "worst": {
+            "vertices": [
+              32163,
+              33074
+            ],
+            "faces": [
+              61457,
+              61733
+            ],
+            "angleDegrees": 15.072335535818048,
+            "length": 0.009800992906093597,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "sourceContactCounts": {
+        "total": 0,
+        "withEditableCorner": 0,
+        "allCornersFrozen": 0
+      }
+    },
+    "60": {
+      "source": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 142,
+          "maximumAngleDegrees": 179.01955867435768,
+          "worst": {
+            "vertices": [
+              21205,
+              21576
+            ],
+            "faces": [
+              65638,
+              65639
+            ],
+            "angleDegrees": 179.01955867435768,
+            "length": 0.03378022462129593,
+            "editableCorners": [
+              20601,
+              21205,
+              21576,
+              22440
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 40.11415520306469,
+          "worst": {
+            "vertices": [
+              18042,
+              18066
+            ],
+            "faces": [
+              47960,
+              48068
+            ],
+            "angleDegrees": 40.11415520306469,
+            "length": 0.01668800227344036,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "S2": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 44,
+          "maximumAngleDegrees": 177.8220762486927,
+          "worst": {
+            "vertices": [
+              21205,
+              21576
+            ],
+            "faces": [
+              65638,
+              65639
+            ],
+            "angleDegrees": 177.8220762486927,
+            "length": 0.03453989326953888,
+            "editableCorners": [
+              20601,
+              21205,
+              21576,
+              22440
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 40.11378295775493,
+          "worst": {
+            "vertices": [
+              18042,
+              18066
+            ],
+            "faces": [
+              47960,
+              48068
+            ],
+            "angleDegrees": 40.11378295775493,
+            "length": 0.016687985509634018,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "sourceContactCounts": {
+        "total": 30,
+        "withEditableCorner": 30,
+        "allCornersFrozen": 0
+      }
+    },
+    "action-turn": {
+      "source": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 136,
+          "maximumAngleDegrees": 177.17372737191843,
+          "worst": {
+            "vertices": [
+              9778,
+              10499
+            ],
+            "faces": [
+              53476,
+              53749
+            ],
+            "angleDegrees": 177.17372737191843,
+            "length": 0.006978312972933054,
+            "editableCorners": [
+              9733,
+              9778,
+              10208,
+              10499
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 47.67503801048541,
+          "worst": {
+            "vertices": [
+              16984,
+              18042
+            ],
+            "faces": [
+              47960,
+              48069
+            ],
+            "angleDegrees": 47.67503801048541,
+            "length": 0.02408335730433464,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "S2": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 17,
+          "maximumAngleDegrees": 149.02918157607218,
+          "worst": {
+            "vertices": [
+              10902,
+              11318
+            ],
+            "faces": [
+              49070,
+              49071
+            ],
+            "angleDegrees": 149.02918157607218,
+            "length": 0.004814706742763519,
+            "editableCorners": [
+              10324,
+              10902,
+              11318,
+              11529
+            ],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 0,
+          "maximumAngleDegrees": 47.674932142553274,
+          "worst": {
+            "vertices": [
+              16984,
+              18042
+            ],
+            "faces": [
+              47960,
+              48069
+            ],
+            "angleDegrees": 47.674932142553274,
+            "length": 0.024083329364657402,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "sourceContactCounts": {
+        "total": 109,
+        "withEditableCorner": 99,
+        "allCornersFrozen": 10
+      }
+    },
+    "action-jump": {
+      "source": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 96,
+          "maximumAngleDegrees": 178.01994682894798,
+          "worst": {
+            "vertices": [
+              26490,
+              27543
+            ],
+            "faces": [
+              43948,
+              44327
+            ],
+            "angleDegrees": 178.01994682894798,
+            "length": 0.007018118165433407,
+            "editableCorners": [
+              27411
+            ],
+            "endpointOnlyWouldMiss": true
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 7,
+          "maximumAngleDegrees": 154.11388858293148,
+          "worst": {
+            "vertices": [
+              28449,
+              29268
+            ],
+            "faces": [
+              44007,
+              44008
+            ],
+            "angleDegrees": 154.11388858293148,
+            "length": 0.008071446791291237,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "S2": {
+        "editableCorner": {
+          "count": 3398,
+          "sharpOver60": 21,
+          "maximumAngleDegrees": 133.47114445818536,
+          "worst": {
+            "vertices": [
+              26490,
+              27543
+            ],
+            "faces": [
+              43948,
+              44327
+            ],
+            "angleDegrees": 133.47114445818536,
+            "length": 0.007018121425062418,
+            "editableCorners": [
+              27411
+            ],
+            "endpointOnlyWouldMiss": true
+          }
+        },
+        "allCornersFrozen": {
+          "count": 310,
+          "sharpOver60": 7,
+          "maximumAngleDegrees": 154.1145716018485,
+          "worst": {
+            "vertices": [
+              28449,
+              29268
+            ],
+            "faces": [
+              44007,
+              44008
+            ],
+            "angleDegrees": 154.1145716018485,
+            "length": 0.00807145144790411,
+            "editableCorners": [],
+            "endpointOnlyWouldMiss": false
+          }
+        },
+        "endpointOnlyMissCount": 202
+      },
+      "sourceContactCounts": {
+        "total": 73,
+        "withEditableCorner": 55,
+        "allCornersFrozen": 18
+      }
+    }
+  },
+  "privateFiles": [
+    {
+      "path": "inventory.json",
+      "bytes": 16131444,
+      "sha256": "71e35a90b5827e76639caaae613146ef7e39248d091756cfcfabd580ae875c8d"
+    },
+    {
+      "path": "operation.py",
+      "bytes": 5418,
+      "sha256": "db91842a5a142a46eb99475b70d34c860bace13ee3e7ab5a4cb821cc32670d53"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 12299,
+      "sha256": "6ce4d0f0b1a6e71c9b69e545dee5e01e7392d4238ebe1f24f9a65ff829fa5ccb"
+    }
+  ],
+  "limitations": [
+    "Structural editability does not prove effective motion at every pose.",
+    "Fixed folds and contacts remain unresolved; no visual pass inferred.",
+    "The constrained solver and CCD adapter are proposed, not implemented or tested.",
+    "This query verifies only the 95 inputs listed in inventory.json; older broader checks remain historical."
+  ]
+}
