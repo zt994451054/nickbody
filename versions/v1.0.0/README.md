@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-062 的 R1 未通过，当前纯权重路线自动投入关闭：源点固定保留目标穿插，源基准预测仍误放行六处实际失败；R2/R3 不启动、试修 0/1。下一项转骨位/rest 与局部定向布线的结构方案比较。模型仍有 169 条实际保护失败，本轮无新权重/QP/Blender。原门禁与正式资源保持；右侧/全身、生产认证及养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。当前纯权重路线已关闭；CHANGE-063 结构比较选择一次有界局部定向拓扑施工，包络 4,906 原面/七边界覆盖全部 1,534 对目标。下一项 B1 静态施工须交付真实网格，B1 0/1、未启动；新试修最多 360 分钟、阶段失败停止。本轮无新模型/权重/QP/Blender，冻结 K3 的 169 条实际失败保持。原生产合同与正式资源不变；右侧/全身、32 关节生产适配及养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,10 +68,11 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 模型仍未修好，R1 拒绝及路线切换见 §8.0.41 |
-| 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前入口：不进入模型试修；下一项结构方案选择 |
-| 研发 | [修复路线评审与总计划](./engineering/pet-knee-route-review.md) | §6 工时台账、§9 R1 停止依据；未使用预算随路线关闭 |
-| 研发 | [膝部修复历史与证据](./engineering/pet-knee-repair-plan.md) | §31 记录 R1 结论；历史实验保持冻结 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 模型仍未修好；结构选择及生产边界见 §8.0.42 |
+| 研发 | [结构方案与单次施工计划](./engineering/pet-knee-structure-review.md) | 当前入口：已选择局部定向拓扑，B1 静态施工未开始；§6 总预算及停止条件 |
+| 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |
+| 研发 | [修复路线评审与总计划](./engineering/pet-knee-route-review.md) | §6 原工时台账、§10 结构选择；旧余额不转入 |
+| 研发 | [膝部修复历史与证据](./engineering/pet-knee-repair-plan.md) | §32 记录结构比较；历史实验保持冻结 |
 | 研发 | [接口设计](./engineering/api-design.md) | ✅ |
 | 研发 | [数据库设计](./engineering/db-design.md) | ✅ |
 | 研发 | [发布流程](./engineering/release.md) | ⏳ |
