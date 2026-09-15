@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-065 完整重建路径决策已完成，选择完整 DCC 直接制作；缺少实际完整布局与已确认建模能力，当前不启动新自动施工，工单已说明来源、面流、身份/UV、32 关节和生产交付。B1 1/1 失败、纯权重及历史路线关闭，旧预算不重开。没有新合格模型/权重/动作，冻结 K3 的 169 条失败保持；正式合同/资源不变。全身生产角色及养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-066：AI 合成肩部修复已有通过实物，本轮绑定真实身份源、8,545 面参考区及有序截面；下一项按新设计有界制作真实肩腋补片。尚无真实新合格四边补片，完整身体、S0、身份/UV、32 关节和生产动画仍待完成。B1、纯权重及历史路线关闭，旧预算不重开；冻结 K3 的 169 条失败、正式合同/资源保持。养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,8 +68,9 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 模型仍未修好；生产路径决策与能力缺口见 §8.0.44 |
-| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 当前入口：方向已选；缺少实际完整布局/建模执行能力，新施工未启动 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整生产角色仍未通过；真实肩腋研究见 §8.0.45 |
+| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；最新局部研究接续见 §8 |
+| 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前接续入口：源与截面已绑定，下一项制作隔离四边补片；尚无真实模型通过 |
 | 研发 | [结构施工结果与下一步](./engineering/pet-knee-structure-review.md) | §9–10 保留 B1 失败证据；§11 为后续决策结论 |
 | 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |
 | 研发 | [修复路线评审与总计划](./engineering/pet-knee-route-review.md) | §12 记录完整生产路径与当前能力判断；原工时与旧路线冻结 |
