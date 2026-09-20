@@ -369,6 +369,9 @@ CHANGE-078 形成[核心联合约束设计](./pet-character-core-constraint-desi
 原源三角数/边界离散不相容，固定环跨旧接缝，尚无合格底网或联合解；下一项只做一次相容输入预检，不直接启动四边模型或 MILP。
 CGAL 固定发行包和 SciPy 已有封装仅做源码核查，未安装/编译/运行新依赖，不增加 App 运行时、基础设施或 ADR。本轮无模型改善，441 项保护文件及 App `6004e40` 保持。
 
+CHANGE-079 的[核心输入预检](./pet-character-core-constraint-design.md)在全环带平面图中发现 3 处固定边交叉，未调用三角化。问题位于固定带末端，不代表原三维自交或核心无解；下一项先做自由核心/固定三维环带域分离核查。
+CGAL 6.2.1 和已有 GCC/Boost/GMP/MPFR 只用于本机编译准备，原生入口最终被 Xcode 许可拒绝阻塞；来源/许可已同步架构基线，无新 App 运行时、基础设施或 ADR。16 项 Python 检查器测试通过，463 项冻结文件保持，无模型质量改善。
+
 ## 3. 向后兼容性
 
 本版本为 v1.0.0 创世版本，不涉及用户数据迁移。角色资产采用并行迁移：Rig v2 完整认证和用户批准前，App 继续使用当前正式 USDZ 与整张桌面图集；新资源以不可变版本和哈希并行加入，切换失败时回退旧资产。旧 24 骨 clip 不复制到 Rig v2，新骨架动作必须从 DCC 源重新烘焙。
@@ -603,7 +606,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-078 已形成[核心联合约束设计](./pet-character-core-constraint-design.md)，下一项只做一次相容输入预检；尚无合格底网/联合解或模型质量改善。160 面固定环带仅为强制单元候选。CHANGE-074 实物仍拒绝，模板布点、CHANGE-076 Gmsh 接入、B1、权重及旧路线关闭。完整身体、S0、身份/UV、32 骨及动画未完成，正式资源和冻结 K3 失败保持。最后核实余额 190，本轮未查询或消费。
+4. **角色生产**：CHANGE-079 [输入预检](./pet-character-core-constraint-design.md)因固定带末端 3 处二维交叉被拒绝，未生成底网。下一项先核查自由核心与固定三维环带的域分离，原生工具入口还受 Xcode 许可阻塞；尚无模型改善。CHANGE-074 实物仍拒绝，模板布点、CHANGE-076 Gmsh 接入、B1、权重及旧路线关闭。完整身体、S0、身份/UV、32 骨及动画未完成，正式资源与原合同保持。最后核实余额 190，本轮未查询或消费。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。

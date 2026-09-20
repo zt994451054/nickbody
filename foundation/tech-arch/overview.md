@@ -57,6 +57,10 @@ CHANGE-076 为一次已结项的固定实体工具核查另建 Gmsh 4.15.2 本�
 官方 PyPI wheel、运行库和许可证/安装记录的指纹保存于 App `character_pipeline/sprout/v2/work/experiments/gmsh-fixed-entity-probe-20260920/`；第三方二进制与源码留在私有环境，不入仓或随 App 分发，也未在此认证整套二进制的重新分发许可。
 单次小样发现 Algorithm 11＋MeshOnlyEmpty 改动固定点和原连接，该接入方式已淘汰，未成为生产 DCC 选型。沿用 ADR-003 的隔离实验职责，不引入新服务、存储或运行时依赖，无新 ADR；`local-env.md` 纯本地模式不变。
 
+CHANGE-079 准备 CGAL 6.2.1 的本机离线输入桥接，官方 library 压缩包摘要绑定 CHANGE-078。三角化包头文件为 GPL-3.0-or-later 或商业许可；仅在私有目录提取并尝试编译，最终受 Xcode 许可拒绝阻塞，没有可运行桥接或网格调用，也未进入生产选型。
+复用既有 GCC 13.2.0（本机配方声明 GPL-3.0-or-later with GCC-exception-3.1）、Boost 1.84.0（BSL-1.0）、GMP 6.3.0（LGPL-3.0-or-later 或 GPL-2.0-or-later）和 MPFR 4.2.1（LGPL-3.0-or-later）；安装收据、配方和现存许可文件指纹已登记，未安装新依赖，不由这些元数据推断整套产物可重新分发。
+新 Python 输入检查器继续使用既有 NumPy 环境。只保留自有未执行桥接源码、检查器及有界证据；第三方源码/二进制不入仓或随 App 分发，临时展开头文件已移除，原始发行包保持。仍是 ADR-003 的隔离实验，无架构边界、基础设施或 App 运行时变更，无新 ADR。
+
 ---
 
 ## 系统架构图
