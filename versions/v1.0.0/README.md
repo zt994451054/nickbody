@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-076 Gmsh 单次小样未保留固定点、原面和接口，接入方式关闭；本轮无真实角色模型改善。下一项先核查固定块与空缺域分离的构造设计，尚无已验证替代方案。CHANGE-074 实物仍拒绝，模板布点、B1、权重及旧路线关闭。完整身体/S0/身份/32 骨及动画未完成，正式资源保持。养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-077 固定块与配对设计未获构造准入：旧核心内仍有折面，下一项先解决合格核心块的自动构造来源，暂停外围补洞试跑。本轮无模型改善；CHANGE-074 实物仍拒绝，模板布点、CHANGE-076 接入、B1、权重及旧路线关闭。完整身体/S0/身份/32 骨及动画未完成，正式资源保持。养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,10 +68,10 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-076 小样拒绝见 §8.0.54 |
-| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；Gmsh 入口关闭及后续边界见 §16 |
-| 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前入口 §14：固定实体检查拒绝，真实模型无新增改善 |
-| 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | CHANGE-076 见 §10：单次小样实测、关闭范围及待核查构造设计 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-077 设计缺口见 §8.0.55 |
+| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；固定核心来源与接续边界见 §17 |
+| 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前入口 §15：旧核心不合格，暂停外围补洞试跑 |
+| 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | CHANGE-077 见 §11：固定块来源、接口保持、配对条件和准入缺口 |
 | 研发 | [结构施工结果与下一步](./engineering/pet-knee-structure-review.md) | §9–10 保留 B1 失败证据；§11 为后续决策结论 |
 | 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |
 | 研发 | [修复路线评审与总计划](./engineering/pet-knee-route-review.md) | §12 记录完整生产路径与当前能力判断；原工时与旧路线冻结 |
