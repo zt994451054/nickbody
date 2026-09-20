@@ -5,7 +5,7 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-09-11
+> 最后更新：2026-09-20
 
 ---
 
@@ -52,6 +52,10 @@ CHANGE-048 另建隔离环境加入 Clarabel 0.11.1（Apache-2.0），用于同�
 不改旧实验环境。新增 wheel 哈希、许可证及 Clarabel 的 Cargo.toml/Cargo.lock/pyproject.toml
 由 App `tripo-knee-qp-diagnostic-20260911/` 证据绑定。Rust 可选构建依赖随配方保留，不以主许可证替代全部依赖声明；
 该环境仅本机诊断，不随 App 分发。仍沿用 ADR-003 的离线职责，不变更运行时或基础设施。
+
+CHANGE-076 为一次已结项的固定实体工具核查另建 Gmsh 4.15.2 本机环境（主许可证元数据 GPLv2+），同时安装 NumPy 2.4.3 与 SciPy 1.17.1；最终检查脚本仅需要前两者，SciPy 未使用。
+官方 PyPI wheel、运行库和许可证/安装记录的指纹保存于 App `character_pipeline/sprout/v2/work/experiments/gmsh-fixed-entity-probe-20260920/`；第三方二进制与源码留在私有环境，不入仓或随 App 分发，也未在此认证整套二进制的重新分发许可。
+单次小样发现 Algorithm 11＋MeshOnlyEmpty 改动固定点和原连接，该接入方式已淘汰，未成为生产 DCC 选型。沿用 ADR-003 的隔离实验职责，不引入新服务、存储或运行时依赖，无新 ADR；`local-env.md` 纯本地模式不变。
 
 ---
 
