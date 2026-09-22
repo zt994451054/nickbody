@@ -614,7 +614,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-083 [核心输入与原生入口](./pet-character-core-constraint-design.md)完成 3,736 点输入及独立固定边/身份核查；原生错误路径 SIGABRT，未运行真实三角化，无新底网或模型改善。下一项验证已有 Apple Clang/libc++，复用冻结输入。CHANGE-074 实物仍拒绝，模板布点、CHANGE-076 接入、B1、权重及旧路线关闭。完整身体、S0、身份/UV、32 骨和动画未完成，正式资源及原合同保持；最后核实余额 190，本轮未查询或消费。
+4. **角色生产**：CHANGE-084 完成实际底网输出检查器，最终 28 项 Python 控制通过；唯一 Apple Clang 编译因标准库头文件路径失败，零真实三角化。已只读定位不完整工具链目录遮蔽 SDK 头文件，下一项显式指定已有 SDK 路径并先验证异常处理；模型未改善。 详情见[核心设计 §13](./pet-character-core-constraint-design.md)。完整身体、S0、身份/UV、32 骨及动画未完成，正式资源和原合同保持；最后核实余额 190，本轮未查询或消费。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
@@ -628,3 +628,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 *   *防范*：生产主身体重拓扑后手工蒙皮，使用命名区域 mask 阻止跨区域 influence，并按关键单关节 → 全关节 → 组合姿势顺序逐级放行。
 *   *风险*：外部 basemesh 许可、来源文件或归因在适配与发布之间漂移，或来源身份被误当作拓扑通过。
 *   *防范*：source intake 绑定 artifact、source topology、license evidence、attribution 和 manifest hashes；候选比较禁止 provenance 原地变更，发布前重新校验归因与修改说明。许可通过与 S0 几何/身份门禁分别判定。
+
+### CHANGE-084 角色离线工具接续（2026-09-22）
+
+CHANGE-084 完成实际底网输出检查器，最终 28 项 Python 控制通过；唯一 Apple Clang 编译因标准库头文件路径失败，零真实三角化。已只读定位不完整工具链目录遮蔽 SDK 头文件，下一项显式指定已有 SDK 路径并先验证异常处理；模型未改善。 App `5d8592c`。本轮只新增离线输出审计工具及证据，无 App 运行时/基础设施依赖、安装或架构变更；原生入口未准入，完整模型与产品测试状态不变。详见[核心设计 §13](./pet-character-core-constraint-design.md)。
