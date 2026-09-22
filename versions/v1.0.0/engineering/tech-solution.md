@@ -614,7 +614,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-090 只读确认三条源边界与原直段最大差为 2.715 / 2.885 / 4.596 mm；四个已有源事件形成 64→68 点局部切口提案，连续曲线双向误差上界最大 0.175759 mm。方案未启用、零新网格；原 14 面方向及九点贴合问题未修复。下一项须先确认三段局部接口变更，再做一次有界边界验证。 证据与待确认计划见[核心设计 §19](./pet-character-core-constraint-design.md)，主动复盘规则见 §14.5。完整身体/S0/身份/32 骨及动画未完成；最后核实余额 190，本轮未查询或消费。
+4. **角色生产**：CHANGE-091 排除当前不变三角底网的仅配对路线（86 个核心必要条件失败点），四点提案不能消除此障碍，暂不优先施工。官方获批基模原件恢复；未新建网格，完整身体/S0/身份/32 骨及动画未完成。具体方案筛选、证据层级和下一项布局要求见[八类问题的方法与验证清单](./pet-character-method-validation.md)；来源许可证据与左右坐标差异保留待处理，不暗改合同。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
