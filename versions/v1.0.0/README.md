@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-091 排除当前不变三角底网的仅配对路线（86 个核心点失败）及单纯翻转 14 面的修法；四点边界提案暂不优先施工。官方获批基模原件已恢复；模型未改善，完整身体/S0/身份/32 骨及动画未完成。八类问题和下一项具体布局要求见方法验证清单；养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-092 已定位原基模实际环带、八组参考块及四个分支；目标映射、支撑与五接口连接未齐，零新模型。下一项核查源→小草成对点/曲线和映射能力。完整身体/S0/身份/32 骨及动画未完成；统一问题清单持续更新。养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -71,7 +71,8 @@
 | 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-090 见 §8.0.68 |
 | 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；四点局部接口提案及边界见 §30 |
 | 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前入口 §28：局部切口 64→68 提案待确认，尚未施工 |
-| 研发 | [剩余八类问题：方法与有效性验证](./engineering/pet-character-method-validation.md) | CHANGE-091 当前统一入口；真实证据、已排除方法、缺失前提与后续布局交付 |
+| 研发 | [剩余八类问题：方法与有效性验证](./engineering/pet-character-method-validation.md) | 当前统一入口；§8 更新 CHANGE-092 实际源布局与缺失前提 |
+| 研发 | [原始面流布局与施工缺口](./engineering/pet-character-source-layout.md) | CHANGE-092 源图与索引、约束分层、四分支及下一项映射核查；零新模型 |
 | 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | CHANGE-090 见 §24；[核心约束设计与核查结果](./engineering/pet-character-core-constraint-design.md) |
 | 研发 | [结构施工结果与下一步](./engineering/pet-knee-structure-review.md) | §9–10 保留 B1 失败证据；§11 为后续决策结论 |
 | 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |
