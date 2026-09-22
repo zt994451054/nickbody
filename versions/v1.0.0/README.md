@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-084 完成实际底网输出检查器，最终 28 项 Python 控制通过；唯一 Apple Clang 编译因标准库头文件路径失败，零真实三角化。已只读定位不完整工具链目录遮蔽 SDK 头文件，下一项显式指定已有 SDK 路径并先验证异常处理；模型未改善。 完整身体/S0/身份/32 骨及动画未完成，正式资源保持，旧关闭路线不重开。养成、Onboarding、StoreKit、数据统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0 核心链路已跑通。CHANGE-085 已修通原生入口并实际生成 7,244 个三角面；平面覆盖、接缝/固定带连接和 256 点保持通过，但 15 处源法向不一致，真实底网拒绝。已主动复盘并检索原始资料，下一项评估保固定条件的局部连接；未获合格模型。 主动复盘检索规则见核心设计 §14.5。完整身体/S0/身份/32 骨及动画未完成，正式资源保持；养成、Onboarding、StoreKit、数据统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,10 +68,10 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-084 见 §8.0.62 |
-| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；原生头文件阻塞及接续见 §24 |
-| 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前入口 §22：输出审计完成与编译路径阻塞 |
-| 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | CHANGE-084 见 §18；[核心约束设计与核查结果](./engineering/pet-character-core-constraint-design.md) |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-085 见 §8.0.63 |
+| 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；真实底网方向拒绝及接续见 §25 |
+| 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 当前入口 §23：固定连接通过与三维方向拒绝 |
+| 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | CHANGE-085 见 §19；[核心约束设计与核查结果](./engineering/pet-character-core-constraint-design.md) |
 | 研发 | [结构施工结果与下一步](./engineering/pet-knee-structure-review.md) | §9–10 保留 B1 失败证据；§11 为后续决策结论 |
 | 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |
 | 研发 | [修复路线评审与总计划](./engineering/pet-knee-route-review.md) | §12 记录完整生产路径与当前能力判断；原工时与旧路线冻结 |
