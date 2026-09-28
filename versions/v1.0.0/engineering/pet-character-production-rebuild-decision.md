@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-100 见[源布局 §15](./pet-character-source-layout.md)：局部定向参考细分消除 5 处形状超限，同样本最大距离下降 79.33%；下一项为 44 切面的接缝/覆盖依赖，不再调该局部密度。完整生产仍未完成，零资产网格；统一状态见[八类问题清单](./pet-character-method-validation.md)，关闭路线保持。
+> 最新 CHANGE-101 见[源布局 §16](./pet-character-source-layout.md)：44 切面已完整分类，缺失部分是四个源盘，各涉及 11 原面；下一项验证目标四条外边界。上轮局部改善保持，本轮无新增几何修复，完整生产未完成；统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**

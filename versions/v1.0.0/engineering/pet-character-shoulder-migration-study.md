@@ -1,6 +1,6 @@
 # 小草肩腋：真实参考量测与局部迁移设计
 
-> 最新 CHANGE-100 见[源布局 §15](./pet-character-source-layout.md)：局部定向参考细分消除 5 处形状超限，同样本最大距离下降 79.33%；下一项为 44 切面的接缝/覆盖依赖，不再调该局部密度。完整生产仍未完成，零资产网格；统一状态见[八类问题清单](./pet-character-method-validation.md)，关闭路线保持。
+> 最新 CHANGE-101 见[源布局 §16](./pet-character-source-layout.md)：44 切面已完整分类，缺失部分是四个源盘，各涉及 11 原面；下一项验证目标四条外边界。上轮局部改善保持，本轮无新增几何修复，完整生产未完成；统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > 输入输出、联合约束及停止边界见[核心约束设计](./pet-character-core-constraint-design.md)。CHANGE-074/076 关闭路线保持。
 > 尚未完成：联合合格肩腋补片、完整身体、S0、生产身份及动画。
 

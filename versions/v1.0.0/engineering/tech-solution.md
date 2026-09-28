@@ -614,7 +614,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-100 的 136 面局部参考布局消除 5 处形状超限，同样本最大离面距离下降 79.33%；下一项按[源布局 §15.4](./pet-character-source-layout.md)核查 44 切面的接缝/覆盖依赖，不再调该局部密度。零资产网格，完整身体、五接口、S0、身份及骨架动作仍未完成。
+4. **角色生产**：CHANGE-101 完成 44 切面的覆盖/接缝分类，缺失部分为四个源盘，各涉及 11 原面；下一项按[源布局 §16.4](./pet-character-source-layout.md)验证四条目标外路径及目标盘。CHANGE-100 局部改善保留，本轮零新几何；完整身体、五接口、S0、身份及骨架动作仍未完成。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
