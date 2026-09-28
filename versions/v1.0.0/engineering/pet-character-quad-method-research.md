@@ -1,6 +1,6 @@
 # 外部四边网格方法筛选与局部验证计划
 
-> 最新 CHANGE-101 见[源布局 §16](./pet-character-source-layout.md)：44 切面已完整分类，缺失部分是四个源盘，各涉及 11 原面；下一项验证目标四条外边界。上轮局部改善保持，本轮无新增几何修复，完整生产未完成；统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-102 见[源布局 §17](./pet-character-source-layout.md)：四条目标外路径与四个成对局部盘一次通过，293 旧接缝站位保持；下一项条件式展开/映射，尚未补齐原四边面。完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 ## 1. 结论
 
