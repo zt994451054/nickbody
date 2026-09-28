@@ -1,6 +1,6 @@
 # 小草肩腋：真实参考量测与局部迁移设计
 
-> 最新 CHANGE-096 见[源布局 §11](./pet-character-source-layout.md)：首份局部双向参考映射通过数值有效性检查，但畸变明显，尚不准入生产面流迁移。下一项为同几何/边界的正均值权重对照；零新资产网格，统一状态见[八类问题清单](./pet-character-method-validation.md)，历史与关闭路线保持。
+> 最新 CHANGE-097 见[源布局 §12](./pet-character-source-layout.md)：正均值权重使 P95 方向失真降低 48.1%，但最坏拉伸回退，仍不准入生产迁移。已定位固定圆边界三角形，下一项核查保留拐角的共同域；零资产网格，统一状态见[八类问题清单](./pet-character-method-validation.md)，历史与关闭路线保持。
 > 输入输出、联合约束及停止边界见[核心约束设计](./pet-character-core-constraint-design.md)。CHANGE-074/076 关闭路线保持。
 > 尚未完成：联合合格肩腋补片、完整身体、S0、生产身份及动画。
 

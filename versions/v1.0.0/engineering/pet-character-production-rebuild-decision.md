@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-096 见[源布局 §11](./pet-character-source-layout.md)：首份局部双向参考映射通过数值有效性检查，但畸变明显，尚不准入生产面流迁移。下一项为同几何/边界的正均值权重对照；零新资产网格，统一状态见[八类问题清单](./pet-character-method-validation.md)，历史与关闭路线保持。
+> 最新 CHANGE-097 见[源布局 §12](./pet-character-source-layout.md)：正均值权重使 P95 方向失真降低 48.1%，但最坏拉伸回退，仍不准入生产迁移。已定位固定圆边界三角形，下一项核查保留拐角的共同域；零资产网格，统一状态见[八类问题清单](./pet-character-method-validation.md)，历史与关闭路线保持。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**
