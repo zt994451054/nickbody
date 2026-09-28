@@ -1,6 +1,6 @@
 # 小草肩腋：真实参考量测与局部迁移设计
 
-> 最新 CHANGE-094 见[源布局 §9](./pet-character-source-layout.md)：十对参考点已定位，源/目标前三对路径环序及区域标签一致；完整网络未通过。具体瓶颈是背部原面 11372 内部没有可用原边出口，下一项验证穿面参考曲线。零新模型，统一状态见[八类问题清单](./pet-character-method-validation.md)；历史与关闭路线保持。
+> 最新 CHANGE-095 见[源布局 §10](./pet-character-source-layout.md)：六对参考曲线已通过连续性/相交/环序及区域标签检查；四组区域仍有开口拓扑差异，一对髋裆围区为圆盘，下一项验证局部参考映射。零新资产网格，统一状态见[八类问题清单](./pet-character-method-validation.md)；历史与关闭路线保持。
 > 输入输出、联合约束及停止边界见[核心约束设计](./pet-character-core-constraint-design.md)。CHANGE-074/076 关闭路线保持。
 > 尚未完成：联合合格肩腋补片、完整身体、S0、生产身份及动画。
 
