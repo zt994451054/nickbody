@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-106，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–20 保留历史语境，双最大值投影/固定边界方法准入结果与下一项见 §21；本轮零实物坐标更新。
-> **首块双最大值投影和一次固定边界线性化检查通过；独立局部矩阵尚不能直接拼成映射。** 下一项只做同一初值上的一次全局约束求解；尚无新映射或合格补面，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-107，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–21 保留历史语境，单次整体求解失败与反思见 §22。
+> **39 步后停滞且质量退步，没有保留新映射。末态坐标快照未落盘，完整几何独立复核未完成。** 当前变体停止，下一项仅逐面硬约束准入；原有效映射与局部改善保持，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -760,3 +760,49 @@ App `0249e7f` 保存四个工具/测试文件和 **30 份证据**。[结果图](
 App `353e2af` 新增两个工具/测试文件和 **18 份证据**。[准入报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/admission-report.json) · [独立核查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/independent-check.json) · [不相容增量诊断](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/integrability-diagnosis.json) · [全部证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/README.md)。最终用户工作树、档案哈希、链接和双仓远端见私有 `sprout-spectral-bound-admission-20260929/receipt.json`。
 
 **进展是排除了新方法的局部投影和一次线性化数值障碍，模型本轮没有改善。** 原有效映射与旧局部改善保持；首块及另外三块仍无合格补面，完整身体、五接口、S0、身份、32 骨及动画未完成。
+
+## 22. CHANGE-107：整体求解退化停止，没有可保留的新映射
+
+### 22.1 唯一真实运行及停止
+
+按 §21.3 运行同一首块、原有效初值、4,122 点 / 8,067 三角、175 固定边界，原比例和五质量上限均未修改。**18 项运行前控制**通过，包括独立有限差分、稠密 KKT 对照及翻面/塌缩/回溯预算检查。
+
+09:22:48 UTC 开始登记，09:52:48 检查点、10:22:48 总截止。真实求解于 **09:27:40–09:27:41** 运行一次：**一次分解、39 个右端、39 次接受更新、41 次局部投影**。第 37–39 步相对下降为 4.753×10⁻¹⁰、1.188×10⁻¹⁰、5.936×10⁻¹¹，触发预定停滞停止；未继续至 100 次，未重启或运行其余三块。
+
+| 指标（原始运行日志值，未独立几何认证） | 同口径初值 | 最后接受态记录 | 原上限 |
+|---|---:|---:|---:|
+| P95 方向比 | 26.254957 | 32.660451 | 4.959942 |
+| P95 最大拉伸 | 3.045239 | 3.124979 | 2.819211 |
+| 最大方向比 | 223.482063 | 约 2.619×10⁷ | 99.225919 |
+| 最大拉伸 | 15.629159 | 10.868282 | 10.864812 |
+| 拉伸 >2 的源面积占比 | 22.790978% | 22.790978% | 17.034577% |
+
+最大拉伸下降 30.462%，但仍超限；最大方向比和两个 P95 退步，不满足保留条件。距离代价虽下降 **99.9493%**，最后记录的最小归一化双倍面积已接近底线：**1.0000048×10⁻¹⁴** 对比 10⁻¹⁴。不得用代价下降替代形状质量。
+
+### 22.2 证据缺口及已修正的保存顺序
+
+末态稀疏算子与直接三角雅可比的最大方向比相对差 **2.228×10⁻⁷**，超过预定核查值 10⁻⁸，断言停止。执行脚本把坐标快照写入放在该断言之后，导致 **`optimizer-arrays.npz` 未生成**。该保存顺序是本轮工具缺陷；未改变容差或重跑以补造证据。
+
+因此 169 旧接缝、实际末态固定边界、完整无交叠/覆盖、目标原三角穿越支撑、广义特征值复核均**未完成**。09:31:49 的独立工作仅复核保存的标量日志、预算/停滞条件和数学反例，不能称为几何审计通过。失败结论足以停止当前变体，但不能据此作全局无解证明。
+
+已新增初值/每个接受态的持久快照，先保存后诊断、独占创建禁止覆盖。三项新增回归覆盖诊断异常、旧文件保护及写入异常清理，修正后 **21 项测试通过**；真实模型未再运行。实际执行工具和修正工具分别保存，历史失败脚本不作为下一轮入口。
+
+### 22.3 主动查资料与独立反例
+
+针对退化重新查读[大规模有界畸变论文](https://shaharkov.github.io/projects/LargeScaleBD_lowRes.pdf)与[直接控制奇异值论文](https://shaharkov.github.io/projects/ContSingVal_lowRes.pdf)。前者的聚合投影思想不保证一般可行；后者提供逐面最大/最小奇异值凸约束，但受初始旋转框架与可行初始化限制。
+
+项目独立构造 `J(ε)=diag(ε, ε²)`：方向比随 ε→0 发散，到原联合上限集合的绝对距离却趋零。**一组五矩阵**的解析距离与投影吻合，说明当前代价允许“更小误差、更差形状”。它证明数学上的缺口，因快照缺失，不能冒充实际失败三角的定位。18 项原控制＋3 项快照控制＋1 组反例，共 **22 组不同控制**。
+
+### 22.4 下一项只验证逐面硬约束，不启动曲面优化
+
+[冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/next-entry-plan.json)尚未执行，30/60 分钟预算，最多 12 组合成控制；**真实映射求解、坐标更新、新组装/路径/四边布局/资产均为零**。
+
+从原 CHANGE-104 有效映射取每面的极分解旋转，核查旋转后的最小奇异值约束、最大奇异值上限及原 K/M 联合限制是否表达正确；同时验证 175 固定边界精确消元。反塌缩候选下界取原初值最小奇异值 **0.01118397161018309**，属于额外算法限制，可能排除原本可行的映射，不是放宽验收，也不能错误地由 K/M 推出。冻结旋转的保守子集失败，不代表全部映射无解。
+
+当前隔离环境无 cvxpy/clarabel/scs/ecos。下轮只用现有 NumPy/SciPy 做准入，核清求解器/许可证/资源需求，不安装或直接启动大规模求解。所有前提通过后，才登记一次明确的可行性求解方案。当前聚合距离下降变体和 CHANGE-105 无最大值能量路线均不追加。
+
+### 22.5 归档与保全
+
+App **`ea35dac`** 保存三个工具/测试文件及 **20 份证据**。[原始报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/optimizer-report.json) · [失败审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/failure-audit.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/method-review.md) · [完整证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/README.md)。保全清单含 **2,107 项旧文件**，最终 SHA、用户工作树、双仓远端及耗时见私有 `sprout-joint-bound-global-review-20260929/receipt.json`。
+
+**本轮未修复成功；定位了当前下降指标的退化缺口，并修正证据持久化。** 保留原有效映射和 136 面局部改善，没有可采用的新补面。44 切面缺口、完整身体、五接口、S0、身份、32 骨及动画仍未完成；没有“必须人类接手”或“整体无解”的结论。

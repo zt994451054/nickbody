@@ -1,6 +1,6 @@
 # 小草肩腋：真实参考量测与局部迁移设计
 
-> 最新 CHANGE-106 见[源布局 §21](./pet-character-source-layout.md)：双最大值投影及固定边界线性化准入通过，零实物映射更新；下一项仅首块一次全局约束求解。局部目标尚不能直接拼接，尚无合格补面；完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-107 见[源布局 §22](./pet-character-source-layout.md)：首块整体求解 39 步退化停止，无新映射保留；末态快照缺失，几何独立审计未完成。下一项仅逐面硬约束准入，完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > 输入输出、联合约束及停止边界见[核心约束设计](./pet-character-core-constraint-design.md)。CHANGE-074/076 关闭路线保持。
 > 尚未完成：联合合格肩腋补片、完整身体、S0、生产身份及动画。
 
