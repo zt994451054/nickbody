@@ -1,6 +1,6 @@
 # 外部四边网格方法筛选与局部验证计划
 
-> 最新 CHANGE-103 见[源布局 §18](./pet-character-source-layout.md)：四目标展开通过，首块源映射翻面停止；十二条固定连边穿出目标域已独立证实，下一项仅测首块公共凸域组合。无新增有效补面，完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-104 见[源布局 §19](./pet-character-source-layout.md)：首块组合映射 57→0 翻面，完整覆盖/旧接缝/十二条分段路径通过；五项畸变失败，下一项仅首块相容参考组装与有界优化。尚无合格补面，完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 ## 1. 结论
 
