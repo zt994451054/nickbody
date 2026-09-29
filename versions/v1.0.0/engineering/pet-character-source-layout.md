@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-105，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–19 保留历史语境，首块组装与 20 步优化的最大值退步、停止结论及下一项准入见 §20。
-> **首块参考组装通过；20 步优化使 P95 方向比下降 54.954%，但两个最坏指标退步，按约停止。** 接续基线仍为 CHANGE-104 有效对应，下一项先验证直接限制最坏畸变的方法；尚无合格补面，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-106，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–20 保留历史语境，双最大值投影/固定边界方法准入结果与下一项见 §21；本轮零实物坐标更新。
+> **首块双最大值投影和一次固定边界线性化检查通过；独立局部矩阵尚不能直接拼成映射。** 下一项只做同一初值上的一次全局约束求解；尚无新映射或合格补面，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -716,3 +716,47 @@ P95 方向比降低 **54.954%**，但最大方向比增加 **54.522%**、最大�
 App `0249e7f` 保存四个工具/测试文件和 **30 份证据**。[结果图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/bounded-distortion-review.png) · [独立复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/independent-check.json) · [方法研究](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/method-review.md) · [全部证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/README.md)。最终双仓远端、链接、哈希和实际耗时见私有 `sprout-bounded-distortion-review-20260929/receipt.json`。
 
 **有局部统计改善及可靠组装进展，没有可采用的修复结果。** 另外三块未执行，完整身体/五接口/S0/身份/32 骨/动画未完成，生产状态不提升。
+
+## 21. CHANGE-106：双最大值方法准入通过，尚无映射坐标更新
+
+### 21.1 局部投影和固定边界线性化前提
+
+严格执行 §20.3：读取 CHANGE-104 的有效组合映射，在 CHANGE-105 已核准的 **4,122 点 / 8,067 三角**上核查；使用 `optimizer-arrays:iterates[0]`，没有使用退步的末帧。全部 **175 边界点**、原面来源、分析连接、长度比例 **1.72642974661416**及五质量门槛保持。
+
+先完成 **15 项工具控制＋12 组独立约束优化对照（36 种旋转姿态）**。独立 SciPy 2D 约束求解与最近奇异值投影最大矩阵相对差 **2.745×10⁻¹³**；包含纯拉伸、纯方向比、同时超限、近等向、零/翻面拒绝，以及完全固定或部分固定但线性约束不相容的拒绝案例。
+
+| 一次真实准入检查 | 结果 |
+|---|---|
+| 8,067 个初始微分矩阵 | **287 个需投影**；原方向比超限 281 个、拉伸超限 166 个，两者有交集 |
+| 双上限 | K=99.2259194684825、M=10.864812040241238 保持；局部投影相对舍入超差仅 2.243×10⁻¹⁴ / 6.662×10⁻¹⁶，低于预定数值核查容差 10⁻¹² |
+| 原来源 | 24,201 个源三角角点，最大复算误差 **4.968×10⁻¹⁶ m** |
+| 面积加权微分算子 | 32,268×8,244，96,804 非零项；初始微分复算相对误差 **1.855×10⁻¹³** |
+| 固定边界兼容性 | 一次稀疏分解＋一个右端求解；相对残差 **8.456×10⁻¹⁶** |
+| 独立逐单元复核 | 不重做真实投影/分解/求解；相对残差 **9.631×10⁻¹⁶**，线性化标量等式相对误差 **6.372×10⁻¹⁶** |
+
+独立用复数线性分解重算奇异值、凸投影最优性不等式及 Frobenius 距离下界，确认所有局部矩阵目标的最近投影性质；用 QR 重建原曲面微分。非零兼容分母只证明**这一条聚合线性化约束可在固定边界下求解**，不证明全部非线性约束存在共同可行映射。
+
+### 21.2 局部目标为什么不能直接用于补面
+
+投影后的矩阵彼此独立，**183 条内部共边的位移增量不一致**，最大 **0.869643 mm**；**6 条边界边**与固定对应不一致，最大 **0.750065 mm**。原有效映射最大共边误差仅 **2.975×10⁻¹⁶ m**。这些目标不是一份已构造的连续映射，更不是 287 个面已经修好；本轮实物坐标更新 **0**，实际映射五项质量仍为原基线失败值。
+
+接续全局方法必须使用共享顶点变量、固定边界精确消元，求得可连续拼接的映射，再对它计算原五指标。保留本轮局部目标作为方法准入证据，不将其提升为有效补面。
+
+### 21.3 下一项：一次共同顶点的全局约束求解
+
+[冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/next-entry-plan.json)尚未执行。仅首块，另行登记 **30 分钟检查点 / 60 分钟总截止**；不新建分析网格、均值映射、外路径、四边布局或资产。
+
+1. 从原有效初值开始，固定同一面积加权微分算子和 175 边界，仅一次分解自由变量法方程。以局部联合投影作为目标，聚合约束的最小变化方向为 `d=-||n||²/(gᵀH⁻¹g)·H⁻¹g`；只对自由坐标求解，固定坐标方向精确为零。
+2. 一次运行最多 **100 次接受更新 / 100 个右端求解**。采用到双上限集合的距离作为评价函数；从防翻面步长出发，每步最多 **20 次回溯**，要求面积正、边界不变和固定 Armijo 下降。它复用同一分解，属于新方法预先限定的迭代预算，不是给 CHANGE-105 增加次数，也不是成功预测。
+3. 两个**实际映射**最大值达标即停止求解并完整审查；否则达到 100 步、连续三次下降 ≤10⁻⁸、时间点或数值/有效性失败时停止，不改 K/M、能量、边界或重启。保留最后接受态，不挑中间快照。局部投影值不能用于最终质量判定。
+4. 独立复核原面来源、无翻面/交叠、完整覆盖、169 个旧接缝查询、目标原三角穿越支撑及实际伸缩。只有原五门槛全过，才考虑另外三块；未全过时，下一份可保留映射须**两个最坏指标均改善至少 20%、其余三项无退步且全部有效性通过**，否则隔离结果并停止此变体。
+
+[作者论文](https://shaharkov.github.io/projects/LargeScaleBD_lowRes.pdf)的微分投影和固定位置约束提供方法依据；联合最大拉伸上限及防翻面回溯属于已说明的项目扩展，不继承通用收敛保证。原作者实现没有导入/执行，现有 NumPy/SciPy 足够本轮准入，无安装、付费或运行时依赖变化。
+
+### 21.4 证据与状态
+
+08:57:31 UTC 开始，**09:03:48 唯一真实准入完成、09:05:23 独立复核完成**，早于 09:27:31 检查点；总截止 09:57:31。共 **27 组不同控制**通过，36 个旋转矩阵样例是其中 12 组的展开，不重复计数。**2,066 个旧文件**保持。
+
+App `353e2af` 新增两个工具/测试文件和 **18 份证据**。[准入报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/admission-report.json) · [独立核查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/independent-check.json) · [不相容增量诊断](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/integrability-diagnosis.json) · [全部证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-spectral-bound-admission-20260929/README.md)。最终用户工作树、档案哈希、链接和双仓远端见私有 `sprout-spectral-bound-admission-20260929/receipt.json`。
+
+**进展是排除了新方法的局部投影和一次线性化数值障碍，模型本轮没有改善。** 原有效映射与旧局部改善保持；首块及另外三块仍无合格补面，完整身体、五接口、S0、身份、32 骨及动画未完成。

@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-105 见[源布局 §20](./pet-character-source-layout.md)：首块组装通过；20 步优化改善 P95 但最坏值退步，该优化已停止，保留 CHANGE-104 初值。下一项仅做最大畸变约束方法准入，尚无合格补面；完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-106 见[源布局 §21](./pet-character-source-layout.md)：双最大值投影及固定边界线性化准入通过，零实物映射更新；下一项仅首块一次全局约束求解。局部目标尚不能直接拼接，尚无合格补面；完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**
