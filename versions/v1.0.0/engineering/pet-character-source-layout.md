@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-104，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–18 保留历史语境，第 0 块零翻面/完整对应通过、五项畸变失败及下一项有界优化见 §19。
-> **第 0 块组合映射消除 57 个翻面，完整覆盖、接缝和十二条分段路径通过；五项畸变门槛全部失败。** 保留数值有效但高畸变的参考映射，下一项只做首块相容参考组装及有界优化；尚无合格补面，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-105，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–19 保留历史语境，首块组装与 20 步优化的最大值退步、停止结论及下一项准入见 §20。
+> **首块参考组装通过；20 步优化使 P95 方向比下降 54.954%，但两个最坏指标退步，按约停止。** 接续基线仍为 CHANGE-104 有效对应，下一项先验证直接限制最坏畸变的方法；尚无合格补面，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -673,3 +673,46 @@ App `10ab6cf` 保存两个工具/测试文件与 **26 份证据**。研究 PDF �
 [前后与质量结果图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-convex-composition-review-20260929/convex-composition-review.png) · [详细报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-convex-composition-review-20260929/composition-report.json) · [方法核查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-convex-composition-review-20260929/method-review.md)。
 
 **本轮有实质的局部映射有效性进展，质量仍明显不达标。** 保留有效但高畸变的第 0 块参考对应作为优化初值；并未完成补面、其余三块、完整身体、五接口、S0、身份或骨架动画。
+
+## 20. CHANGE-105：参考组装通过，20 步优化因最坏值退步停止
+
+### 20.1 有效性与真实变化
+
+一次精确有理谓词/原边交点身份组装，将既有 2,199 交叠片构造成 **4,122 点 / 8,067 三角 / 12,188 边**的相容分析盘；175 个原边界站位及源/目标原面来源、面积和接缝保持，没有按距离焊接。该分析细分不是生产网格，也不是新四边布局。
+
+只执行一轮 **20 次代理求解、20 次接受更新**，以最后接受步作结，不挑有利中间状态。全部 21 个状态（含初值）边界逐位不变、无翻面。独立复核 **114,455 对包围盒相交候选**，最大数值交叠面积 3.247×10⁻¹⁹，低于既定 10⁻¹² 容差；最终与原目标 **119 三角**交叠得到 **11,204 支撑片 / 36,783 角点**，完整覆盖及原面来源通过。169 个旧接缝站位/中点最大误差 **8.472×10⁻¹⁷ m**。
+
+| 同一组装口径指标 | 初值 | 最后接受步 | 原上限 |
+|---|---:|---:|---:|
+| 源面积加权 P95 方向比 | 26.254957 | **11.826875** | 4.959942 |
+| P95 归一化最大拉伸 | 3.045239 | **2.986877** | 2.819211 |
+| 最大方向比 | 223.482063 | **345.329471** | 99.225919 |
+| 最大归一化拉伸 | 15.629159 | **21.258924** | 10.864812 |
+| >2 倍拉伸的源面积 | 22.790978% | **20.583880%** | 17.034577% |
+
+P95 方向比降低 **54.954%**，但最大方向比增加 **54.522%**、最大拉伸增加 **36.021%**，五项原门槛仍全部失败。初值与 CHANGE-104 是同一分片映射；由交叠多边形改为中心扇后，加权插值 P95 分别有 **+0.004967 / +0.000641** 的离散表示差异，已单独报告，没有改归一化 **1.72642974661416** 或门槛。
+
+### 20.2 停止结论与局部诊断
+
+对称 Dirichlet 总能量降低 **86.817%**；方向比改善的源面积占 **73.733%**，另 **26.267%** 退步。最坏方向比现在落在原源四边面 **9795** 内的分析三角 1759（占源面积 3.561×10⁻⁸）；最大拉伸在原面 **12045** 内的三角 3186。面积加权目标未直接约束最坏值，因此能量下降不能替代五项质量审查，小面积也不能豁免最大值门槛。
+
+**本轮不满足 §19.4 的“至少 20% 改善且其他四项不回退”条件，停止该无最大值约束的能量优化路线。** 不追加迭代、不从中间步挑结果，也不把最后一帧接续为新基线。保留 CHANGE-104 有效组合映射，以及本轮对它的可靠分析组装；本轮最后映射仅存为失败证据。独立广义特征值复算最大相对差 **2.615×10⁻⁸**，确认这些变化不是指标代码误报。
+
+### 20.3 主动研究与下一项方法准入
+
+已阅读 [Lipman 2012 §4](https://www.wisdom.weizmann.ac.il/~ylipman/BoundedDistortion/bounded_distortion_may_1.pdf)的有界畸变凸空间及 [Kovalsky 等 2015 §§2–4](https://shaharkov.github.io/projects/LargeScaleBD_lowRes.pdf)的微分矩阵投影与线性约束方法。后者可研究固定边界，但没有任意边界下的可行性/终止保证，原算法也不自动满足我们的最大拉伸、P95 和面积门槛。原 Matlab/MEX 实现没有导入或执行；现有环境有 NumPy/SciPy，没有相应锥优化库，本轮零安装。
+
+下一项是**方法准入核查，尚未执行实物优化**，详见[冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/next-entry-plan.json)：
+
+1. 复用本轮分析组装的 **CHANGE-104 初值**，固定全部 175 边界和原五上限；零新组装、均值映射、坐标更新、路径、四边布局或资产。
+2. 验证同时限制方向比 **K=99.2259194684825** 与最大拉伸 **M=10.864812040241238** 的 2×2 奇异值投影。候选投影域为 `(0,0)、(M,M/K)、(M,M)` 围成的三角形；先做解析及独立约束优化小样控制，再对 8,067 个初始微分矩阵投影一次。逐面矩阵合格不等于可拼成连续映射。
+3. 固定边界精确消元，仅一次稀疏分解/一个右端求解，核查整体线性化约束是否兼容、残差是否 ≤10⁻¹⁰。必须有“全部固定但不相容”的拒绝控制，不能直接套论文条件声称任何边界都可解。
+4. 任一前提失败即停止，不放开边界或提高上限。前提全过，才给出下一份有明确预算的实物求解计划；**本次准入批次不追加映射优化**。30 分钟检查点、60 分钟总预算，不恢复本轮已停止路线。
+
+### 20.4 证据与生产状态
+
+01:24:43 UTC 开始，**01:29:45 组装完成、01:33:51 达到 20 步上限、01:36:59 独立复核完成**，均早于 01:54:43 检查点；总截止 02:24:43。6 项组装控制＋11 项优化控制＋7 项独立控制，共 **24 项不同控制**通过。测试入口路径和绘图括号各一次纠正，未重跑几何。**1,997 个旧文件**保全，用户原工作树和 App 原 4,725 个未跟踪路径保持。
+
+App `0249e7f` 保存四个工具/测试文件和 **30 份证据**。[结果图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/bounded-distortion-review.png) · [独立复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/independent-check.json) · [方法研究](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/method-review.md) · [全部证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-bounded-distortion-review-20260929/README.md)。最终双仓远端、链接、哈希和实际耗时见私有 `sprout-bounded-distortion-review-20260929/receipt.json`。
+
+**有局部统计改善及可靠组装进展，没有可采用的修复结果。** 另外三块未执行，完整身体/五接口/S0/身份/32 骨/动画未完成，生产状态不提升。
