@@ -1,6 +1,6 @@
 # 外部四边网格方法筛选与局部验证计划
 
-> 最新 CHANGE-102 见[源布局 §17](./pet-character-source-layout.md)：四条目标外路径与四个成对局部盘一次通过，293 旧接缝站位保持；下一项条件式展开/映射，尚未补齐原四边面。完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-103 见[源布局 §18](./pet-character-source-layout.md)：四目标展开通过，首块源映射翻面停止；十二条固定连边穿出目标域已独立证实，下一项仅测首块公共凸域组合。无新增有效补面，完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 ## 1. 结论
 
