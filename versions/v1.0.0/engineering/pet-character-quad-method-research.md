@@ -1,6 +1,6 @@
 # 外部四边网格方法筛选与局部验证计划
 
-> 最新 CHANGE-108 见[源布局 §23](./pet-character-source-layout.md)：12 组小型控制通过，真实数值准入失败；三张极小面的舍入相消已定位，完整数据保留，零求解/坐标更新，无模型改善。下一项仅位移表达精度检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-109 见[源布局 §24](./pet-character-source-layout.md)：九探针位移表达达标，普通坐标转换 6/9 精度失败；独立审计确认舍入放大。零求解/接受坐标更新，无模型改善，下一项只查双分量保存/导数，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 ## 1. 结论
 

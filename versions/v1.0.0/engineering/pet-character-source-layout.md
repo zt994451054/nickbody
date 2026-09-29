@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-108，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–22 为历史，最新验证见 §23。
-> **12 组小型控制通过，真实数值准入失败；零求解、零坐标更新，无模型质量改善。** 独立审计定位三张极小三角面的舍入相消，完整失败数据已保存。下一项仅位移表达精度检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-109，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–23 为历史，最新检查见 §24。
+> **位移表达的九个非零探针全部达标；存回普通坐标后 6/9 精度失败，整体准入仍未通过。** 零求解/接受坐标更新，无模型质量改善。下一项仅双分量坐标的保存与导数检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -851,3 +851,37 @@ Clarabel 0.11.1 元数据和官方文档满足候选 SOC/稀疏接口需求，Ap
 App **`466be3a`** 保存两个工具/测试文件及 **23 份证据**。[真实失败报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/admission-report.json) · [独立审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/independent-audit.json) · [证据入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/README.md)。本轮失败前已保存坐标及完整系数，未重复上轮末态数据缺失问题。**2,154 项受保护文件**保持，最终双仓远端、用户树与耗时见私有 `sprout-per-face-conic-admission-20260929/receipt.json`。
 
 本轮进展是缩小数值失败原因，模型质量未提高。原有效映射、136 面局部改善和 293 站位保持；44 切面缺口、完整身体、五接口、S0、身份、32 骨及动画仍未完成。
+
+## 24. CHANGE-109：位移表达达标，单浮点坐标转换仍失败
+
+### 24.1 一次有界数值批次
+
+11:05:36 UTC 开始，11:35:36 检查点，12:05:36 总截止。八组合成控制一次通过。11:10:01–11:10:02 UTC 运行一次真实组装和预先冻结的九探针：平滑场、交替自由坐标分量场、旧失败面局部场，各取导数幅度 0.001/1/10。它们只检查算式，不是修复候选。原 4,122 点 / 8,067 面 / 175 边界、来源、比例、旋转、额外正下界及五门槛全部保持。
+
+| 检查 | 最大误差 | 冻结门槛 | 结果 |
+|---|---:|---:|---|
+| 初值边差与独立源基底重建 | 7.9847×10⁻¹³ | 10⁻¹⁰ | 通过 |
+| 九个非零探针的位移表达 | 1.2549×10⁻¹² | 10⁻¹⁰ | 9/9 通过 |
+| 转为单个 float64 坐标后 | 6.4108×10⁻¹⁰ | 10⁻¹⁰ | 6/9 失败 |
+
+位移表达这一层已达到原标准；完整数值通路仍未通过。坐标转换关在真实误差计算前写入[冻结协议](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/frozen-probe-protocol.json)，不是结果出来后追加。失败后未更换尺度/旋转/下界、重新组装或引入另一坐标表示。真实分解/求解/接受坐标更新、安装/付费、新路径/四边布局/资产均为零。
+
+### 24.2 80 位独立审计确认坐标舍入影响
+
+全部初值用 80 位十进制复核，偏移误差 3.4500×10⁻¹³；新旧稀疏矩阵数组逐位相同，既有逐项系数审计仍适用。独立谱相对差 8.3696×10⁻¹⁰、旋转正交误差 1.7764×10⁻¹⁵，原三角来源误差 4.9670×10⁻¹⁶ 米，均在既定范围。175 边界位移精确为零，原初值未变。
+
+最坏探针 7 / 面 432：存回单浮点坐标的舍入约 **6.5243×10⁻¹⁸**，经极小面梯度放大后，预测约束误差 **6.4106915×10⁻¹⁰**，实测 **6.4107608×10⁻¹⁰**，相差仅 **6.9331×10⁻¹⁵**。九个最坏行预测与实测差最大 1.0002×10⁻¹²。失败面并集 430/431/432/441 只是探针数值误差位置，不是新增模型损伤。详见[独立审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/independent-audit.json)。
+
+**本轮有数值表达层面的明确改进，模型质量没有改善。** 未找到新可行映射，也未验证完整几何；固定旋转/正下界的保守性保持，不能据此推导全局无解。
+
+### 24.3 下一项：保存坐标值和舍入余量，尚未验证
+
+重新查读 [Ogita–Rump–Oishi 原论文算法 3.1 / 定理 3.4](https://www.tuhh.de/ti3/paper/rump/OgRuOi05.pdf)。TwoSum 在给定算术前提下用两个浮点分量保留精确加法结果；把两部分再压回一个数仍会丢余量。这是下一项的依据，不是本项目已修复的证据。[Shewchuk 的稳健几何研究](https://www.cs.cmu.edu/~quake/robust.html)也不能替代雅可比、约束或模型验证。
+
+[下一项冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/next-entry-plan.json)：30/60 分钟、最多八组控制、复用本轮九探针和矩阵的一次检查，零新系数组装/探针、零求解/接受坐标更新/安装。必须保存、重读并在局部导数中保留高低两分量，按原 10⁻¹⁰ 标准验证；丢弃余量的负对照必须重现当前失败。旧单数组读取函数不能静默接收并丢弃余量，完整旧流程不声明兼容。失败即停，不再增加表示或精度扫描；通过后才规划独立的可行性求解。
+
+### 24.4 归档和状态
+
+App **`dd9c1be`** 保存两个工具/测试文件与 **21 份证据**：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/README.md) · [批次结果](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/batch-results.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/method-review.md)。**2,206 项受保护文件**保持，最终远端、用户工作树及耗时见私有 `sprout-centered-conic-admission-20260929/receipt.json`。
+
+原有效映射、136 面局部改善和 293 站位保持。44 切面缺口、完整身体、五接口、S0、身份、32 骨与动画仍未完成。
