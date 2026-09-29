@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-107 见[源布局 §22](./pet-character-source-layout.md)：首块整体求解 39 步退化停止，无新映射保留；末态快照缺失，几何独立审计未完成。下一项仅逐面硬约束准入，完整生产未完成，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-108 见[源布局 §23](./pet-character-source-layout.md)：12 组小型控制通过，真实数值准入失败；三张极小面的舍入相消已定位，完整数据保留，零求解/坐标更新，无模型改善。下一项仅位移表达精度检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**

@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-107，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–21 保留历史语境，单次整体求解失败与反思见 §22。
-> **39 步后停滞且质量退步，没有保留新映射。末态坐标快照未落盘，完整几何独立复核未完成。** 当前变体停止，下一项仅逐面硬约束准入；原有效映射与局部改善保持，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-108，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–22 为历史，最新验证见 §23。
+> **12 组小型控制通过，真实数值准入失败；零求解、零坐标更新，无模型质量改善。** 独立审计定位三张极小三角面的舍入相消，完整失败数据已保存。下一项仅位移表达精度检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -806,3 +806,48 @@ App `353e2af` 新增两个工具/测试文件和 **18 份证据**。[准入报�
 App **`ea35dac`** 保存三个工具/测试文件及 **20 份证据**。[原始报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/optimizer-report.json) · [失败审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/failure-audit.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/method-review.md) · [完整证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-joint-bound-global-review-20260929/README.md)。保全清单含 **2,107 项旧文件**，最终 SHA、用户工作树、双仓远端及耗时见私有 `sprout-joint-bound-global-review-20260929/receipt.json`。
 
 **本轮未修复成功；定位了当前下降指标的退化缺口，并修正证据持久化。** 保留原有效映射和 136 面局部改善，没有可采用的新补面。44 切面缺口、完整身体、五接口、S0、身份、32 骨及动画仍未完成；没有“必须人类接手”或“整体无解”的结论。
+
+## 23. CHANGE-108：硬约束控制通过，真实数值准入未通过
+
+### 23.1 本轮范围与数学结果
+
+10:30:49 UTC 开始，11:00:49 检查点，11:30:49 总截止。按 §22.4 固定原初值、175 边界、旋转框架、五门槛及额外压缩下界 **0.01118397161018309**。只做方法准入，真实求解/分解/坐标更新、安装/付费和新路径/四边布局/资产均为零。
+
+[原作者方法](https://shaharkov.github.io/ContSingVal.html)的旋转后最小奇异值 LMI 与最大谱范数 LMI，在二维改写为每面三个三维 Lorentz 锥和三个标量不等式。**12 组小型控制最终通过**，包括塌缩族、超限、独立特征值/谱值、旋转与保守性、固定边界、系数及快照故障。首次第 8 组测试错误地把四个局部三角坐标系当成同一世界坐标系；仅按原极分解规则修正测试输入，原失败报告保留，两次执行仍计 12 组。
+
+这些控制支持约束表达能阻止上轮的塌缩反例。固定旋转与正下界仍为保守限制，失败不代表全局无解，初值也没有继承可行初始化保证。
+
+### 23.2 唯一真实系数组装按精度关停止
+
+10:37:12 UTC 从原有效映射组装一次：**4,122 点 / 8,067 面 / 175 固定边界**，32,095 未知量、96,804 行、347,442 非零元。初值与系数先落盘，再核查。稀疏表达与逐面公式最大误差 **1.4616926904964522×10⁻⁹**，超过冻结 **10⁻¹⁰**，立即停止；未更换容差、旋转或下界，未再次组装。
+
+独立审计只读取保存的矩阵和坐标，没有新求解或组装：
+
+| 核查 | 实测结果 |
+|---|---|
+| 超精度行定位 | 面 430 / 432 / 441，共 13 行 |
+| 最坏行乘积绝对值和 / 最终值 | 约 17,371,915.61 / −0.048915 |
+| 最小源三角面积 / 最大梯度 | 1.0037×10⁻¹³ / 7.6760×10⁷ |
+| 80 位算术重放与原双精度行差 | 最大 1.7801×10⁻⁹ |
+| 80 位重放与旧逐面公式差 | 仍有 4.9117×10⁻¹⁰，不能只换求和函数 |
+| 逐项系数相对误差 | 7.6412×10⁻¹³，未发现符号/索引错误 |
+| 独立边差雅可比与旧绝对坐标公式 | 相差约 9.7838×10⁻¹⁰ |
+| 独立奇异值相对差 | 8.3686×10⁻¹⁰，在原 10⁻⁸ 谱核查值内 |
+| 固定边界与初值 | 350 DOF 精确分区还原，快照与原初值逐位相等 |
+| 原三角来源重建 | 最大 4.9670×10⁻¹⁶ 米 |
+
+证据支持大数相消的舍入影响；系数、固定项和旧直接公式都有数值误差，不能把后者当成绝对精确参考。原初值仍有 281 面方向比超限、166 面拉伸超限，**没有可行新映射、没有模型改善**。完整几何/生产验证本轮未执行。
+
+### 23.3 查资料后冻结下一项：只检查位移表达
+
+[MOSEK 官方指南 §7.2–7.4](https://docs.mosek.com/modeling-cookbook/practical.html)提示处理近相关、尺度差异和有限精度问题。结合本地证据，下一项改写为 `x=x0+δ`，基准导数用局部边差计算，175 边界 δ 精确为零。该改写在实数下不改变约束，但目前**尚未实现或验证**，不能预告成功。
+
+[冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/next-entry-plan.json)：30/60 分钟，最多八组合成控制、一次真实系数组装、九个预先冻结的非零数值探针；探针只检查算式，不能成为候选映射。仍为零真实求解/分解/接受坐标更新/安装。保留原 **10⁻¹⁰** 重建标准、所有质量上限、旋转和下界；不能只通过 δ=0 恒等式就放行。一个真实批次失败即停，不追加参数扫描。通过后才准备独立的可行性求解计划。
+
+Clarabel 0.11.1 元数据和官方文档满足候选 SOC/稀疏接口需求，Apache-2.0，ARM64 abi3 wheel 935,135 字节；尚未安装或验证可导入。保存矩阵与偏移共 **6,590,272 字节**，分解填充/实际峰值内存和耗时未测，不能据此直接启动大规模求解。详见[方法与资源评估](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/method-review.md)。
+
+### 23.4 证据与状态
+
+App **`466be3a`** 保存两个工具/测试文件及 **23 份证据**。[真实失败报告](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/admission-report.json) · [独立审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/independent-audit.json) · [证据入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-per-face-conic-admission-20260929/README.md)。本轮失败前已保存坐标及完整系数，未重复上轮末态数据缺失问题。**2,154 项受保护文件**保持，最终双仓远端、用户树与耗时见私有 `sprout-per-face-conic-admission-20260929/receipt.json`。
+
+本轮进展是缩小数值失败原因，模型质量未提高。原有效映射、136 面局部改善和 293 站位保持；44 切面缺口、完整身体、五接口、S0、身份、32 骨及动画仍未完成。
