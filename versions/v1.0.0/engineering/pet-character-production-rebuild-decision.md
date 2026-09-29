@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-109 见[源布局 §24](./pet-character-source-layout.md)：九探针位移表达达标，普通坐标转换 6/9 精度失败；独立审计确认舍入放大。零求解/接受坐标更新，无模型改善，下一项只查双分量保存/导数，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-110 见[源布局 §25](./pet-character-source-layout.md)：双分量保存/重读与导数精度已通过，九探针和独立复核达标。零求解/接受模型更新，无模型质量改善；下一项为第一块的单次有界可行性求解，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**

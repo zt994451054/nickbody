@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-109，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–23 为历史，最新检查见 §24。
-> **位移表达的九个非零探针全部达标；存回普通坐标后 6/9 精度失败，整体准入仍未通过。** 零求解/接受坐标更新，无模型质量改善。下一项仅双分量坐标的保存与导数检查，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-110，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–24 为历史，最新检查见 §25。
+> **双分量坐标的保存、重读及导数精度验证已通过，九探针和独立高精度复核全部达标。** 零求解/接受模型更新，尚无模型质量改善。下一项为第一块的单次有界可行性求解，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -885,3 +885,44 @@ App **`466be3a`** 保存两个工具/测试文件及 **23 份证据**。[真实�
 App **`dd9c1be`** 保存两个工具/测试文件与 **21 份证据**：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/README.md) · [批次结果](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/batch-results.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-centered-conic-admission-20260929/method-review.md)。**2,206 项受保护文件**保持，最终远端、用户工作树及耗时见私有 `sprout-centered-conic-admission-20260929/receipt.json`。
 
 原有效映射、136 面局部改善和 293 站位保持。44 切面缺口、完整身体、五接口、S0、身份、32 骨与动画仍未完成。
+
+## 25. CHANGE-110：双分量坐标通过原精度标准
+
+### 25.1 本轮实际进展
+
+15:06:35 UTC 开始，15:36:35 检查点，16:06:35 总截止。八组小型控制一次通过。15:12:23–15:12:24 UTC 完成唯一真实批次，复用 CHANGE-109 的九个探针和原矩阵，零新系数组装或方向。初值和九个探针均先保存高低两部分，再重读计算；它们是数值探针，不是模型候选。
+
+| 检查 | 最大误差 | 原门槛 | 结果 |
+|---|---:|---:|---|
+| 保存重读后与独立源边差 | 9.7911×10⁻¹³ | 10⁻¹⁰ | 9/9 通过 |
+| 保存重读后与既有位移表达 | 1.0004×10⁻¹² | 10⁻¹⁰ | 9/9 通过 |
+| 独立 80 位全批次复核 | 1.1149×10⁻¹² | 10⁻¹⁰ | 9/9 通过 |
+| 故意丢掉余量的负对照 | 6.4108×10⁻¹⁰ | 10⁻¹⁰ | 重现上轮 6/9 失败 |
+
+独立复核于 15:14:29 UTC 完成，不调用本轮双分量工具。用精确有理数核对 **74,196 个坐标加法全部相等**，用 80 位十进制复核九探针的全部 8,067 面。47,394 个非零余量被保留；175 个固定边界的高分量精确保持、低分量精确为零。来源误差 4.9670×10⁻¹⁶ 米，旋转正交误差 1.7764×10⁻¹⁵。未变初值的独立谱证据沿用上轮结果，不虚增测试次数。详见[最终独立审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/independent-audit.json)。
+
+**这次解决了冻结批次中的坐标精度障碍，尚未改善模型形状。** 原 4,122 点 / 8,067 面 / 175 边界、固定旋转、额外正下界及五质量门槛不变。真实分解/求解/接受模型更新、安装/付费/新路径/四边布局/资产均为零。
+
+### 25.2 实现边界和方法依据
+
+[Ogita–Rump–Oishi 原论文算法 3.1 / 定理 3.4](https://www.tuhh.de/ti3/paper/rump/OgRuOi05.pdf)提供 TwoSum。新工具先检查算术前提，将坐标保存为“舍入和＋余量”；边差在保留两部分的情况下计算。[Python math.fsum 文档](https://docs.python.org/3/library/math.html#math.fsum)也说明算术环境限制，故保留独立高精度检查，不声称任意后续输出都自动准确。
+
+新快照校验格式版本、来源/边界/初值/合同及载荷哈希，独占写入并刷盘。旧单数组消费者尝试隐式转换时明确报错，避免悄悄丢余量；生产导出兼容性未完成。未来真实求解输出仍须重新进行同等数值检查。
+
+### 25.3 下一项：第一块的一次可行性求解
+
+[完整冻结计划](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/next-entry-plan.json)和[包版本/哈希清单](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/solver-package-plan.json)已准备，尚未执行。沿用原有效初值、原矩阵、固定旋转和边界；引入单一诊断余量 t，求其最小值，再检查未放松的原约束。该目标不直接优化两个 P95 或受影响面积，不能以 t 下降代替五项质量通过。
+
+- 整体 30 分钟检查点、60 分钟总预算；最多八组控制、四次小型求解、一次真实求解。
+- Clarabel 0.11.1，32,096 变量 / 96,805 行；最多 100 次内部迭代、120 秒求解。外部监控覆盖构造及求解，300 秒或进程树 RSS 8 GiB 即停。一调用可能多次内部矩阵分解，不承诺一次固定分解。
+- 仅在新私有 vendor 目录安装三份已锁定 wheel，不改变现有运行时/App 依赖。本轮只读官方元数据，零下载/安装。
+- 保存求解器返回值和完整双分量坐标后再诊断；原五门槛、未放松硬约束、数值一致性与完整几何全部通过，才保留一份隔离映射。旧单数组几何工具不得静默丢余量。
+- 失败、超限或低精度退出即停；不改下界/旋转/门槛，不补跑或扩展其余块。正余量若无可信独立对偶下界，不证明不可行；即使排除固定凸子集，也不证明几何全局无解。
+
+资源设置和状态语义核对 [Clarabel 官方设置](https://clarabel.org/stable/api_settings/)及[标准形式/返回状态](https://clarabel.org/stable/python/getting_started_py/)。具体 phase-I 增广是本项目待验证提案，不是文献对本模型的成功保证。
+
+### 25.4 归档和状态
+
+App **`53b33fc`** 保存两个工具/测试文件和 **30 份证据**：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/README.md) · [批次结果](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/batch-results.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/method-review.md)。2,254 项受保护文件保持，最终双仓远端、用户树和工时见私有 `sprout-compensated-coordinate-admission-20260929/receipt.json`。
+
+原有效映射、136 面局部改善、293 站位保持。44 切面缺口、完整身体、五接口、S0、身份、32 骨和动画仍未完成。

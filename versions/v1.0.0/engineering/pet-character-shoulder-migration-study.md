@@ -1,6 +1,6 @@
 # 小草肩腋：真实参考量测与局部迁移设计
 
-> 最新 CHANGE-109 见[源布局 §24](./pet-character-source-layout.md)：九探针位移表达达标，普通坐标转换 6/9 精度失败；独立审计确认舍入放大。零求解/接受坐标更新，无模型改善，下一项只查双分量保存/导数，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-110 见[源布局 §25](./pet-character-source-layout.md)：双分量保存/重读与导数精度已通过，九探针和独立复核达标。零求解/接受模型更新，无模型质量改善；下一项为第一块的单次有界可行性求解，统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > 输入输出、联合约束及停止边界见[核心约束设计](./pet-character-core-constraint-design.md)。CHANGE-074/076 关闭路线保持。
 > 尚未完成：联合合格肩腋补片、完整身体、S0、生产身份及动画。
 
