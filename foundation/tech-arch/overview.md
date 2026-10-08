@@ -5,7 +5,7 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-09-20
+> 最后更新：2026-10-08
 
 ---
 
@@ -60,6 +60,10 @@ CHANGE-076 为一次已结项的固定实体工具核查另建 Gmsh 4.15.2 本�
 CHANGE-079 准备 CGAL 6.2.1 的本机离线输入桥接，官方 library 压缩包摘要绑定 CHANGE-078。三角化包头文件为 GPL-3.0-or-later 或商业许可；仅在私有目录提取并尝试编译，最终受 Xcode 许可拒绝阻塞，没有可运行桥接或网格调用，也未进入生产选型。
 复用既有 GCC 13.2.0（本机配方声明 GPL-3.0-or-later with GCC-exception-3.1）、Boost 1.84.0（BSL-1.0）、GMP 6.3.0（LGPL-3.0-or-later 或 GPL-2.0-or-later）和 MPFR 4.2.1（LGPL-3.0-or-later）；安装收据、配方和现存许可文件指纹已登记，未安装新依赖，不由这些元数据推断整套产物可重新分发。
 新 Python 输入检查器继续使用既有 NumPy 环境。只保留自有未执行桥接源码、检查器及有界证据；第三方源码/二进制不入仓或随 App 分发，临时展开头文件已移除，原始发行包保持。仍是 ADR-003 的隔离实验，无架构边界、基础设施或 App 运行时变更，无新 ADR。
+
+CHANGE-111 为第一块的一次有界可行性求解，在新私有 vendor 目录安装 Clarabel 0.11.1（Apache-2.0）、cffi 2.0.0（MIT）、pycparser 3.0（BSD-3-Clause）三份锁定 wheel；只读复用已有 Python 3.14.5、NumPy 2.4.3、SciPy 1.17.1。
+实际 wheel 哈希、已安装许可/元数据指纹及安装记录保存在 App `character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/`。第三方 wheel、源码、二进制和 vendor 留在私有环境，不入仓或随 App 分发；不以主许可证标签替代可重新分发认证。
+一次求解的数值与平面几何通过，但五质量门槛仅通过两项，结果未采用，不引入生产 DCC 选型或资产。仍沿用 ADR-003 的离线隔离职责，无 App 运行时、基础设施或配置变更，无新 ADR；`local-env.md` 纯本地模式不变。
 
 ---
 

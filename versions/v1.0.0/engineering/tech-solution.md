@@ -614,7 +614,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 1. **已完成的产品链路**：`FatigueTracker`、Vision 姿态识别、六动作评分、透明 `NSPanel`、大厅/跟练 RealityKit 场景和迁移期桌面图集保持可运行，不因资产重构中断。
 2. **Rig v2 合同**：冻结视觉身份，完成 32 关节骨架、网格/蒙皮、动作 manifest、导出和 Gate 0–4 认证规范。
 3. **最小往返实验（已完成）**：隔离三骨资产已验证 GLB/USD/USDZ/RealityKit，选择 Blender USD → USDZ 主发布路径；机器报告位于 App 仓库 `character_pipeline/sprout/v2/reports/roundtrip-report.json`。
-4. **角色生产**：CHANGE-110 双分量保存/重读与导数精度通过，九探针及独立复核均达标，解决本批次坐标舍入障碍。零真实求解/接受模型更新，尚无模型质量改善。下一项按[源布局 §25.3](./pet-character-source-layout.md)仅做第一块的一次有界可行性求解，原边界/五门槛不变。旧有效映射、局部改善和 293 站位保持；完整身体、五接口、S0、身份及骨架动作仍未完成。
+4. **角色生产**：CHANGE-111 第一块一次真实求解的保存、独立数值及完整平面几何通过，两项最大值达标，两个 P95 与超限面积仍失败。未采用本轮映射；下一项按[源布局 §26.3](./pet-character-source-layout.md)评审保留原最大值硬约束的分布质量目标。旧有效映射、136 面局部改善和 293 站位保持；完整身体、五接口、S0、身份及骨架动作仍未完成。
 5. **运行时迁移**：新增 `PetAnimationLibrary`、`PetAnimationGraph` 和 `PetIdleActionScheduler`，迁移脚底/叶片后处理，保留旧资产回退。
 6. **动作内容**：依次制作挥手、张望、伸展，每项执行八方位逐帧审核并生成同源桌面 strip。
 7. **正式切换**：用户批准后更新不可变发布 manifest 和 bundle 资源；验证失败时回退当前正式资产。
@@ -660,3 +660,9 @@ App `3aabe0f` 新增有限六点准入工具及 18 项合成控制；一次真�
 ### CHANGE-090 接续说明
 
 App `7af2ec4` 完成三段源边界只读复核，给出四点局部切口 64→68 提案；28 项合成控制通过、28 份证据归档。连续曲线双向界限最大 0.175759 mm，零实际网格修改。原 256 点/160 面及生产机器合同保持，三条原局部固定段的改变尚未授权。正式外侧补片尚缺，现有 14 面方向/九点反向贴合问题仍在。具体坐标、双侧影响及确认后单次验证见[核心设计 §19](./pet-character-core-constraint-design.md)；运行时、发布资源和基础设施依赖不变。
+
+### CHANGE-111 第一块有界可行性求解（2026-10-08）
+
+App `1d32f3f` 记录唯一真实调用及全部输出：21 内部迭代、0.993880 秒，两个最大值通过原门槛，三项分布质量失败；独立数值/完整平面几何通过，未采用新映射。八组初始控制通过，预算内第四次实际三角形绑定小样在真实求解之后补齐，执行顺序偏差已如实归档。完整结果和下一项质量目标评审见[源布局 §26](./pet-character-source-layout.md)及[归档入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/README.md)。
+
+本轮新私有 vendor 仅安装三份哈希锁定 wheel：Clarabel 0.11.1（Apache-2.0）、cffi 2.0.0（MIT）、pycparser 3.0（BSD-3-Clause）；已有 Python 3.14.5、NumPy 2.4.3、SciPy 1.17.1 只读复用。具体许可证与指纹见[依赖证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/installed-dependency-evidence.json)，同步登记技术架构基线。依然是 ADR-003 下的离线隔离工具，无 App 运行时、基础设施或配置变更，不新增 ADR；第三方 wheel/源码/二进制均不入仓或随 App 分发。

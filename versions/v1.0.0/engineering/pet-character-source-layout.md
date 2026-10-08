@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-110，2026-09-29（UTC）；负责人 @winston（AI 执行）。§1–24 为历史，最新检查见 §25。
-> **双分量坐标的保存、重读及导数精度验证已通过，九探针和独立高精度复核全部达标。** 零求解/接受模型更新，尚无模型质量改善。下一项为第一块的单次有界可行性求解，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新 CHANGE-111，2026-10-08（UTC）；负责人 @winston（AI 执行）。§1–25 为历史，最新检查见 §26。
+> **第一块完成一次真实求解，数值与完整平面几何通过，五质量门槛通过两项。** 三项分布指标仍失败，未采用新映射；下一项为保留两个最大值硬约束的质量目标评审。统一状态见[八类问题清单](./pet-character-method-validation.md)。
 > [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -926,3 +926,39 @@ App **`dd9c1be`** 保存两个工具/测试文件与 **21 份证据**：[完整�
 App **`53b33fc`** 保存两个工具/测试文件和 **30 份证据**：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/README.md) · [批次结果](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/batch-results.json) · [方法反思](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-compensated-coordinate-admission-20260929/method-review.md)。2,254 项受保护文件保持，最终双仓远端、用户树和工时见私有 `sprout-compensated-coordinate-admission-20260929/receipt.json`。
 
 原有效映射、136 面局部改善、293 站位保持。44 切面缺口、完整身体、五接口、S0、身份、32 骨和动画仍未完成。
+
+## 26. CHANGE-111：真实可行性求解完成，第一块质量仍未通过
+
+### 26.1 唯一真实调用与结果
+
+05:08:56 UTC 开始（Asia/Singapore 13:08:56），05:38:56 检查点，06:08:56 总截止。八组初始控制通过后，唯一真实调用于 05:17:15 UTC 返回 `Solved`，21 内部迭代、0.993880 秒，诊断余量 t=2.50327×10⁻¹³。外部监控覆盖构造与求解，耗时 2.058 秒，采样最大进程树 RSS 175,030,272 字节，未超 300 秒/8 GiB。原矩阵未重新组装，只追加 phase-I 列/行；原 4,122 点、8,067 面、175 边界、旋转、正下界及五门槛均保持。
+
+| 原指标 | 原有效初值 | 本轮输出 | 原上限 | 判定 |
+|---|---:|---:|---:|---|
+| P95 方向比 | 26.25496 | 14.39575 | 4.95994 | 未通过 |
+| P95 归一化拉伸 | 3.04524 | 3.46077 | 2.81921 | 未通过，退步 13.65% |
+| 最大方向比 | 223.48206 | 89.49902 | 99.22592 | 通过，改善 59.95% |
+| 最大归一化拉伸 | 15.62916 | 10.80356 | 10.86481 | 通过，改善 30.88% |
+| 拉伸 > 2 源面积比例 | 22.79098% | 22.53264% | 17.03458% | 未通过 |
+
+这五项是第一块的既定投入门槛，不是正式角色验收。未为门槛增加求解容差。**已有真实映射指标进展，但整体 2/5，输出未采用。** 原有效映射继续为 CHANGE-104；本轮坐标仅以不可变失败证据保存，不成为后续初值或生产候选。
+
+### 26.2 保存、数值与完整几何
+
+返回的 x/s/z、双分量坐标及辅助高低分量先保存再诊断。8,244 个坐标和 24,201 个辅助加法精确保持；175 固定边界精确不变。全部 8,067 面独立 80 位复核：导数锥最大误差 6.7771×10⁻¹⁴，原稀疏表达最大误差 9.8782×10⁻¹³，均低于原 10⁻¹⁰；独立源基底谱差 1.5097×10⁻¹³，低于原 10⁻⁸。原未放松锥的最小余量 0.00197939，原始 primal/dual ∞ 残差分别 9.0958×10⁻¹¹ / 2.3568×10⁻¹²；不把近似对偶目标宣称为严格下界。
+
+有向圆盘拓扑、简单边界、全部面正向、精确有理数重叠检查通过；106,036 对宽相候选中零正面积重叠。12,032 个原目标支撑单元完整覆盖，原来源绑定与 169 个继承接缝查询通过。固定凸子集在本次输出上确实可行，但另外三项质量失败仍阻断接受。
+
+[独立数值及五指标](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/independent-check.json) · [完整几何](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/geometry-check.json) · [原 UV 对比图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/phase-one-review.png) · [失败面定位](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/quality-failure-faces.json.gz)。方向比超过 P95 cap 的区域占源面积 47.65%，归一化拉伸超过 P95 cap 占 9.73%；分布于全部 11 个原来源面，不能仅用局部最大值改善概括问题已解决。
+
+### 26.3 控制偏差和下一项评审
+
+本轮八组初始控制、三次小型解析锥求解通过；代码复查发现“可行三角形”未绑定实际几何映射，补做预算内第四次恒等三角形小样，通过。**这个检查发生在真实求解之后，属于执行顺序偏差。** 原日志和历史顺序保持，真实求解没有补跑；不把事后补证写成事前通过。详见[代码复查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/code-review.json)及[补充控制](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/geometric-control-result.json)。总计四次小型求解、一次真实求解，无未处理 P0/P1 发现。
+
+当前目标只最小化 t，不直接优化两个 P95 或超限面积。[下一项质量目标评审](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/next-step-review.md)提出保留原最大值硬约束，去掉 t，加入三类面积加权超限代理；未执行、未验证，不作为成功保证。代理代价下降也可能与真实分布指标改善不一致，必须先补充对应负控制，再按原五门槛和完整几何验收。不扫描权重、旋转、下界或阈值，不扩展其余块；需要单独冻结下一轮预算与输入。
+
+### 26.4 归档和生产状态
+
+App **`1d32f3f`** 已推送三个工具/测试文件及 43 份归档文件（含六份过程脚本、执行工具快照和 manifest）：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/README.md) · [最终结论](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/conclusion.json) · [资源监控](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/watchdog-result.json)。三份锁定 wheel 仅在新私有 vendor 目录安装一次，许可证和指纹已登记技术基线，未改变既有 Python 环境、App 运行时或基础设施。
+
+原 3,834 项受保护文件的保全、双仓远端与用户树核查结果由私有 `sprout-phase-one-feasibility-20261008/receipt.json` 记录。原有效映射、136 面局部改善、293 接缝站位及正式资源保持；44 切面缺口、四边样件、完整身体、五接口、S0、身份、32 骨、权重和动画仍未完成。角色生产及版本阶段不推进。

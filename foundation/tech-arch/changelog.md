@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-10-08 | v1.0.0 | 登记第一块有界可行性求解的隔离依赖
+
+**变更内容**：CHANGE-111 在新私有 vendor 安装 Clarabel 0.11.1（Apache-2.0）、cffi 2.0.0（MIT）、pycparser 3.0（BSD-3-Clause），三份 wheel 哈希及实际许可证/元数据指纹归档。已有 Python 3.14.5、NumPy 2.4.3、SciPy 1.17.1 只读复用，原环境保持。
+**结果与边界**：一次真实求解的数值/完整平面几何通过，两个最大值通过、三项分布质量失败，结果未采用。第三方代码/二进制不入仓或随 App 分发，无 App 运行时、基础设施或配置变更；沿用 ADR-003，无新 ADR。
+**影响文档**：[overview.md](./overview.md)、[版本源布局 §26](../../versions/v1.0.0/engineering/pet-character-source-layout.md)、版本技术方案与 CHANGES.md；App 实验 `sprout-phase-one-feasibility-20261008` 保存包和执行证据。
+
+---
+
 ## 2026-09-20 | v1.0.0 | CGAL 本机输入入口准备结项
 
 **变更内容**：CHANGE-079 登记 CGAL 6.2.1 官方发行包和复用的 GCC/Boost/GMP/MPFR 来源、版本与许可；编译入口最终被 Xcode 许可拒绝阻塞，未运行三角化。选定平面输入也因 3 处固定边交叉被拒绝。新增 Python 预检/边检查器及有界档案，零新角色网格。
