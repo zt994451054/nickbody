@@ -666,3 +666,6 @@ App `7af2ec4` 完成三段源边界只读复核，给出四点局部切口 64→
 App `1d32f3f` 记录唯一真实调用及全部输出：21 内部迭代、0.993880 秒，两个最大值通过原门槛，三项分布质量失败；独立数值/完整平面几何通过，未采用新映射。八组初始控制通过，预算内第四次实际三角形绑定小样在真实求解之后补齐，执行顺序偏差已如实归档。完整结果和下一项质量目标评审见[源布局 §26](./pet-character-source-layout.md)及[归档入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/README.md)。
 
 本轮新私有 vendor 仅安装三份哈希锁定 wheel：Clarabel 0.11.1（Apache-2.0）、cffi 2.0.0（MIT）、pycparser 3.0（BSD-3-Clause）；已有 Python 3.14.5、NumPy 2.4.3、SciPy 1.17.1 只读复用。具体许可证与指纹见[依赖证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/installed-dependency-evidence.json)，同步登记技术架构基线。依然是 ADR-003 下的离线隔离工具，无 App 运行时、基础设施或配置变更，不新增 ADR；第三方 wheel/源码/二进制均不入仓或随 App 分发。
+
+
+CHANGE-112（2026-10-09 UTC，本地次日结项）承接用户整体复盘后授权，执行一次代表性髋裆分支端到端隔离施工前提检查。两个五面星在当前62原面盘外各缺4邻面及目标对应；真实双groin支撑未制作，完整1783原目标三角足迹不覆盖现有审核工具的髋核心和一圈身份。目标 raw REST 坐标框架存在，但未完成生产 A-pose/身份。按事前停止条件结项，零新求解/布局/网格、Blender、付费、安装或模型改善；不自动安排新的数值/前提回合，不降低正式合同或修改运行时架构。原有效对应、136面参考改善和正式资源保持，当前输入变体关闭；完整生产角色仍阻塞。详见[源布局 §27](./pet-character-source-layout.md)及[归档](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/README.md)。

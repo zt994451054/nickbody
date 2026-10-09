@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-111 第一块一次真实求解的数值和完整平面几何通过，两个最大值达标、三项分布质量失败，未采用新映射。见 §8.0.89 和[源布局 §26](./pet-character-source-layout.md)。完整网络、四边样件及生产门禁仍未通过。
+> 当前状态：CHANGE-112 代表性分支的完整邻圈对应、实际髋裆支撑和目标保护区覆盖前提失败，零新求解/布局/网格。当前输入变体结项，不自动追加研究；无模型新增改善。见 §8.0.90 和[源布局 §27](./pet-character-source-layout.md)。完整身体、身份、32 骨和动画仍未通过。
 > 后续依据：[完整重建决策与工单](./pet-character-production-rebuild-decision.md)。B1、纯权重路线和更早关闭路线保持冻结；不开放旧余额。原生产合同与正式资源不变，不宣称整体无解，也不承诺当前 AI 能独立完成尚未展示的建模能力。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
@@ -1993,3 +1993,10 @@ App `466be3a` 保存两个工具/测试文件及 23 份证据。下一项只做�
 一次真实调用 `Solved`，21 内部迭代约 0.994 秒；保存/独立数值及完整平面几何通过。最大方向比 89.49902、最大归一化拉伸 10.80356 均通过原门槛；两个 P95 与超限面积失败，未采用本轮映射，不建立四边样件或候选资产。
 
 App `1d32f3f` 已推送三份工具/测试和 43 份归档文件。八组初始控制通过，第四次几何绑定小样在真实求解后补齐且通过，顺序偏差已记录，未补跑。下一项仅评审保持最大值硬约束的分布质量目标；详细结果见[源布局 §26](./pet-character-source-layout.md)和[实测归档](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/README.md)。原有效映射、136 面局部改善和 293 站位保持；44 切面缺口、完整身体/五接口、S0/身份、32 骨、蒙皮与动画仍未完成。
+
+
+### 8.0.90 CHANGE-112：代表性分支施工因输入前提停止
+
+用户批准同轮端到端隔离实物验证，并允许先于五项研究映射指标全过作诊断；原指标、正式合同及失败记录保持。完整原源邻域、原面对应支持和目标坐标/保护区独立检查证明：62 面盘的两个五面星均缺盘外四面及其目标对应；真实双 groin 支撑未制作；完整 1,783 原目标三角足迹不覆盖既有工具髋核心及一圈身份。
+
+零新映射求解/布局/网格、Blender、付费或生产资产，无模型改善。按事前条件结项并关闭当前输入变体，不自动再开前提、扩域、精度或优化器回合；不外推所有 DCC/AI 方法无解。髋裆不属现行 scoped_wip profile，不进入 normalizer/候选/S0/身份/骨架。原有效对应、136 面参考改善、293 站位及正式资源保持；全文见[源布局 §27](./pet-character-source-layout.md)和[本轮结项](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/README.md)。

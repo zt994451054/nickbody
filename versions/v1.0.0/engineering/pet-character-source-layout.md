@@ -1,8 +1,8 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-111，2026-10-08（UTC）；负责人 @winston（AI 执行）。§1–25 为历史，最新检查见 §26。
-> **第一块完成一次真实求解，数值与完整平面几何通过，五质量门槛通过两项。** 三项分布指标仍失败，未采用新映射；下一项为保留两个最大值硬约束的质量目标评审。统一状态见[八类问题清单](./pet-character-method-validation.md)。
-> [源布局图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [原始数据与检查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/README.md)
+> 最新 CHANGE-112，2026-10-09 UTC／本地次日结项；负责人 @winston（AI 执行）。§1–26 为历史，最新检查见 §27。
+> **代表性分支施工前提失败，零新求解/布局/网格，原模型未改善。** 完整邻圈无目标对应、真实支撑未制作、目标足迹不覆盖髋核心；当前输入变体结项，不再自动追加研究。原五项及正式合同保持，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> [源布局历史图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [本轮原源邻域图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/branch-prerequisite-review.png)
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
 
@@ -962,3 +962,37 @@ App **`53b33fc`** 保存两个工具/测试文件和 **30 份证据**：[完整�
 App **`1d32f3f`** 已推送三个工具/测试文件及 43 份归档文件（含六份过程脚本、执行工具快照和 manifest）：[完整入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/README.md) · [最终结论](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/conclusion.json) · [资源监控](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/watchdog-result.json)。三份锁定 wheel 仅在新私有 vendor 目录安装一次，许可证和指纹已登记技术基线，未改变既有 Python 环境、App 运行时或基础设施。
 
 原 3,834 项受保护文件的保全、双仓远端与用户树核查结果由私有 `sprout-phase-one-feasibility-20261008/receipt.json` 记录。原有效映射、136 面局部改善、293 接缝站位及正式资源保持；44 切面缺口、四边样件、完整身体、五接口、S0、身份、32 骨、权重和动画仍未完成。角色生产及版本阶段不推进。
+
+
+## 27. CHANGE-112：代表性分支前提不成立，本轮停止施工
+
+用户在整体复盘后授权一次端到端实物验证。本轮已先记录 CHANGE-112，再在同一 3 小时上限内落实完整分支、真实邻域、来源、髋裆支撑与目标保护区；允许隔离施工诊断先于五项研究映射指标全过，但不改原数值或正式合同。**前提失败，零新对应求解、布局、网格、Blender、付费或模型改善。**
+
+### 27.1 两个完整五面星都缺邻域对应
+
+已有 62 原面盘含原顶点 **11360 / 8677** 的完整五面星，但完整共享顶点邻圈各有四面在盘外：
+
+| 分支原顶点 | 缺共享边邻圈面 | 缺共享顶点邻圈面 |
+|---|---|---|
+| 11360 | 12102、12174 | 10820、12102、12174、12179 |
+| 8677 | 9395、9467 | 8113、9395、9467、9472 |
+
+“共享边邻圈”指与星形面共享整条原边的外面；“共享顶点邻圈”包含所有共享原角点的外面，二者分别核查，不混用。各局部星＋顶点邻圈为 20 原面；在当前 62 面基线上补一侧需 66 面、两侧 70 面，不声称这是所有施工方法的最小面数。源几何存在，**新增八面没有既有目标对应**。
+
+CHANGE-098 触及 62 原面，不等于 62 面完整覆盖；中央完整面是 18。CHANGE-104 第一条带涉及 11；CHANGE-102 四条带并集是 **44** 切面，是该 62 面盘的子集。补算其余三块只填盘内部分，不能补出盘外邻圈。数值 `12102` 在外链节点/顶点字段出现，不是同值原面已绑定的证据。完整源网格的独立点/边关联集合重建确认所有缺面，并逐项验证 70 个绘图原面、98 个原坐标。
+
+### 27.2 参考盘及曲线不足以代表髋关节施工
+
+每侧已有 groin 参考线仅一条，含面内插值节点；未形成每侧至少两条实际四边边路径及连续支撑面带。原 `source-linked-layout` 的支撑及目标布点未完成状态保持。
+
+目标坐标框架已经存在：历史身份原件的 Blender raw REST 捕获统一到 1.10 m，未做 Head=0.90 或 A-pose 身份拟合。可在此坐标下沿用审核脚本的关节区做定位诊断，不能对局部片另缩放，或把人体源坐标直接套到小草关节区。
+
+已有完整目标原面足迹为 **1,783** 三角（旧盘 1,415，加四条带 119/64/65/120）。按现有工具髋区有限圆柱谓词，其原面足迹覆盖两侧核心点 **0/350、0/344**；核心＋一原边邻圈点 **0/433、0/424**，相关原三角 **0/969、0/940**。这是身份覆盖事实，不是对所有三角内部与关节区绝不相交的证明，也不认证正式解剖或未来四边网格一圈。工具既有左右名称保留，未裁定生产坐标冲突。
+
+### 27.3 本轮结项与自动投入停止
+
+**“补齐既有四图表后直接施工代表性分支”这一输入变体关闭。** 不把 11 面规则链、五面星或前提报告当完整髋关节实物；不自动再开精度、优化器或扩域研究回合，不滚动重置或结转本轮余额。该结论只针对当前输入，不证明所有面流迁移、DCC 或 AI 方法无解。
+
+髋裆不在当前仅肩左右的 `scoped_wip` profile 中，零候选/S0/身份/骨架推进。原有效对应、136 面参考改善、293 站位及正式资源保持，CHANGE-111 输出仍不采用；三平方代理提案不自动接续。完整身体、五接口、闭合身份评估器、32 骨、权重和动作仍待完成。
+
+[本轮结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/README.md) · [完整源邻域](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/scope-preflight.json) · [独立对应支持](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/mapping-input-preflight.json) · [完整目标足迹](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/semantic-extended-footprint.json) · [原源邻域图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/branch-prerequisite-review.png)。具体脚本、绘图运行时失败及 SHA 均保存；未安装新依赖或改容差。起点及总截止见 CHANGE-112，最终保全/双仓远端/工时见私有同名目录 `receipt.json`。
