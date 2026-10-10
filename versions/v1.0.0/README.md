@@ -33,7 +33,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0核心链路已跑通。CHANGE-115已辨明髋枢轴/表面腿根/变形关系，形成592原quad整体重布及测量语义提案，待具体审批；正式合同未改，零新模型改善。原rev1未验收形体、有效对应、136面参考改善及293站位保持；完整身体/S0/身份/32骨及动画、养成、Onboarding、StoreKit、统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | P0核心链路已跑通。CHANGE-116独立hip v3施工1初稿+2修订均拒绝；最终内部双向有限P95改善至5.3257/5.2118mm，但36折面/131自交对/76坏AR面及髋裆/左保护仍失败，修订额度用尽，不继续模型轮。正式S0/CLI仍v2，原骨架/资源及CHANGE-113未验收形体保持；完整身体/S0/身份/32骨及动画、养成、Onboarding、StoreKit、统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -68,12 +68,12 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-115见§8.0.93 |
-| 研发 | [髋枢轴、表面腿根与修复设计](./engineering/pet-hip-repair-design.md) | 方案已形成；具体合同/施工审批待完成 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-116见§8.0.94 |
+| 研发 | [髋枢轴、表面腿根与修复设计](./engineering/pet-hip-repair-design.md) | CHANGE-115冻结设计；CHANGE-116实物初稿+2修订均失败、额度用尽 |
 | 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；最新对应工作由顶部链接接续 |
 | 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 保留历史局部证据；最新对应工作由顶部链接接续 |
-| 研发 | [剩余八类问题：方法与有效性验证](./engineering/pet-character-method-validation.md) | 当前统一入口；§31：关系与修复方案已明确，待具体审批 |
-| 研发 | [原始面流布局与施工缺口](./engineering/pet-character-source-layout.md) | §30：592面整体重布方案，替换连接尚未作者 |
+| 研发 | [剩余八类问题：方法与有效性验证](./engineering/pet-character-method-validation.md) | 当前统一入口；§32：局部贴合改善，三份实物联合验收均失败 |
+| 研发 | [原始面流布局与施工缺口](./engineering/pet-character-source-layout.md) | §31：真实512新quad+336原面，最终失败、停止模型修订 |
 | 研发 | [外部四边网格方法筛选](./engineering/pet-character-quad-method-research.md) | 历史方法研究；[核心约束最新结果 §43](./engineering/pet-character-core-constraint-design.md) |
 | 研发 | [结构施工结果与下一步](./engineering/pet-knee-structure-review.md) | §9–10 保留 B1 失败证据；§11 为后续决策结论 |
 | 研发 | [R1 方案收敛结论](./engineering/pet-knee-r1-decision.md) | 当前纯权重路线关闭，R2/R3 不启动 |

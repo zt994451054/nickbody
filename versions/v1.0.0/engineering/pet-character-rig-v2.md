@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-115已辨明内部髋枢轴、表面腿根与变形过渡，形成592原quad整体重布及hip测量语义提案，待具体审批；见§8.0.93及[修复设计](./pet-hip-repair-design.md)。正式v2合同未改，零新候选/模型改善，原rev1未验收基线保留；全身/S0/身份/32骨和动画仍阻塞。
+> 当前状态：CHANGE-116独立hip v3诊断和592原quad域施工已完成1初稿+2实际修订，三份实物均拒绝；最终局部贴合改善但几何/髋裆/左实际保护仍失败，修订额度用尽，不继续改mesh，见§8.0.94。[修复设计](./pet-hip-repair-design.md)保持CHANGE-115冻结字节。正式S0/CLI仍v2、原骨架/资源保持；全身/S0/身份/32骨和动画仍阻塞。
 > 后续依据：[完整重建决策与工单](./pet-character-production-rebuild-decision.md)。B1、纯权重路线和更早关闭路线保持冻结；不开放旧余额。原生产合同与正式资源不变，不宣称整体无解，也不承诺当前 AI 能独立完成尚未展示的建模能力。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
@@ -2018,3 +2018,19 @@ App `1d32f3f` 已推送三份工具/测试和 43 份归档文件。八组初始�
 实际历史32骨髋点与冻结合同一致；表面接环1↔5/97↔101更低，下两旧圈跨膝，不能重标四髋环。刚体运动量测不等于蒙皮预测。固定原面切向仍有约0.641低对齐，单换frame或插环均不构成修复。
 
 [具体设计](./pet-hip-repair-design.md)冻结592原quad工作域、49/5/101接口与336域外腿面；首选四环各28点，整体作者接环/双支撑/安全极点位置和实际保护并集。替换quad表、上腹目标点、raw参考场及新mask尚未作者。hip表面frame与有向切向规则为待审批提案，不激活当前v2机器合同或Skill，不提升S0/身份/rig。零新网格、骨架、权重或动作，完整角色仍阻塞。
+
+### 8.0.94 CHANGE-116：独立 hip v3 实物验收失败，修订额度用尽
+
+用户批准设计 `70a8aa…` 与提案 `ee5e8dd…`，实施单独 `hip_branch_diagnostic`。新[完整合同快照](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/contract/sprout-rig-v2-static-topology-contract-v3.json) SHA `dcd9b328…`、[测量 API](../../../engineering/workspace/macos-app/tools/pet-model/rig_v2_hip_measurement_v3.py) SHA `6905ed0c…`；旧 v2 合同 SHA `4cc50d3c…` 和正式 assessor/S0 不替换，CHANGE-115 原设计字节保持。
+
+髋环使用获批独立表面中心及旧观察轴；原骨 pivot/head/tail/roll 不动。参考 `T=normalize(b−(b·n)n)`，`n` 来自施工前冻结 raw 原三角的完整邻面面积法向与 barycentric 插值，connector 按骨盆→腿接口在两端有向 dot≥.85。禁止候选法向反求参照。缺完整 raw NPZ/原三角/锚点/物理 region 或投影近零则 fail closed；完整输入校验与物理关联校准分别判定。
+
+保护旧 core、冻结 attachment/groin、实际点落入固定物理盒及真实一圈的并集；不得收窄 mask、改名排除或豁免人工截口极点。groin 真实双路径/相邻 quad-strip 与 joint-ring 弧排除仍要求保留。严格 AR≤3.5、自交/折面/T点、固定样本贴合及来源独立审核，不能由 dot/路由子项通过替代。
+
+1初稿+2实际修订均保存895点/848quad：512新作者面 `sourceFaceId=-1`，336原面/392旧点及原许可源中的928面/975点选区独立实核，T点及rig/权重/动作/modifier等均0。初稿为24折面/22全对角自交对/44坏AR面；修订1虽六段方向与双groin子项过、保护0/0，仍21折面/52自交对/98坏AR面及圈覆盖失败，max AR105.3758，拒绝。
+
+最终修订2为36折面/131同侧自交对/76坏AR面，max AR31.6555、审计最小角约0.3445°；rows4/5/6角覆盖不足，rows4/5周向边子项失败，六段有向connector全失败（最差左−.2557/右−.1952）。双groin的row2内侧margin左−2.607/右−3.660mm，row3过，双路径合并仍失败；左保护真实一圈包含前六价点858，右0，不能收窄盒或排除极点。全部版本不采用为生产候选。
+
+内部双向有限P95初稿22.3412/23.0401→修订1 6.7550/7.8547→最终5.3257/5.2118mm，属于局部贴合改善。最终895锚点数值回放及显式recipe重构一致，但全表对应gap P95/max13.1034/30.9595mm、hip点9.7372/14.0449mm仅记录，不认证物理关联/变形。30项v3纯控制和最终builder9项表控制通过是工具证据；旧执行代码有精确快照，历史报告不回填。
+
+实际模型修订额度已用尽，停止改mesh，不自动新建第二轮。04:06:44–07:06:44 UTC总预算含规则、参考、施工、验收、归档与双仓推送，不结转额度。旧失败、关闭路线、正式五接口/S0/身份和32骨/动作门禁保持；diagnostic 的 `staticGateS0Passed`/`riggingAllowed`/`productionCandidate` 均 false，完整角色仍阻塞。[施工记录 §31](./pet-character-source-layout.md) · [最终v3实物复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-hip-v3-review.json) · [方法验证 §32](./pet-character-method-validation.md)。

@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-115，2026-10-10；负责人 @winston（AI执行）。§1–29为历史，当前设计关系和具体施工范围见§30及[髋修复设计](./pet-hip-repair-design.md)。
-> 保形重布线预检未取得四环/真实条带及双支撑施工见证，零新候选/模型改善。原源扩域可以按真实quad选择，但新增坐标和保护区未验收；所测平面/唯一非平面guide失败不证明一般无解。CHANGE-113 rev1保留，正式合同与完整生产阻塞状态保持。
+> 最新CHANGE-116，2026-10-10；负责人@winston（AI执行）。§1–30为历史，1初稿+2实际修订与最终失败见§31，修订额度已用尽，不再改mesh。[髋修复设计](./pet-hip-repair-design.md)保持CHANGE-115冻结字节。
+> 512新作者quad接回336原面，内部贴合P95改善但三份实物均失败；固定场/895锚点可复现不等于物理关联/变形已认证。CHANGE-113 rev1基线、旧失败与关闭路线保持；新v3只作hip分支诊断，正式S0/CLI仍v2，完整生产仍阻塞。
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
 
@@ -1039,3 +1039,27 @@ rev2仅对6条实际完整对边链一次2/3分段，保留895旧点，276新增
 有限4×56插环诊断仍有AR约8.73、旧观察轴connector约0.46，原局部插点产生T点；投影固定原面切向后最差仍约0.641。该构造不采用，更多行密度不能修方向。新方案以4×28接口匹配、整体双支撑和极点迁移为施工目标，但实际新quad表/目标点/保护区未作者，不能称模型修好。
 
 [关系、规则提案和施工顺序](./pet-hip-repair-design.md) · [592面完整原IDs](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-semantic-repair-20261010/topology-review/attachment-scope-supplement.json)。机器合同修改和一次有界新施工仍待具体审批，当前合同/原源/旧失败及正式资源保持。
+
+## 31. CHANGE-116：获批规则下的完整分叉施工未通过
+
+用户批准独立髋测量调整与同轮三小时施工。04:06:44 UTC起、05:06:44检查点、07:06:44截止，包含规则/输入、实物、独立验收、归档和双仓推送。1初稿+2实际修订均已保存和审核，三份均拒绝，模型施工结项；修订额度用尽，不再改mesh、不结转预算或自动开下一轮。
+
+已作者完整连接表：在原许可源中的928quad/975点选区替换获批592原quad域，保留336域外原quad，新增512作者quad；三份实物均895点/848quad、单组件、χ−1、边界40/28/28。双侧4×28声明髋环、每侧两条9点groin路径均为真实连边/quad-strip；原5/101腿接口保留，跨膝旧环不重标髋环。**512新作者面sourceFaceId为−1，不称512原许可面；源原坐标、Sprout作者坐标和raw锚点分别绑定。** 928面/975点选区原身份、336保留原面/392旧点和保存后作者表exact独立核验；不能由来源、面数/χ推导质量通过。
+
+新增 v3 完整合同快照与 hip-only API，只用于 `hip_branch_diagnostic`；正式 CLI/S0 保持 v2，原骨架不移动。固定完整 raw 三角场、原 triangle+bary 锚点及物理区域，在新mesh前冻结；保护旧core、attachment/groin、实际point固定物理盒和真实一圈并集，不豁免截口极点。全局旧失败保留，几何/形体和物理锚点关联不由有向 dot≥.85 自动认可。
+
+保存后独立实物结果如下；P95按同一参考域的内部Z [.11,.33]有限采样计算，顺序为mesh→raw/raw→mesh，样本加权而非面积加权。
+
+| 版本 | 双对角折面 | 全四组合自交对 | AR>3.5面 | max AR | 内部双向P95 mm | 综合结果 |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| 初稿 | 24 | 22 | 44 | 19.8024 | 22.3412 / 23.0401 | 拒绝 |
+| 修订1 | 21 | 52 | 98 | 105.3758 | 6.7550 / 7.8547 | 拒绝 |
+| 最终修订2 | 36 | 131 | 76 | 31.6555 | 5.3257 / 5.2118 | 拒绝 |
+
+修订1六段有向connector及双groin子项通过、保护pole0/0，但圈覆盖与严格几何失败，不能采用。最终rows4/5/6覆盖<.95，rows4/5周向edgeDotP95失败；六段有向connector全失败，最差左−.2557/右−.1952。groin row2内侧margin左−2.607/右−3.660mm，row3通过，双路径合并不通过。左保护真实一圈仍触及前六价点858，右0；不得缩盒、删声明或豁免边界/极点。131交对全部同侧，主要集中bands2–6、跨腿0仍属自交失败；审计最小角约.3445°。全部版本T点0、无rig/权重/动作/modifier，不能抵消失败。
+
+内部有限贴合P95取得局部改善，最终full-domain双向P95为5.0560/5.7000mm；该量测不是连续Hausdorff、面积误差、身份或变形认证，raw REST不等于正式A-pose装配。初稿独立校准发现cut profile、station与medial前后身份缺口，原记录保留。最终更正recipe/query后895triangle+bary回放exact，literal重构最大2.78×10⁻¹⁷m、Z/query差最大5.55×10⁻¹⁷m；但全表声明对应gap P95/max13.1034/30.9595mm、hip点9.7372/14.0449mm只记录，**数值/来源一致不认证物理关联或联合施工通过。三份新实物均不采用为生产候选，CHANGE-113原未验收形体基线不替换。**
+
+v3规则控制30项通过，最终builder实际表控制9项通过，3App工具与私有helper AST核对通过；这些不是实物通过。新renderer输入守卫改显式异常，旧渲染/首次builder报告绑定的原代码快照精确保留，不回填旧报告。旧合同/设计/骨架SHA保持；两处Skill仅新增独立诊断指针/失败状态，原v2 reference不改。正式全身/五接口/S0/身份/rig仍未通过，不使用shoulder scoped_wip profile。
+
+归档及双仓保全/推送在同轮时限收尾，提交/远端事实由验证和私有同名receipt记录，不从模型结项推定。证据：[本轮入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/README.md) · [最终实物审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-independent-review-summary.json) · [v3髋/支撑/保护](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-hip-v3-review.json) · [来源实核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-source-provenance.json) · [有限双向贴合](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/fit-revision2/fit-report.json) · [锚点关联复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/field-authoring/author-anchor-binding-review-revision2.json) · [最终工具质量](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/rule-review/tool-quality-review-final.json) · [Rig边界 §8.0.94](./pet-character-rig-v2.md) · [方法验证 §32](./pet-character-method-validation.md)。

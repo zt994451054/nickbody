@@ -5,7 +5,7 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-10-08
+> 最后更新：2026-10-10
 
 ---
 
@@ -64,6 +64,8 @@ CHANGE-079 准备 CGAL 6.2.1 的本机离线输入桥接，官方 library 压缩
 CHANGE-111 为第一块的一次有界可行性求解，在新私有 vendor 目录安装 Clarabel 0.11.1（Apache-2.0）、cffi 2.0.0（MIT）、pycparser 3.0（BSD-3-Clause）三份锁定 wheel；只读复用已有 Python 3.14.5、NumPy 2.4.3、SciPy 1.17.1。
 实际 wheel 哈希、已安装许可/元数据指纹及安装记录保存在 App `character_pipeline/sprout/v2/work/experiments/sprout-phase-one-feasibility-20261008/`。第三方 wheel、源码、二进制和 vendor 留在私有环境，不入仓或随 App 分发；不以主许可证标签替代可重新分发认证。
 一次求解的数值与平面几何通过，但五质量门槛仅通过两项，结果未采用，不引入生产 DCC 选型或资产。仍沿用 ADR-003 的离线隔离职责，无 App 运行时、基础设施或配置变更，无新 ADR；`local-env.md` 纯本地模式不变。
+
+CHANGE-116 已实施获批的髋表面frame与固定raw切向独立v3量测及 `hip_branch_diagnostic` API；正式CLI/S0仍使用旧v2，原骨枢轴、权重/动作与正式资源保持。592原quad域整体作者后，1初稿+2实际修订均失败；最终36折面、131自交对、76面AR超限，髋圈/条带、双groin及左实际保护一圈仍失败。内部双向有限P95改善至5.3257/5.2118mm和895锚点exact回放不构成物理关联/变形验收，不采用为生产候选；修订额度用尽，不再改mesh或自动新开模型轮。三小时含归档及双仓推送，无新运行时/基础设施/依赖或架构边界，不新建ADR。详见[版本源布局 §31](../../versions/v1.0.0/engineering/pet-character-source-layout.md)。
 
 ---
 
@@ -176,7 +178,7 @@ graph TB
 | 跟练时姿态推理帧率 | 待 M1 实测（目标 ≥15fps）| MacBook Air M1 基线机型 | v1.0.0 |
 | 后台常驻 CPU 占用 | 待实测（目标 <1%）| 宠物闲时动画 | v1.0.0 |
 | Vision 肩部关键点稳定性 | 待 M1 bake-off | 坐姿近距（0.5–1m）| v1.0.0 |
-| Rig v2 变形质量 | 生产Rig尚未建立；CHANGE-115已区分髋枢轴/表面腿根/变形，592面整体重布及hip语义提案待审批；正式合同未改，零新模型改善 | 历史430样本及CHANGE-113实物保持；新增只读关系/实际592面范围与刚体需求证据，不作为蒙皮认证；production Gate 0–4未过 | v1.0.0 |
+| Rig v2 变形质量 | 生产Rig尚未建立；CHANGE-116初稿+2修订均失败，最终贴合局部改善但几何/髋裆/左保护仍不合格；修订额度已用尽，正式S0/CLI仍v2 | 历史430样本及CHANGE-113基线保持；895固定锚点数值回放不认证物理关联或蒙皮，production Gate 0–4未过 | v1.0.0 |
 
 ---
 
