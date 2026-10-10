@@ -1,7 +1,7 @@
 # v1.0.0
 
 
-**最新角色状态（CHANGE-117）**：根因已定位，连续原表面路径与共同裆缝已核验；施工前提仍未完整，零新Blend，生产角色保持阻塞。[修复设计](./engineering/pet-hip-embedding-repair-design.md)，Rig§8.0.95 / 源布局§32 / 方法§33。
+**最新角色状态（CHANGE-118，预检未通过）**：895/848完整连接及最新两份895行坐标CSV已精确回读；八份完整点表均被拒绝。最新最佳/末态为29折/6交/32坏AR与33折/5交/37坏AR，四环/支撑/保护通过仍有短边挤瘪，零新Blend。969/922长缝细分连接及schema已独立核查，尚无新图完整坐标和物理保护通过；生产角色保持阻塞。[施工记录](./engineering/pet-hip-shared-chart-construction.md)，Rig§8.0.96 / 源布局§33 / 方法§34。
 
 ## 版本信息
 
@@ -73,6 +73,7 @@
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
 | 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；CHANGE-116见§8.0.94 |
 | 研发 | [髋裆连续映射与共同边界修复](./engineering/pet-hip-embedding-repair-design.md) | CHANGE-117根因/输入已验证；完整连接与几何施工前提未过 |
+| 研发 | [共享髋裆完整施工与预检](./engineering/pet-hip-shared-chart-construction.md) | CHANGE-118进行中；腿根局部通过，上部完整预检未过 |
 | 研发 | [髋枢轴、表面腿根与修复设计](./engineering/pet-hip-repair-design.md) | CHANGE-115冻结设计；CHANGE-116实物初稿+2修订均失败、额度用尽 |
 | 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；最新对应工作由顶部链接接续 |
 | 研发 | [真实肩腋参考与迁移设计](./engineering/pet-character-shoulder-migration-study.md) | 保留历史局部证据；最新对应工作由顶部链接接续 |
