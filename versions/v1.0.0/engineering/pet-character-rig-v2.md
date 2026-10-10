@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-113已交真实髋裆样件，形体内部双向P95约20→5.5mm；面形、接受髋环及groin支撑仍未过。rev1作为未验收形体基线，rev2不采用连接；见§8.0.91及[源布局§28](./pet-character-source-layout.md)。完整身体/身份/32骨和动画仍阻塞。
+> 当前状态：CHANGE-114保形重布线在空间/源图预检停止，尚无四环/连续条带及双支撑施工见证，零新候选/模型改善。参考检查场景不是网格初稿；见§8.0.92及[源布局§29](./pet-character-source-layout.md)。原rev1形体基线保留，完整身体/身份/32骨和动画仍阻塞。
 > 后续依据：[完整重建决策与工单](./pet-character-production-rebuild-decision.md)。B1、纯权重路线和更早关闭路线保持冻结；不开放旧余额。原生产合同与正式资源不变，不宣称整体无解，也不承诺当前 AI 能独立完成尚未展示的建模能力。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
@@ -2006,3 +2006,9 @@ App `1d32f3f` 已推送三份工具/测试和 43 份归档文件。八组初始�
 一份获批源848 quad初稿和两份实际修订已完成；rev1有限cage保持全部Z/348低位点，内部双向P95降至5.417/5.545mm。rev2通过完整对边链形成1116 quad且895旧点保持，max AR降至5.095，但53child超3.5，并给髋环原好面新增面形失败。保留rev1为未验收形体基线，rev2仅留诊断不采用。
 
 三份实物单组件、三截口Euler−1，双diagonal折面/四组合自交/T点均0。来源/父身份真实核验；两侧接受髋环仍0、groin所需双支撑仍空，原8内部极点及人工上截口触及hip核心/一圈的问题保留。髋裆不属肩左右scoped_wip，无formal candidate/S0/身份/骨架/资源切换；全部正式接口、关节与身份保持。两次修订已用完，结项不自动新开模型轮。[实际样件与原尺寸审查](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/README.md) · [详细结果](./pet-character-source-layout.md#28-change-113真实3d形体改善髋裆面流仍未合格)。
+
+### 8.0.92 CHANGE-114：保形髋裆重布线未取得开工见证
+
+真实空间与源图预检完成：区内36个轴法截面都是躯干圈，观察meanR143–152mm；旧腿圈位置偏低。唯一40点非平面原边guide可满足轴向均值，却在radius/normal/edge方向/角覆盖失败，且不是连续quadstrip。真实源band扩域已绑定原IDs，但新坐标/保护区及四环/双支撑未制作验收。零新候选/改点，原rev1保留，髋裆不属于肩scoped_wip，不进入normalizer/候选/S0/身份/骨架。
+
+所测族失败不证明任意非平面无解，未经蒙皮/动作不能判定pivot或门槛与实际变形的关系。当前关节、阈值、五接口、来源与正式资源均保持；后续设计关系需先明确，不自动调规则或开启模型轮。[完整范围](./pet-character-source-layout.md) · [只读检查场景与证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/README.md)。

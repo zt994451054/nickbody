@@ -1,7 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-113，2026-10-10；负责人 @winston（AI 执行）。§1–27 为历史，实物及结论见 §28。
-> **真实髋裆样件和两次修订已完成：形体有限采样改善，关节面流仍未合格。** 保留 rev1 为未验收的形体施工基线，rev2 只作布线诊断；两次修订已用完，不自动追加模型/映射研究。正式合同、源和身份保持，完整角色仍阻塞。
+> 最新 CHANGE-114，2026-10-10；负责人 @winston（AI执行）。§1–28为历史，最新预检与停止范围见§29。
+> 保形重布线预检未取得四环/真实条带及双支撑施工见证，零新候选/模型改善。原源扩域可以按真实quad选择，但新增坐标和保护区未验收；所测平面/唯一非平面guide失败不证明一般无解。CHANGE-113 rev1保留，正式合同与完整生产阻塞状态保持。
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
 
@@ -1015,3 +1015,19 @@ rev2仅对6条实际完整对边链一次2/3分段，保留895旧点，276新增
 参考域先冻结为z[.09,.355]内唯一跨中线且包含双腿的18444原三角组件，排除两侧分离手臂。内部z[.11,.33]区分截口影响，不设新合格阈值。固定参考73776/内部62864样本三批完全一致；候选采样随分割变密，候选P95差异不当作面积公平或连续表面证书。raw REST无Head=.90/A-pose装配。全域反向最大21.487mm主要在上截口，内部最大另列。
 
 [实物/结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/README.md) · [形体基线Blend](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/revision1/hip-authoring.blend) · [四站真实截面对照](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/target-fit/crosssection-comparison/section-comparison.png) · [基线实物审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/audit-review/revision1-actual-audit.json) · [最终child来源](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/audit-review/revision2-source-lineage-review.json)。23项App控制及独立实际核验完成；零新付费/安装，无运行时或基础设施依赖变化。初稿脚本绑定遗漏和过曝展示以原报告/快照补充如实保留，不计额外模型修订。起点23:44:47 UTC、总截止02:44:47 UTC；1初稿+2修订共用预算，已结项，不自动再开研究轮。双仓与3899项保全结果见归档verification及私有同名receipt。
+
+## 29. CHANGE-114：空间与原源扩域预检，未取得施工布局
+
+用户授权保留CHANGE-113 rev1形体、重建髋裆连接。本轮先记录变更并冻结输入；01:31:50 UTC开始，02:31:50检查点，04:31:50总截止，1初稿+最多2修订共用3小时上限。实际在施工准入停下：**零新候选、零改点/连接修订；一份仅参考标注的检查场景不计模型初稿。** 没有模型改善或新的生产问题关闭项。
+
+两侧冻结轴的区内9站切片，在raw REST和actual rev1共36个截面全部为跨X=0的整体躯干圈；轴点位于这些闭合截面内部。256等弧长观察样本meanR143–152mm超原100mm；raw在已测轴向+105mm截面出现分离腿圈。原首28点非平面腿圈axialMean84.56mm超45mm，已有22条source cycle有限统计均不满足全部几何项。**取样平均随顶点分布改变，不能作为所有作者环的半径下界；平面族失败不能推广到任意非平面环。**
+
+又检查唯一40旧点/原边非平面闭路：轴向均值7.128mm、winding1通过；meanR119.659mm、normal .769、edgeDotP95 .9695、coverage .9225仍失败，且两处非对边转向未形成连续quad strip。它反驳“保形环均值必定远离pivot”的泛化，但仍不提供四条同侧环带的施工输入。
+
+真实source band52→44→49各40原quad；选择可扩为935v/888面或975v/928面。旧cut52的40点恢复原degree4，保存的两侧旧core到新cut图距2/3；**新增target坐标未作者，不能认证新core/一圈。** 原groin ribbon实际一圈仍含8677/9336及11360/12023四个五价点，扩cut不等于双支撑。三边界quad选择的净内部拓扑电荷−4说明极点应迁至许可稳定区，不能把整个区域密化为四价当目标。
+
+已保存[等比例四视图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/spatial-preflight/fixed-hip-overlay-scaled.png)、[真实源面/边ID](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/source-preflight/source-extension-preflight.json)、[唯一闭路](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/source-preflight/nonplanar-source-route-review.json)及[参考检查Blend](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/inspection/readonly-spatial-inspection.blend)。检查场景保存后独立重读确认895点/848原quad/source整数属性exact、18444原参考三角身份exact，6圆+2轴为单独CURVE，不能冒充quad环。没有重跑旧全几何/贴合；旧失败保持。
+
+5项helper正负控制通过，原triangle/barycentric重构最大1.272×10⁻¹⁶m。源环NumPy双精度统计属于独立诊断，不替代正式审计器。前三次准备运行失败只有工具文本/摘要，失败版本与原stderr未另存；该缺口如实记录，不补跑伪造历史。最终观测及场景脚本与所有输入SHA完整绑定，未安装依赖或放宽容差。
+
+**停止依据是本计划仍缺联合满足的实际连接/点位布局，不是任意非平面无解或骨枢轴必错。** 后续须先明确骨pivot、真实腿根表面与变形目标的设计关系，当前规则/关节不自动调整，不自动开启下一模型/资料轮；此设计评审未执行。原rev1形体基线、历史有效对应、正式资源及完整身体/五接口/S0/身份/32骨/动作阻塞保持。[结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/README.md) · [明确结论](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/outcome.json)。最终保全和双仓推送范围见归档verification及同名私有receipt。

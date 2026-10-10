@@ -1,6 +1,6 @@
 # Sprout 完整重建：生产路径决策与 DCC 制作工单
 
-> 最新 CHANGE-112 见[源布局 §27](./pet-character-source-layout.md)：代表性分支完整邻圈的目标对应、真实髋裆支撑和目标保护区覆盖前提失败。零新求解/布局/网格，无模型新增改善；当前输入变体结项，不自动追加研究，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新CHANGE-114见[源布局§29](./pet-character-source-layout.md)：保形髋裆重布线未取得联合合格的四环/条带及双支撑施工布局，预检停止、零新候选/模型改善；原CHANGE-113 rev1保留。以下CHANGE-065判断为历史，当前统一状态见[八类问题清单](./pet-character-method-validation.md)，不自动追加模型轮。
 
 > CHANGE-065，2026-09-14，负责人 @winston（AI 执行）。
 > **决策已完成：停止当前自动修补投入，选择完整 DCC 面流制作作为后续方向；当前不具备新施工开工条件。**
