@@ -1,8 +1,7 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-112，2026-10-09 UTC／本地次日结项；负责人 @winston（AI 执行）。§1–26 为历史，最新检查见 §27。
-> **代表性分支施工前提失败，零新求解/布局/网格，原模型未改善。** 完整邻圈无目标对应、真实支撑未制作、目标足迹不覆盖髋核心；当前输入变体结项，不再自动追加研究。原五项及正式合同保持，统一状态见[八类问题清单](./pet-character-method-validation.md)。
-> [源布局历史图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-topology-layout-review-20260922/source-layout-reference.png) · [本轮原源邻域图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/branch-prerequisite-review.png)
+> 最新 CHANGE-113，2026-10-10；负责人 @winston（AI 执行）。§1–27 为历史，实物及结论见 §28。
+> **真实髋裆样件和两次修订已完成：形体有限采样改善，关节面流仍未合格。** 保留 rev1 为未验收的形体施工基线，rev2 只作布线诊断；两次修订已用完，不自动追加模型/映射研究。正式合同、源和身份保持，完整角色仍阻塞。
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
 
@@ -996,3 +995,23 @@ CHANGE-098 触及 62 原面，不等于 62 面完整覆盖；中央完整面是 
 髋裆不在当前仅肩左右的 `scoped_wip` profile 中，零候选/S0/身份/骨架推进。原有效对应、136 面参考改善、293 站位及正式资源保持，CHANGE-111 输出仍不采用；三平方代理提案不自动接续。完整身体、五接口、闭合身份评估器、32 骨、权重和动作仍待完成。
 
 [本轮结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/README.md) · [完整源邻域](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/scope-preflight.json) · [独立对应支持](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/mapping-input-preflight.json) · [完整目标足迹](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/semantic-extended-footprint.json) · [原源邻域图](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/branch-prerequisite-review.png)。具体脚本、绘图运行时失败及 SHA 均保存；未安装新依赖或改容差。起点及总截止见 CHANGE-112，最终保全/双仓远端/工时见私有同名目录 `receipt.json`。
+
+## 28. CHANGE-113：真实3D形体改善，髋裆面流仍未合格
+
+本轮用户授权AI直接制作获批源面流的真实下腹—臀部—双腿根样件。实际保留895 source点/848原quad连接，由固定SHA获批原Blend逐点/逐面/绕序核实；没有要求旧二维图表先补齐。原源和历史失败不改，不重开旧R0、trunk/tube、水平collar、调和布点或nearest/shrinkwrap路线。髋裆样件不属肩左右scoped_wip，不进入normalizer、正式候选、S0、身份或骨架流程。
+
+| 实际阶段 | 点/quad | 内部双向有限采样P95 mm | 最坏面长宽比 | 超3.5面数 |
+|---|---:|---:|---:|---:|
+| 初稿 | 895/848 | 19.468 / 20.303 | 9.089 | 34 |
+| rev1形体修订 | 895/848 | 5.417 / 5.545 | 10.751 | 42 |
+| rev2完整边链分割诊断 | 1171/1116 | 6.071 / 5.559 | 5.095 | 53 |
+
+rev1由10层、每侧6横向列的有限3D cage控制修正两侧前外髋过宽/过前及后中心鼓度不足；全部实际Z和348低位点float坐标保持，未从nearest测量结果回写顶点。最外列clamp及斜顶截线限制保存。它确实改善本区域形体，但长宽比及最小角有回退，不能称综合质量通过。内部双向最大余差约11mm仍在裆部中心过渡。
+
+rev2仅对6条实际完整对边链一次2/3分段，保留895旧点，276新增edge/bilinear点及1116 child quad父身份逐一独立核对。它解决40个原坏父面，但20个原好父面产生51个坏child，集中两侧髋环。坏面积占比4.061%→2.795%，面积加权AR P95 3.08541→3.08911略升；髋范围新增面形超限。**因此保留rev1为未验收形体施工基线，rev2作为不采用的布线诊断。** 原quad继承与编辑后的child lineage分别证明，不混称原连接保持。
+
+三份真实网格均单组件、三截口、Euler−1；双对角折面、四对角组合严格自交、几何T点、退化/重复及内部非流形边均0。七条实际腿根圈和连续quad strips存在，但两侧接受髋圈均0，groin双支撑未制作或接受；八个内部source极点保留，上截口仍触及冻结hip核心/一圈，未改变关节定义或抬高腿根来通过指标。**面形、环/支撑、完整身体五接口、闭合身份、32骨/权重/动作仍未完成。**
+
+参考域先冻结为z[.09,.355]内唯一跨中线且包含双腿的18444原三角组件，排除两侧分离手臂。内部z[.11,.33]区分截口影响，不设新合格阈值。固定参考73776/内部62864样本三批完全一致；候选采样随分割变密，候选P95差异不当作面积公平或连续表面证书。raw REST无Head=.90/A-pose装配。全域反向最大21.487mm主要在上截口，内部最大另列。
+
+[实物/结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/README.md) · [形体基线Blend](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/revision1/hip-authoring.blend) · [四站真实截面对照](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/target-fit/crosssection-comparison/section-comparison.png) · [基线实物审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/audit-review/revision1-actual-audit.json) · [最终child来源](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/audit-review/revision2-source-lineage-review.json)。23项App控制及独立实际核验完成；零新付费/安装，无运行时或基础设施依赖变化。初稿脚本绑定遗漏和过曝展示以原报告/快照补充如实保留，不计额外模型修订。起点23:44:47 UTC、总截止02:44:47 UTC；1初稿+2修订共用预算，已结项，不自动再开研究轮。双仓与3899项保全结果见归档verification及私有同名receipt。

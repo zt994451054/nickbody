@@ -669,3 +669,5 @@ App `1d32f3f` 记录唯一真实调用及全部输出：21 内部迭代、0.9938
 
 
 CHANGE-112（2026-10-09 UTC，本地次日结项）承接用户整体复盘后授权，执行一次代表性髋裆分支端到端隔离施工前提检查。两个五面星在当前62原面盘外各缺4邻面及目标对应；真实双groin支撑未制作，完整1783原目标三角足迹不覆盖现有审核工具的髋核心和一圈身份。目标 raw REST 坐标框架存在，但未完成生产 A-pose/身份。按事前停止条件结项，零新求解/布局/网格、Blender、付费、安装或模型改善；不自动安排新的数值/前提回合，不降低正式合同或修改运行时架构。原有效对应、136面参考改善和正式资源保持，当前输入变体关闭；完整生产角色仍阻塞。详见[源布局 §27](./pet-character-source-layout.md)及[归档](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-branch-construction-20261009/README.md)。
+
+CHANGE-113（2026-10-10）在获批原848 quad骨盆种子制作初稿及两份实际3D/连接修订。rev1内部双向有限P95约20→5.5mm但面形回退；rev2完整链分割使max AR降至5.095但新增髋环细长面，接受髋圈0/groin双支撑缺，保留rev1为未验收形体基线、rev2仅作不采用诊断。三份真实Blend来源/child lineage及0全对角折面/自交/T点均实核。没有新运行时/基础设施/依赖、ADR或正式资源切换，不进入shoulder scoped_wip/正式candidate/S0/身份/32骨。两次修订已用完且结项，不自动追加研究；详见[源布局§28](./pet-character-source-layout.md)及[实物档案](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-direct-hip-authoring-20261010/README.md)。

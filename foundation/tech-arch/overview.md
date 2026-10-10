@@ -176,7 +176,7 @@ graph TB
 | 跟练时姿态推理帧率 | 待 M1 实测（目标 ≥15fps）| MacBook Air M1 基线机型 | v1.0.0 |
 | 后台常驻 CPU 占用 | 待实测（目标 <1%）| 宠物闲时动画 | v1.0.0 |
 | Vision 肩部关键点稳定性 | 待 M1 bake-off | 坐姿近距（0.5–1m）| v1.0.0 |
-| Rig v2 变形质量 | 生产 Rig 尚未建立；CHANGE-026 R0 一次性变形诊断失败，当前 licensed-basemesh AI 施工路线关闭 | Blender 430 个逐度样本 + 有界原尺寸复核；production Gate 0–4 均未通过 | v1.0.0 |
+| Rig v2 变形质量 | 生产Rig尚未建立；旧R0路线保持关闭。CHANGE-113直接髋裆样件有形体改善，但严格面形/关节支撑未过，无正式候选/绑骨推进 | 历史430逐度样本保持；新增3份无骨架髋裆Blend实际几何/双向有限贴合审计，production Gate 0–4未通过 | v1.0.0 |
 
 ---
 

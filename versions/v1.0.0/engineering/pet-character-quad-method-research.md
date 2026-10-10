@@ -1,6 +1,6 @@
 # 外部四边网格方法筛选与局部验证计划
 
-> 最新 CHANGE-110 见[源布局 §25](./pet-character-source-layout.md)：双分量保存/重读与导数精度已通过，九探针和独立复核达标。零求解/接受模型更新，无模型质量改善；下一项为第一块的单次有界可行性求解，统一状态见[八类问题清单](./pet-character-method-validation.md)。
+> 最新CHANGE-113见[源布局§28](./pet-character-source-layout.md)：直接3D作者取得实物形体改善，但关节/支撑与严格面形未过；rev1保留作未验收形体基线，rev2不采用分割。以下§1–24为历史筛选，已关闭模板/调和及旧builder不重开；本轮不是这些提案的继续执行。
 
 ## 1. 结论
 
@@ -576,3 +576,7 @@ CHANGE-090 只读确认三条源边界与原直段最大差为 2.715 / 2.885 / 4
 本轮主动研究 CGAL 的 Polyline Features、MeshDomainWithFeatures 与 Polygon Mesh Processing 官方文档，借鉴有向曲线/角点/双侧曲面关联及组合、几何分开验证。三条原直段跨过 x/z 裁剪平面交界，选择三个真实角点并补一个已有弧中点事件保持偶数边界；不是增加任意内点或调密度。全部 22 事件仅是数量上界。连续源子链与保留折线的对应给出双向界限，不代替整网采样或四边可行性。
 
 App `7af2ec4` 保存四个新工具、28 项通过的合成控制及 28 份证据。936 项保护文件保持，生产机器合同、正式资源、S0/身份/骨架状态不变。详见[核心设计 §19](./pet-character-core-constraint-design.md)及[本轮档案](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-core-boundary-representation-20260922/README.md)。
+
+## 25. CHANGE-113：直接作者实物结果
+
+实际获批源骨盆quad继承、有限cage形体修订及一次完整链分割均保存Blend。形体内部双向P95约20→5.5mm，但整链分割在原好髋环面产生新的细长child，来源或曲面观测成立不等于联合关节质量成立。保留rev1未验收形体基线，rev2只留不采用诊断；没有新的外部资料/付费/安装/算法轮，生产门槛保持。详细实物和停止状态见[源布局§28](./pet-character-source-layout.md)。
