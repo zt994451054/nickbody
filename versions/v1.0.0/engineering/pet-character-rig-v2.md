@@ -2034,3 +2034,11 @@ App `1d32f3f` 已推送三份工具/测试和 43 份归档文件。八组初始�
 内部双向有限P95初稿22.3412/23.0401→修订1 6.7550/7.8547→最终5.3257/5.2118mm，属于局部贴合改善。最终895锚点数值回放及显式recipe重构一致，但全表对应gap P95/max13.1034/30.9595mm、hip点9.7372/14.0449mm仅记录，不认证物理关联/变形。30项v3纯控制和最终builder9项表控制通过是工具证据；旧执行代码有精确快照，历史报告不回填。
 
 实际模型修订额度已用尽，停止改mesh，不自动新建第二轮。04:06:44–07:06:44 UTC总预算含规则、参考、施工、验收、归档与双仓推送，不结转额度。旧失败、关闭路线、正式五接口/S0/身份和32骨/动作门禁保持；diagnostic 的 `staticGateS0Passed`/`riggingAllowed`/`productionCandidate` 均 false，完整角色仍阻塞。[施工记录 §31](./pet-character-source-layout.md) · [最终v3实物复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-hip-v3-review.json) · [方法验证 §32](./pet-character-method-validation.md)。
+
+## 8.0.95 CHANGE-117：连续映射根因与共同裆缝前置
+
+已定位body/leg参数突变（约6cm）、裆桥端回折和接口残差三个独立作者错误。原最终36折面/131全对角自交索引完整重放；连续椭圆反事实0/0却因AR、裆部抬高、v3/保护失败而拒绝，不能称模型修好。
+
+完成56条连续原三角guide与193段共同裆缝，固定21mm同侧环带因两slot27到X=0而缺站；零新Blend。七块源域/中央14×3计数和上腹五扇区整数算法已提出，完整索引、四环/双支撑及通过全部门槛的坐标表未完成；只作为有明确前置条件的施工设计。20输入+9 Blender几何控制通过，正式骨架、v2/S0、保护与资源保持。
+
+[修复设计](./pet-hip-embedding-repair-design.md) · [可审查证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-embedding-repair-20261010/README.md)。本次06:46:59–09:46:59 UTC为助手自定上限，不结转116施工额度；按原前提停止依赖模型保存，不自动新开参数或模型轮。

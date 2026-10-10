@@ -1063,3 +1063,11 @@ rev2仅对6条实际完整对边链一次2/3分段，保留895旧点，276新增
 v3规则控制30项通过，最终builder实际表控制9项通过，3App工具与私有helper AST核对通过；这些不是实物通过。新renderer输入守卫改显式异常，旧渲染/首次builder报告绑定的原代码快照精确保留，不回填旧报告。旧合同/设计/骨架SHA保持；两处Skill仅新增独立诊断指针/失败状态，原v2 reference不改。正式全身/五接口/S0/身份/rig仍未通过，不使用shoulder scoped_wip profile。
 
 归档及双仓保全/推送在同轮时限收尾，提交/远端事实由验证和私有同名receipt记录，不从模型结项推定。证据：[本轮入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/README.md) · [最终实物审计](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-independent-review-summary.json) · [v3髋/支撑/保护](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-hip-v3-review.json) · [来源实核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/actual-review/revision2-source-provenance.json) · [有限双向贴合](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/fit-revision2/fit-report.json) · [锚点关联复核](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/field-authoring/author-anchor-binding-review-revision2.json) · [最终工具质量](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-branch-build-20261010/rule-review/tool-quality-review-final.json) · [Rig边界 §8.0.94](./pet-character-rig-v2.md) · [方法验证 §32](./pet-character-method-validation.md)。
+
+## 32. CHANGE-117：七块真实源域与连续共享曲线
+
+已定位body/leg参数突变（约6cm）、裆桥端回折和接口残差三个独立作者错误。原最终36折面/131全对角自交索引完整重放；连续椭圆反事实0/0却因AR、裆部抬高、v3/保护失败而拒绝，不能称模型修好。
+
+完成56条连续原三角guide与193段共同裆缝，固定21mm同侧环带因两slot27到X=0而缺站；零新Blend。七块源域/中央14×3计数和上腹五扇区整数算法已提出，完整索引、四环/双支撑及通过全部门槛的坐标表未完成；只作为有明确前置条件的施工设计。20输入+9 Blender几何控制通过，正式骨架、v2/S0、保护与资源保持。
+
+[修复设计](./pet-hip-embedding-repair-design.md) · [可审查证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-embedding-repair-20261010/README.md)。本次06:46:59–09:46:59 UTC为助手自定上限，不结转116施工额度；按原前提停止依赖模型保存，不自动新开参数或模型轮。
