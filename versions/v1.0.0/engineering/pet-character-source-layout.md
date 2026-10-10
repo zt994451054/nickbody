@@ -1,6 +1,6 @@
 # Sprout 原始面流布局与施工缺口
 
-> 最新 CHANGE-114，2026-10-10；负责人 @winston（AI执行）。§1–28为历史，最新预检与停止范围见§29。
+> 最新 CHANGE-115，2026-10-10；负责人 @winston（AI执行）。§1–29为历史，当前设计关系和具体施工范围见§30及[髋修复设计](./pet-hip-repair-design.md)。
 > 保形重布线预检未取得四环/真实条带及双支撑施工见证，零新候选/模型改善。原源扩域可以按真实quad选择，但新增坐标和保护区未验收；所测平面/唯一非平面guide失败不证明一般无解。CHANGE-113 rev1保留，正式合同与完整生产阻塞状态保持。
 
 ## 1. 约束分层：哪些应保留，哪些只属于旧试验
@@ -1031,3 +1031,11 @@ rev2仅对6条实际完整对边链一次2/3分段，保留895旧点，276新增
 5项helper正负控制通过，原triangle/barycentric重构最大1.272×10⁻¹⁶m。源环NumPy双精度统计属于独立诊断，不替代正式审计器。前三次准备运行失败只有工具文本/摘要，失败版本与原stderr未另存；该缺口如实记录，不补跑伪造历史。最终观测及场景脚本与所有输入SHA完整绑定，未安装依赖或放宽容差。
 
 **停止依据是本计划仍缺联合满足的实际连接/点位布局，不是任意非平面无解或骨枢轴必错。** 后续须先明确骨pivot、真实腿根表面与变形目标的设计关系，当前规则/关节不自动调整，不自动开启下一模型/资料轮；此设计评审未执行。原rev1形体基线、历史有效对应、正式资源及完整身体/五接口/S0/身份/32骨/动作阻塞保持。[结项入口](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/README.md) · [明确结论](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/outcome.json)。最终保全和双仓推送范围见归档verification及同名私有receipt。
+
+## 30. CHANGE-115：592面整体分叉与接环修复设计
+
+髋内部枢轴不因表面腿根较低而下移。原536面分支49/1/97并入左右首28面接环带后，真实工作域为592quad/639点/1232边，χ−1，边界49/5/101，域外336腿面保留。1/97为内部可重布参考；4/3及100/99跨膝旧圈不充当髋圈。
+
+有限4×56插环诊断仍有AR约8.73、旧观察轴connector约0.46，原局部插点产生T点；投影固定原面切向后最差仍约0.641。该构造不采用，更多行密度不能修方向。新方案以4×28接口匹配、整体双支撑和极点迁移为施工目标，但实际新quad表/目标点/保护区未作者，不能称模型修好。
+
+[关系、规则提案和施工顺序](./pet-hip-repair-design.md) · [592面完整原IDs](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-semantic-repair-20261010/topology-review/attachment-scope-supplement.json)。机器合同修改和一次有界新施工仍待具体审批，当前合同/原源/旧失败及正式资源保持。

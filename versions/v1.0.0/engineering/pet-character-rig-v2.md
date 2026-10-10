@@ -1,7 +1,7 @@
 # 人形小草生产角色 Rig v2 规范
 
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-114保形重布线在空间/源图预检停止，尚无四环/连续条带及双支撑施工见证，零新候选/模型改善。参考检查场景不是网格初稿；见§8.0.92及[源布局§29](./pet-character-source-layout.md)。原rev1形体基线保留，完整身体/身份/32骨和动画仍阻塞。
+> 当前状态：CHANGE-115已辨明内部髋枢轴、表面腿根与变形过渡，形成592原quad整体重布及hip测量语义提案，待具体审批；见§8.0.93及[修复设计](./pet-hip-repair-design.md)。正式v2合同未改，零新候选/模型改善，原rev1未验收基线保留；全身/S0/身份/32骨和动画仍阻塞。
 > 后续依据：[完整重建决策与工单](./pet-character-production-rebuild-decision.md)。B1、纯权重路线和更早关闭路线保持冻结；不开放旧余额。原生产合同与正式资源不变，不宣称整体无解，也不承诺当前 AI 能独立完成尚未展示的建模能力。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
@@ -2012,3 +2012,9 @@ App `1d32f3f` 已推送三份工具/测试和 43 份归档文件。八组初始�
 真实空间与源图预检完成：区内36个轴法截面都是躯干圈，观察meanR143–152mm；旧腿圈位置偏低。唯一40点非平面原边guide可满足轴向均值，却在radius/normal/edge方向/角覆盖失败，且不是连续quadstrip。真实源band扩域已绑定原IDs，但新坐标/保护区及四环/双支撑未制作验收。零新候选/改点，原rev1保留，髋裆不属于肩scoped_wip，不进入normalizer/候选/S0/身份/骨架。
 
 所测族失败不证明任意非平面无解，未经蒙皮/动作不能判定pivot或门槛与实际变形的关系。当前关节、阈值、五接口、来源与正式资源均保持；后续设计关系需先明确，不自动调规则或开启模型轮。[完整范围](./pet-character-source-layout.md) · [只读检查场景与证据](../../../engineering/workspace/macos-app/character_pipeline/sprout/v2/work/experiments/sprout-hip-groin-reconstruction-20261010/README.md)。
+
+### 8.0.93 CHANGE-115：髋枢轴与皮肤腿根分开，整体分叉重布方案
+
+实际历史32骨髋点与冻结合同一致；表面接环1↔5/97↔101更低，下两旧圈跨膝，不能重标四髋环。刚体运动量测不等于蒙皮预测。固定原面切向仍有约0.641低对齐，单换frame或插环均不构成修复。
+
+[具体设计](./pet-hip-repair-design.md)冻结592原quad工作域、49/5/101接口与336域外腿面；首选四环各28点，整体作者接环/双支撑/安全极点位置和实际保护并集。替换quad表、上腹目标点、raw参考场及新mask尚未作者。hip表面frame与有向切向规则为待审批提案，不激活当前v2机器合同或Skill，不提升S0/身份/rig。零新网格、骨架、权重或动作，完整角色仍阻塞。
