@@ -1,5 +1,9 @@
 # 技术架构变更历史
 
+## 2026-10-12 | CHANGE-121：可达账本迁移与原整带接续
+
+当前可达依赖账本迁移及重独审通过，136行forward实际回放通过；Source78直接复用、零新source求解。唯一target入口在原固定必要几何拒绝：left face147／right face381及3／10固定边接触，完整solver尚未调用。577、969/922整带、完整表与保存未执行，新增模型0；生产／S0／rig仍阻塞。迁移common v3及兼容层原core/cap通过独审，完整已发布base按exact身份复用。详细实际门结果、旧失败及交付范围见[施工记录§7](../../versions/v1.0.0/engineering/pet-hip-transition-band-construction.md#7-change-121可达账本迁移与原完整整带接续)及[CHANGE-121](../../versions/v1.0.0/CHANGES.md)。无运行时/基础设施/正式资源变更，无需新增ADR。
+
 ## 2026-10-11 | CHANGE-120：源展开与PURE通过，历史收据严格闭包阻塞
 
 **CHANGE-120 当前接续结果（2026-10-11，阻塞）**：当前新切缝 Source78 左右度量 atlas 已实际完成，各侧原 mean-value 求解调用及返回均为1；本次完整父域、两fan与UV交对重新检查通过（left `a3b7bcce…`／right `f29caef8…`／source review `0b642b60…`），有限源独审 `221f0b7d…` 通过。forward v3 的100项控制、target v4 的13项控制、point v3 的49＋16项控制及各自 PURE 独审全部通过（`1567982e…`／`2b721827…`／`07cbf2aa…`）；历史资格别名准入、仅9个固定当前源身份的完整严格 EOF 读取和577 producer账本／直接seed分层已修正，原数学、作者、field、阈值与冻结条件保持。

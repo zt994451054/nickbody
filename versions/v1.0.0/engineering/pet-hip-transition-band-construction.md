@@ -1,6 +1,8 @@
-# 真实髋裆过渡带施工（CHANGE-119／120）
+# 真实髋裆过渡带施工（CHANGE-119／120／121）
 
-**最新接续为 CHANGE-120**：新Source78实际及有限源独审、三消费者PURE均已通过；forward严格闭包停止，本次下游几何及保存未执行。当前结果见[§6](#6-change-120-接续结果与严格闭包停止点)。下文§1—5及其既有登记为CHANGE-119历史事实，原文件、失败与通过范围全部保留。
+**CHANGE-121 当前结果（2026-10-12）**：当前可达依赖账本迁移与重新独审通过；Source78按原明确身份复用，136行forward实际回放及独审通过，零新source求解。兼容层及三个下游PURE-v3通过；新target已冻结并经ENTRY独审，唯一实际入口在原固定必要几何拒绝（left face147／right face381，3／10固定边接触），完整solver0。577／整带／完整表／保存与重读未执行，新增模型0；生产／S0／rig保持阻塞。最终实际结果与交付状态以[CHANGE-121](../CHANGES.md)及本施工记录§7为准。
+
+**CHANGE-120 历史接续结果**：新Source78实际及有限源独审、三消费者PURE均已通过；forward严格闭包停止，本次下游几何及保存未执行。当前结果见[§6](#6-change-120-接续结果与严格闭包停止点)。下文§1—5及其既有登记为CHANGE-119历史事实，原文件、失败与通过范围全部保留。
 
 **真实PL已通过、顺序接点失败与联合选点施工登记（2026-10-11，先登记后实现）**：唯一真实源执行32dde9238d0ce5cd63a4d656321cd0edbb3988ca3faa2e8c6751b92474e5cd65（36697880B）实际20条各5边原父PL/完整190接触全部通过，逐点首可行组件中点只完成left22..25四点，在left26的56个原父片段上失败；原face145=[upper25,upper26,mid4:5,bridge5]全部AR3.5共同弧域[0.01805380047754744,0.07014461040641488]m与两原对角线严格正向域(0.07496368160005795,0.089271240451086]m分离4.819071mm，不能把单点失败泛化成全部原PL无解。原1604执行输入前后全字节真实保持，Root1607角色完成回执36a67a2d79d55ed48a619bf6ab6a92de83c7ec3a6592f203b2abe6c46c3750b3；原35MiB失败、日志/配方/QA/原greedy代码不改、不得当20点或native28资格。另exclusive coupled-source-station-preparation准备明确新方法：复用这20条已实际通过的完整原父PL及full190原证据，不重trace/改源/选平面/改UV；每侧10个归一化弧长联合未知，原current110+globalShared/closing32作为literal已知，选点前不冻结任何旧失败中点。fresh全0.5弧长种子、单次maximin SLSQP构造，全部已知完整coface的原12项AR3.5、严格正边及两原diagonal dot共同进入约束并保原尺度；不扫角/随机种子/重试，不声称全局最优或不可行证明。求解输出只是proposal：随后把20点共同固定，逐原父片段/当前选片重放原finite interval helper、严格Fraction符号/原锚/存储doublecoface和20实际prefix190；未知hip共面仍明确未认证。每侧数值call、实际success/返回/正余量及原source/native边界独立记录；原完整28Q/45支持native、final104/577/wholeG0/完整表/G1/fit/16视图/保存重载仍逐级全部通过才推进。新代码仅pure fixture资格与fresh实际薄入口/独审/Root全SHA通过后运行，正式阈值、n/T、轴、mask、14星、18444拟合、392含56硬接口、78边界及168原根表达均不改。
 
@@ -405,3 +407,22 @@ forward 配方冻结在原严格fallback读取历史 `bridge-transverse-path-pre
 **精确失败证据**：OLD的`geometry-authoring/physical-upper-curve-constraints/bridge-transverse-path-preparation/actual-entry-controls-first-attempt.json`，完整SHA `fbea292e6ab5ce3473cc834ede4a11cdd04080f85d67aaf4fdc1f79cabed8388`，class为`observed_synthetic_actual_entry_first_control_attempt`。其`bridge_source_loader.py`、`bridge_transverse_entry.py`和`test_bridge_actual_entry.py`三项声明均含`path`／`sha256`／`preservedSnapshot`三个字段；原严格fallback只接受exact path／SHA记录，在line8,column6拒绝。NEW的`continuation-20261011/forward-closure-failure-diagnostic.json`完整SHA `fca69ea791c1ea4d1a80fd4f7874cf3a9ed7a65766dec037dfe2e80477ef0ce2`保存原异常、准确拒绝身份与声明形态。未修改历史JSON、旧script或降低parser准入，未导出forward recipe，也未执行本次源forward、target solver、577作者或Blender整带／保存。
 
 **CHANGE-119 尚未交付部分**：通过原门槛的完整真实过渡带及全部变化星、同一完整作者表／来源／392硬点与56接口身份、原969／922完整预检、G1／有限fit／16视图、条件保存G5与真实重载G6仍须逐级取得新实际资格。原54折／100个all4交对／40坏AR等结果是历史候选的拒绝证据，不能冒充本次新atlas之后的三维结果。证据归档与双仓推送状态仅在[CHANGE-120](../CHANGES.md)的归档状态段维护；归档交付不授几何、保存或角色生产资格。
+
+
+## 7. CHANGE-121：可达账本迁移与原完整整带接续
+
+**当前可达迁移资格**：manifest `62e2b67d…`、原core `f200d71d…`、preparation `54200001…`、独审 `c86aeec8…`绑定同一完整tuple。1,687身份、748 physical JSON、637,438 literal roles与86 explicit actual seed保持完整EOF／原声明顺序／原父支持；176作者及37独立控制通过。原735 view、fbea的30pass／1error／1failed及3旧script snapshot保持；d9为23,632字节的738:56截断失败，原156父／542aliases及新增非seed旧point recipe单独保留，不把失败变PASS。原九个large包exception、strict parser、队列、数学及阈值保持。
+
+**兼容层资格**：第一次target冻结只在metadata拒绝遗漏的实际forward transitive producer，配置`cd10f9e9…`与诊断`7de63f54…`保全，零target求解。为保已实际forward tuple，新helper `0dbe391b…`／prep `9716f351…`／独审 `c6bce79f…`在同一原core实例/cap上补足经过原_stage_record完整承认的actual producer byte ownership；50＋8控制通过。helper不作direct seed，所有literal child seen前仍guard，unknown/history/PURE/copy/symlink提升拒绝。新target／577／whole PURE-v3为27／25／33项作者及6／14／41项独立检查（`0ca0f8ad…`／`27938069…`／`62396fff…`），旧源码与资格不覆盖。
+
+**实际接续状态**：forward recipe `4d964f95…`经ENTRY `a862a48c…`实际执行一次，completion `0a11fc4a…`；26 unique语义／32corner及104普通共136行原锚、parent/child、bary、world/UV与native独审通过（`f94c8df8…`）。新target config-v3 `0cc0cfe0…`与recipe `85ec33f2…`经ENTRY `ac14b768…`取得完整1450role闭包资格；随后唯一实际入口失败 `26160cb2…`停于 original_fixed_necessary_geometry，start `8889df9c…`／日志 `be42b251…`及1823完整输入before-after保持。原full-core/preDispatch为空，完整solver0；未产出raw/envelope或XYZ。只读必要见证 `93497514…`与独审 `871c3b0c…`复现左右各140fixed／109unknown／39fully-fixed Q：仅left face147、right face381方向检查失败，并有3／10固定边接触。该独审factgate通过而实际几何gate=false（P1=2/P2=0），不授577／整带／完整表／save。
+
+**边界与交付**：原392含56接口、110点、168根表达、336保留面、骨轴、hip轴、原保护14星、n/T、AR与18444参考拟合保持。仅全部原门禁通过才完整表、G1实物、G4拟合/16视图、G5条件保存及G6真实重读；失败则保存全部原报告与真实调用，无自动参数扫描。本轮新增证据使用incremental delta，已发布base按exact path/SHA引用；最终原17,931文件保全、15 lexical links、全流复验及九文档双仓交付另记，工具PURE不作实际交付结果。
+
+**固定必要条件的具体见证**：left cycle `[124,125,93,92]`四corner cross为`[-0.1475963836214884,0.003054408058142094,0.032178044460854316,-0.17672002002420062]`；right cycle `[90,91,126,125]`为`[0.03219126838999105,-0.20270481545293223,-0.17311857372545814,0.0026050266625169674]`。失败角全部固定，109未知角无法改变这些原必要检查；此为当前Source78固定UV与209 target图的被拒绝输入，不是整个模型无解证明。只读source/UV对应见证 `36227353…`核32semantic＋104ordinary的corner/key/literalUV原值与原anchor、parent/child及bary→UV；原topology／registry九字段保持，未发现迁移引入坐标变换或侧别误接。独立对应复核 `8e0a6762…`（完整SHA `8e0a676285eb0dde472a8d5a28f5dbb237b40eacc224aef86119a976318100c6`）实际通过，全部136记录与原target.prepare一致，九份原几何记录、3586输入及4 reviewer supports前后字节exact，所有数值dispatch为0。最终结果 `7157d1fc…`明确target实际拒绝；原17,931文件与15 links的实际保全分别为 `7012ebb7…`／`77f47885…`。
+
+**本轮停止点与未执行范围**：point及whole当前PURE-v3仍只作实现资格，其config、recipe、ENTRY、实际577与G0–G6均未生成。原Source78／Native28有限通过保持，不能抵消本次固定target拒绝。下一修订须先验证当前源到目标的固定UV方向与原面/边相容性，再取得新的实际target资格；不得用求解109未知角、换种子或放宽阈值绕过已固定坏面。本轮保全原失败并交付证据，未认证完整969表、975/928实物、拟合/16视图或savedBlend重读。
+
+**实际证据运输**：六fixture身份补齐与Git component可区分转义分别取得v5 58／v6 65项控制独审；两次真实plan拒绝与各自原request/catalog均保留，未作几何重试。最终当前消费清单50条metadata、9217普通源文件、186合成link metadata、2644 unique输入；9443 delta＋3 capture元数据共9446归档records，1483已发布base records按原path/SHA引用。实际manifest `0f4443e7…`／root全流与本轮base回放 `64fefea9…`已通过，独立全流审查与双仓精确状态由[CHANGE-121交付段](../CHANGES.md)及外置最终交付回执维护。2份原保护Blend仅参照字节，6负控fixture非完整模型，新增模型0；本轮不授整带／保存／S0或rig资格。
+
+**独立回放验收**：实际独审 `817dc37e…`（完整SHA `817dc37e680fae2c8a8de50642437ef9acd7ab99aa46277554b03fab20db74be`）通过全部9446 delta／1483 selected-base完整解码及38677来源roles／70 reviewer supports重建，P1/P2=0。此为证据运输验收，不抵消`871c3b0c…`固定UV几何拒绝，也不授577／G0–G6／表认证或模型保存。最终九文档、staged字节与双仓remote精确状态统一由CHANGE-121交付段及外置最终回执承载。

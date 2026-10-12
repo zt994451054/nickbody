@@ -1,7 +1,9 @@
 # v1.0.0
 
+**最新角色状态（CHANGE-121）**：当前可达依赖账本迁移及重独审通过，136行forward实际回放通过；Source78直接复用、零新source求解。唯一target入口在原固定必要几何拒绝：left face147／right face381及3／10固定边接触，完整solver尚未调用。577、969/922整带、完整表与保存未执行，新增模型0；生产／S0／rig仍阻塞。导航：Rig§8.0.99／源布局§36／方法§37；实际门与双仓交付见[施工记录§7](./engineering/pet-hip-transition-band-construction.md#7-change-121可达账本迁移与原完整整带接续)及[CHANGE-121](./CHANGES.md)。
 
-**最新角色状态（CHANGE-120，严格闭包阻塞）**：当前新切缝Source78已实际通过有限源检查及独审（`0b642b60…`／`221f0b7d…`）。forward v3／target v4／point v3的100／13／49＋16项控制与PURE独审全部通过；forward冻结被历史收据`fbea292e…`的额外`preservedSnapshot`及旧script身份拒绝（诊断`fca69ea7…`）。forward recipe未导出，本次26／104映射、target、577、969／922全检、完整表和保存均未执行，新增模型0，生产／S0／rig仍阻塞。下一步新版本迁移历史失败收据依赖账本并重资格，再从forward冻结接续。[本次接续结果](./engineering/pet-hip-transition-band-construction.md#6-change-120-接续结果与严格闭包停止点)。导航：Rig§8.0.98／源布局§35／方法§36；归档与双仓推送状态见[CHANGE-120](./CHANGES.md)。
+
+**CHANGE-120 历史角色状态（严格闭包阻塞）**：当前新切缝Source78已实际通过有限源检查及独审（`0b642b60…`／`221f0b7d…`）。forward v3／target v4／point v3的100／13／49＋16项控制与PURE独审全部通过；forward冻结被历史收据`fbea292e…`的额外`preservedSnapshot`及旧script身份拒绝（诊断`fca69ea7…`）。forward recipe未导出，本次26／104映射、target、577、969／922全检、完整表和保存均未执行，新增模型0，生产／S0／rig仍阻塞。下一步新版本迁移历史失败收据依赖账本并重资格，再从forward冻结接续。[本次接续结果](./engineering/pet-hip-transition-band-construction.md#6-change-120-接续结果与严格闭包停止点)。导航：Rig§8.0.98／源布局§35／方法§36；归档与双仓推送状态见[CHANGE-120](./CHANGES.md)。
 
 **已消费的历史有限前置**：本轮实际源已消费2026-10-11 17:07（UTC+8）合格native28回执（`e8aa2255…`），45支持点／28Q的原native、finite与AR检查通过，折面／all4交对／T点／退化／重复均0，maxAR3.4961213125＜3.5；本轮未重跑。旧GUIDE-ONLY“零Native28／未通过”是当时早期尝试状态，后续这一有限28Q前置已通过；完整14星／全部cofaces／完整表／模型保存仍未获资格。
 
@@ -40,7 +42,7 @@
 | 需求分析 | ✅ 完成 | 2026-07-14 | 2026-07-15 | 需求文档已定稿结项 |
 | 产品设计 | ✅ 完成 | 2026-07-14 | 2026-07-15 | Stitch设计规范落地，宠物动作原画就绪 |
 | 技术方案 | ✅ 完成 | 2026-07-15 | 2026-07-16 | 含 ADR-002 桌面预烘焙帧与 ADR-003 生产级角色动画管线；Rig v2 细化规范在开发阶段按 CHANGE-011 补充 |
-| 开发中   | 🚫 阻塞 | 2026-07-16 | - | CHANGE-120当前新Source78实际及独审通过，forward/target/point PURE通过；forward因历史收据exact绑定schema拒绝而未导出配方，本次下游几何与保存未执行。历史记录：P0核心链路已跑通。CHANGE-116三份实物拒绝且原额度关闭；CHANGE-119度量Source78与upper209二维目标已实际通过，旧168根/批准26点原锚及native float32保持，double不全部逐值相同；最新577与969/922完整3D已执行，54折/100个all4交对/40坏AR、max15.00978865及8保护星失败；168腿根Q/336保留面自身0折/交/坏AR，8环/168连接/双groin通过。§4.16两buffer21/12Q有限native通过，原新相位外接预算空交保持；四翼26/12Q与新84/42Q有限native通过；桥侧V3.1 left26有限预算失败保持，新全20同列PL路径/190对实际通过但left22双AR域空、零站/零Native28；84原锚forward实际通过（`c52a5e7d…`），GUIDE-ONLY`065c72ea…`每侧6坏Q/17接触及后继LP/QP`ad87013c…`每侧6坏Q/25接触均providerfalse，完整836双阶段纯准备26控通过但当前真实构造0次，零采用/新站/native；零认证完整表/新Blend、无保存许可。正式S0/CLI仍v2，原骨轴/fit/masks、骨架/资源及CHANGE-113未验收形体保持；完整身体/S0/身份/32骨及动画、养成、Onboarding、StoreKit、统计页待完成 |
+| 开发中   | 🚫 阻塞 | 2026-07-16 | - | CHANGE-121迁移／重独审及136行forward通过，target固定必要条件拒绝；完整solver/577/整带/保存未执行。历史记录：P0核心链路已跑通。CHANGE-116三份实物拒绝且原额度关闭；CHANGE-119度量Source78与upper209二维目标已实际通过，旧168根/批准26点原锚及native float32保持，double不全部逐值相同；最新577与969/922完整3D已执行，54折/100个all4交对/40坏AR、max15.00978865及8保护星失败；168腿根Q/336保留面自身0折/交/坏AR，8环/168连接/双groin通过。§4.16两buffer21/12Q有限native通过，原新相位外接预算空交保持；四翼26/12Q与新84/42Q有限native通过；桥侧V3.1 left26有限预算失败保持，新全20同列PL路径/190对实际通过但left22双AR域空、零站/零Native28；84原锚forward实际通过（`c52a5e7d…`），GUIDE-ONLY`065c72ea…`每侧6坏Q/17接触及后继LP/QP`ad87013c…`每侧6坏Q/25接触均providerfalse，完整836双阶段纯准备26控通过但当前真实构造0次，零采用/新站/native；零认证完整表/新Blend、无保存许可。正式S0/CLI仍v2，原骨轴/fit/masks、骨架/资源及CHANGE-113未验收形体保持；完整身体/S0/身份/32骨及动画、养成、Onboarding、StoreKit、统计页待完成 |
 | 测试     | ⏳ 待开始 | - | - | |
 | 发布     | ⏳ 待开始 | - | - | |
 
@@ -75,9 +77,9 @@
 | 产品 | [产品设计](./product/design-spec.md) | ✅ |
 | 产品 | [统一原型](../../foundation/design/prototype/README.md) | 🚫 停更（CHANGE-003）|
 | 研发 | [技术方案](./engineering/tech-solution.md) | ✅ |
-| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；当前CHANGE-120见§8.0.98；历史CHANGE-119见§8.0.97，原CHANGE-116合同与结项见§8.0.94 |
+| 研发 | [人形小草 Rig v2 规范](./engineering/pet-character-rig-v2.md) | 🚫 完整角色未通过；当前CHANGE-121见§8.0.99；历史CHANGE-120见§8.0.98／CHANGE-119见§8.0.97，原CHANGE-116合同与结项见§8.0.94 |
 | 研发 | [髋裆连续映射与共同边界修复](./engineering/pet-hip-embedding-repair-design.md) | CHANGE-117根因/输入已验证；完整连接与几何施工前提未过 |
-| 研发 | [真实髋裆过渡带施工](./engineering/pet-hip-transition-band-construction.md) | CHANGE-120当前源atlas与全部PURE通过，forward严格闭包阻塞，当前target/577/整带/保存未执行；历史CHANGE-119：度量源78与upper209二维实际通过，577/完整3D实际54折/100个all4交对/40坏AR、max15.00978865及8保护星失败；root168/ret336自身与8环/168连接/groin通过，§4.16四翼26/12Q及新84/42Q有限native通过；桥侧新20同列PL路径/190对通过但left22双AR域空、零站/零Native28；84原锚forward实际通过（`c52a5e7d…`），GUIDE-ONLY`065c72ea…`每侧6坏Q/17接触及后继LP/QP`ad87013c…`每侧6坏Q/25接触均providerfalse，完整836双阶段纯准备26控通过但当前真实构造0次，零采用/新站/native；零认证完整表/新Blend、无保存许可 |
+| 研发 | [真实髋裆过渡带施工](./engineering/pet-hip-transition-band-construction.md) | CHANGE-121迁移／重独审及136行forward通过，target固定必要几何拒绝，后续577/整带/保存未执行；历史CHANGE-120严格闭包阻塞；历史CHANGE-119：度量源78与upper209二维实际通过，577/完整3D实际54折/100个all4交对/40坏AR、max15.00978865及8保护星失败；root168/ret336自身与8环/168连接/groin通过，§4.16四翼26/12Q及新84/42Q有限native通过；桥侧新20同列PL路径/190对通过但left22双AR域空、零站/零Native28；84原锚forward实际通过（`c52a5e7d…`），GUIDE-ONLY`065c72ea…`每侧6坏Q/17接触及后继LP/QP`ad87013c…`每侧6坏Q/25接触均providerfalse，完整836双阶段纯准备26控通过但当前真实构造0次，零采用/新站/native；零认证完整表/新Blend、无保存许可 |
 | 研发 | [共享髋裆完整施工与预检](./engineering/pet-hip-shared-chart-construction.md) | CHANGE-118已结项；八份完整点表被拒绝，零新模型，失败证据保持 |
 | 研发 | [髋枢轴、表面腿根与修复设计](./engineering/pet-hip-repair-design.md) | CHANGE-115冻结设计；CHANGE-116实物初稿+2修订均失败、额度用尽 |
 | 研发 | [完整重建决策与 DCC 工单](./engineering/pet-character-production-rebuild-decision.md) | 全身工单保持；最新对应工作由顶部链接接续 |

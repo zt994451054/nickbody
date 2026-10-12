@@ -5,7 +5,7 @@
 > 技术决策记录（ADR）见 [decisions/](./decisions/)
 > 产品架构见 [../product-arch/overview.md](../product-arch/overview.md)
 > 研发工程文档见 [../../engineering/README.md](../../engineering/README.md)
-> 最后更新：2026-10-10
+> 最后更新：2026-10-12
 
 ---
 
@@ -206,7 +206,7 @@ graph TB
 
 969/922真实过渡带与14异常价完整星正在施工；六组42Q有限小片通过。单次同态续算原全检86折面/10交对/97坏AR，八髋环/双groin/14星保护通过，43条有向nT仍失败。有限尺寸诊断确认数值余量有方向盲区，显式无量纲恢复已在902.115秒结束，无BEST或重启；原全检78折面/0交对/45坏AR，八环仅4过、37条连接失败，双groin/14完整星通过；完整预检仍拒绝。原二维变量、场/骨轴/保护/门槛、392点/56接口及336有向原面保持。完整坐标认证、形体与条件保存/真实重读尚未通过，零新Blend，生产角色继续阻塞。仅离线髋部诊断，无运行时依赖或架构边界变更。[本轮实际记录](../../versions/v1.0.0/engineering/pet-hip-transition-band-construction.md)。
 
-### CHANGE-120 当前角色接续状态（2026-10-11，阻塞）
+### CHANGE-120 历史角色接续状态（2026-10-11，阻塞）
 
 **CHANGE-120 当前接续结果（2026-10-11，阻塞）**：当前新切缝 Source78 左右度量 atlas 已实际完成，各侧原 mean-value 求解调用及返回均为1；本次完整父域、两fan与UV交对重新检查通过（left `a3b7bcce…`／right `f29caef8…`／source review `0b642b60…`），有限源独审 `221f0b7d…` 通过。forward v3 的100项控制、target v4 的13项控制、point v3 的49＋16项控制及各自 PURE 独审全部通过（`1567982e…`／`2b721827…`／`07cbf2aa…`）；历史资格别名准入、仅9个固定当前源身份的完整严格 EOF 读取和577 producer账本／直接seed分层已修正，原数学、作者、field、阈值与冻结条件保持。
 
@@ -217,3 +217,7 @@ forward 配方冻结在原严格fallback读取历史 `bridge-transverse-path-pre
 下一步在新的独占版本迁移该历史失败收据的依赖账本并重资格：明确历史原path、对应保全snapshot与各自完整SHA，执行依赖角色仅使用真实exact path／SHA身份；原收据、旧文件与严格解析规则保留。新迁移及控制、独审通过后再从forward冻结接续，随后仍依次核实际映射、target、577和整带门禁。归档与双仓推送的实际状态统一见 CHANGE-120；下列 CHANGE-119 记录保持历史事实，不继承为本次几何资格。
 
 仅离线施工及metadata IO准入修订，未改变App运行时、基础设施、正式资源或架构边界；无需新增ADR。
+
+### CHANGE-121 当前角色接续状态（2026-10-12）
+
+当前可达依赖账本迁移及重独审通过，136行forward实际回放通过；Source78直接复用、零新source求解。唯一target入口在原固定必要几何拒绝：left face147／right face381及3／10固定边接触，完整solver尚未调用。577、969/922整带、完整表与保存未执行，新增模型0；生产／S0／rig仍阻塞。新common与transitive owner资格、完整当前身份和旧失败保全见[施工记录§7](../../versions/v1.0.0/engineering/pet-hip-transition-band-construction.md#7-change-121可达账本迁移与原完整整带接续)。本轮没有App运行时、基础设施、数据所有权或架构边界变化，无需新ADR。

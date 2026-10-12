@@ -1,7 +1,8 @@
 # 人形小草生产角色 Rig v2 规范
 
+> 当前CHANGE-121：当前可达依赖账本迁移及重独审通过，136行forward实际回放通过；Source78直接复用、零新source求解。唯一target入口在原固定必要几何拒绝：left face147／right face381及3／10固定边接触，完整solver尚未调用。577、969/922整带、完整表与保存未执行，新增模型0；生产／S0／rig仍阻塞。最新见本文件末节与[施工记录§7](./pet-hip-transition-band-construction.md#7-change-121可达账本迁移与原完整整带接续)。
 > 本文档是 v1.0.0 人形小草生产网格、骨架、蒙皮、动作、导出和认证的单一权威合同。
-> 当前状态：CHANGE-118完整连接和坐标已生成，八份整表预检均拒绝；最新双侧四环、固定有向连接、双groin及完整保护通过，严格几何仍失败，零新Blend，见§8.0.96。CHANGE-116三份失败实物与关闭额度、CHANGE-115冻结设计保持。正式S0/CLI仍v2、原骨架/资源保持；全身/S0/身份/32骨和动画仍阻塞。
+> CHANGE-118 历史状态：完整连接和坐标已生成，八份整表预检均拒绝；最新双侧四环、固定有向连接、双groin及完整保护通过，严格几何仍失败，零新Blend，见§8.0.96。CHANGE-116三份失败实物与关闭额度、CHANGE-115冻结设计保持。正式S0/CLI仍v2、原骨架/资源保持；全身/S0/身份/32骨和动画仍阻塞。
 > 后续依据：[完整重建决策与工单](./pet-character-production-rebuild-decision.md)。B1、纯权重路线和更早关闭路线保持冻结；不开放旧余额。原生产合同与正式资源不变，不宣称整体无解，也不承诺当前 AI 能独立完成尚未展示的建模能力。
 > 关联决策：`foundation/tech-arch/decisions/ADR-003-production-character-animation-pipeline.md`。
 
@@ -2068,3 +2069,9 @@ forward 配方冻结在原严格fallback读取历史 `bridge-transverse-path-pre
 下一步在新的独占版本迁移该历史失败收据的依赖账本并重资格：明确历史原path、对应保全snapshot与各自完整SHA，执行依赖角色仅使用真实exact path／SHA身份；原收据、旧文件与严格解析规则保留。新迁移及控制、独审通过后再从forward冻结接续，随后仍依次核实际映射、target、577和整带门禁。归档与双仓推送的实际状态统一见 CHANGE-120；下列 CHANGE-119 记录保持历史事实，不继承为本次几何资格。
 
 仅离线施工及metadata IO准入修订，未改变App运行时、基础设施、正式资源或架构边界；无需新增ADR。
+
+### 8.0.99 CHANGE-121：依赖账本迁移与整带接续
+
+当前可达依赖账本迁移及重独审通过，136行forward实际回放通过；Source78直接复用、零新source求解。唯一target入口在原固定必要几何拒绝：left face147／right face381及3／10固定边接触，完整solver尚未调用。577、969/922整带、完整表与保存未执行，新增模型0；生产／S0／rig仍阻塞。common v3 `62e2b67d…`／`54200001…`／`c86aeec8…`及transitive helper `0dbe391b…`／`c6bce79f…`同原f200 core/cap保持。176＋37与50＋8控制通过，三个下游当前PURE-v3 `0ca0f8ad…`／`27938069…`／`62396fff…`取得资格；forward实际独审 `f94c8df8…`通过136记录。历史失败与旧源码保持，迁移不授几何、完整表、保存或正式资源资格。
+
+完整结果／原范围及交付状态统一见[施工记录§7](./pet-hip-transition-band-construction.md#7-change-121可达账本迁移与原完整整带接续)和[CHANGE-121](../CHANGES.md)。无运行时、基础设施或正式架构调整，原骨架、动作、资源、合同与生产门槛保持。

@@ -2807,3 +2807,54 @@ App已精确提交`2b3588318e8a5f68bb0d81c505f14a12fc103897`（branch `feat/v1.0
 **只读接续设计补充登记（2026-10-12）**：旧`fbea292e…`属于失败synthetic control：32项中30通过、1error、1failed，`sourceGuideCount=0`，没有源构造或几何资格。三份`preservedSnapshot`实体字节的SHA精确等于旧声明SHA，三份当前原path字节则已不同；下一版producer ledger须分别保留历史原path／SHA声明与当前物理snapshot的exact path／SHA身份，不以旧SHA绑定已变化的当前原path。
 
 只读小metadata检查已识别多个直接consumer，下一轮须先做metadata-only当前可达frontier边清单，明确每条consumer role、producer身份、原声明／snapshot身份及所需新版ownership；不能承诺只新增一份receipt即可解除闭包。只对当前可达引用发新版ownership，并独审完整tuple后再冻结forward；退休分支及旧失败原样保全，其是否进入当前闭包以真实可达边为准，不以退休标签跳过引用。原旧文件和严格parser保持，不删`preservedSnapshot`字段、不跳过依赖、不新增opaque或cached-normalized例外。本次仅补充接续设计，尚未实施本设计中的迁移、重资格、新冻结或下游实际运行；已取得的源／PURE／有限native28门结果与归档复验SHA保持；最终提交／push状态以本节归档状态及独立交付回执为准。
+
+## CHANGE-121 | 2026-10-12 | 当前可达依赖账本迁移与完整整带接续
+
+**变更时当前阶段**：开发中（角色生产阻塞）
+**用户授权**：“好，继续实施下一步，先迁移当前可达的依赖账本并重新审查，通过后接着做完整整带验证。”
+**实施顺序**：先保全 CHANGE-120 全部原始文件、失败、已发布归档及三个仓库状态；对当前 forward request 的实际因果种子建立完整 EOF 可达边清单，区分历史声明、真实保全 snapshot 与当前执行身份。仅在新独占目录发布版本化 producer ownership 及当前可达消费者账本；原失败结果、旧收据及严格 parser 保持。迁移控制与独立审查通过后，依次冻结并实际执行 forward、target、577 作者和原 969／922 完整整带门禁；通过原全部条件后才认证完整表、保存隔离模型并真实重读。
+**边界**：原392硬点（含56接口）、110点、168腿根表达、336保留面、骨轴／髋轴、原参考／保护／n／T／拟合与正式阈值保持。已实际通过的 Source78 只作明确身份的几何复用，不把账本迁移宣称为新源求解。零付费、安装、骨骼、权重、动作及正式资源晋升；每个新冻结配方一次实际执行，具体失败修订另记，不作自动参数扫描。新输出根为 `sprout-hip-dependency-migration-20261012`；原 OLD、continuation、delivery 控制与已提交归档只读。
+**影响范围**：
+- [x] 当前可达 frontier、版本化 ownership 迁移、完整 EOF 与身份／历史失败保留控制：common v3 已完成176项控制及全量独审；原735份物理view保持（@Codex；新 forward 冻结前已完成）
+- [x] forward／target／577及whole消费者实现与PURE独审：共同f200实现及四阶段新资格通过；实际计算资格仍由各ENTRY／实际审查分别取得（@Codex；下游几何前已完成）
+- [ ] 实际映射已通过；target唯一入口在原固定必要几何拒绝，577／969-922／完整表／保存／重读的前置不满足（@winston，AI执行；截止：阻塞，待新源→目标固定UV修订评审通过后重新排期。本轮失败独审及保全已完成）
+- [x] 九份授权文档同步、原17931文件／15links保全、实际增量归档及独立全流复验；双仓提交、暂存完整字节和精确远端HEAD由最终外置交付回执记录（@Codex；archive `0f4443e7…`／root `64fefea9…`／独审 `817dc37e…`，完整整带待项不勾作通过）
+
+**开始状态**：上轮 Source78 及消费者 PURE 已通过；历史 `fbea292e…` 因额外 snapshot 字段及脚本身份漂移阻止 forward 冻结，下游尚未执行。本记录不预授迁移、几何、完整表或模型资格。
+
+**当前可达边调查补充（先于迁移实现）**：完整 metadata frontier 实测1,636个唯一身份，其中实际种子可达1,454；735个JSON、92,707条唯一父子边／561,296条原role边。`fbea292e…`有23个实际可达直接父级。除原9包外，两个源求解 observation 各有37,775个role，原streaming资源上限拒绝而现有64MiB严格完整读取可验证合法；新版物理账本须完整保留其声明投影并满足原parser预算，不扩大原九包exception。
+
+**迁移资格已完成（2026-10-12；实际几何结果另记）**：最终common v3 manifest `62e2b67d…`、implementation `f200d71d…`、preparation `54200001…`与独审 `c86aeec8…`精确绑定。1,687个身份、748份physical JSON／637,438条完整原role及86个explicit actual seed逐项通过；原735份view保持，新13份中仅3份为合法causal proof，10份为非seed资格view。176项作者控制及37项独立边界控制通过，完整原声明顺序／原父支持集合／before-after SHA均核对，P1/P2=0。原失败fbea全payload、3份旧script实体snapshot与当前script分别保留；d9仍是原738:56截断失败，原156父／542roles保持，新增非seed旧point recipe的1父／1role单独批准保留，不把旧失败转PASS。
+
+**消费者PURE及forward冻结已完成**：forward／target／577／whole各24／23／21／28项当前控制与独立PURE审查通过（`8eed84d1…`／`3e056b61…`／`cb93aaae…`／`a0c0840f…`）。原数学、严格parser、队列、阈值及Source78身份保持；新增IO修订涵盖completion原参数配对、Blender入口bootstrap和失败真实调用／返回回执，旧版本源码及所有资格文件保留。实际forward配方`4d964f95…`经原strict队列冻结，1,443个role／1,442个unique物理执行身份完整；ENTRY独审`a862a48c…`通过，所有数值dispatch为0。随后唯一实际forward执行已完成（completion `0a11fc4a…`），26 unique语义／32corner记录与104普通记录共136行原parent／child／bary／world／UV／native／cut身份独审全部通过（`f94c8df8…`）；Source78按明确身份直接复用，零新source求解。target及后续门结果另行登记。
+
+原固定`d9dec…`失败文件也实际可达：23,632字节、原strict与完整JSON均在line738,column56确认截断。它没有完整EOF或可认证的完整声明，不可复制为bin／空view或沿用隐式opaque使新闭包通过。拟在新版producer ownership明确每条原父级role与失败字节，只有完整证明其为当前成功源之外的历史失败证据、由独立typed资格审查且普通执行role／copy／symlink提升均拒绝，才可列入历史资格层；不能证明时保持实际阻塞。另5项历史脚本漂移及旧截断metadata仅qualification可达，不提升为本轮执行身份。
+
+**交付工具再审补充（实际归档尚未执行）**：29项增量交付控制和34项独立边界检查通过（PURE `a79081a3…`／独审 `8c4ddedd…`）；修复external consumed身份重新绑定SHA绕过旧文件保护的P2反例，current与外部consumed完整并集均须保持原保护SHA。v2源码／控制／资格完整保留；固定4份无效模型拒绝fixture只保全其exact原字节，不授模型资格。当前消费清单工具38项控制及44项独立重放／反例检查通过（`a7aa748e…`／`8dd5c3b1…`）；15条原source/runtime lexical链接工具43项控制及46项独立重放／反例检查通过（`f790a6e7…`／`124e7670…`）。旧17,931文件／17,488,357,201字节及5用户文件的保护检查实现通过只读审查（`56fdf6bc…`）；实际完整保全、清单、增量capture/replay与双仓push须在最终报告完成后实做，不能以工具PURE代替交付。
+
+**target 冻结失败与兼容补充登记（先于修订实现）**：唯一target metadata freeze在严格队列拒绝 `Unregistered active byte ownership`，配方未导出，target求解为0；原配置 `cd10f9e9…`、失败trace及诊断 `7de63f54…`保留。精确child是已实际通过forward的原当前producer `migrated_forward.py`／`87615bfd…`：其身份已在target PURE绑定，但current-stage的有限byte-owner列表未登记它作为上游实际packet的transitive child。该问题不否定Source78或136行实际回放，不授几何失败或无解结论。
+
+为保留已实际forward的完整执行tuple，原f200核心／common v3资格／manifest及forward原path字节保持。下一修订仅在新独占helper中，对原 `_stage_record` 完整承认的实际上游packet追加其exact producer及有限、上游完整PURE绑定的transitive byte owner；保原严格LIFO/EOF/每child seen前guard，不给direct seed、历史/PURE/unknown helper/copy/symlink准入。helper控制与独审通过、三个下游PURE重新取得当前资格后，再用新独占target配置重冻并独审ENTRY；原数学／solver／作者／阈值不变，不重跑source或forward。旧target／point／whole资格源码与收据须先实体保全，原失败不能覆写为PASS。
+
+**兼容补充已取得新资格**：extension `0dbe391b…`／preparation `9716f351…`／独审 `c6bce79f…`通过50项作者与8项独立边界控制；本轮实际forward的6份输出、recipe、ENTRY与Source78 tuple前后全字节保持。新helper不作为执行direct seed，原core实例与cap继续使用，每条原literal child在seen前仍独立guard；只在初始化及新canonical actual producer登记时复核authority predicate，未缓存JSON或跳过EOF／身份检查。三个下游新PURE-v3 target／577／whole分别27／25／33项作者控制及6／14／41项独立检查通过（`0ca0f8ad…`／`27938069…`／`62396fff…`），原旧资格与一次冻结失败保持。随后以新的独占target config-v3接续冻结／ENTRY，不重跑Source78或forward；实际下游结果另记。
+
+**交付工具最终资格修订**：增量交付v4（`800baaf1…`／独审`f2ddc045…`）31＋7项控制通过；只对本轮真实Git负控fixture内保留的 `.git` 路径component采取可入库字节运输名，完整原lexical身份／SHA与payload全部保留，不省略Git metadata。reviewerSupportBindings显式投影工具33＋3项控制通过（`b3f703f4…`／`353d6ddc…`），保留最终QA每个literal role、顺序和原字段来源，不递归解释历史JSON。实际暂存byte verifier完成9项小Git控制及只读复核（`202d7371…`／`8a508e72…`）；primary exception保持、三清理故障均尝试且使用bounded wait，origin feature upstream精确匹配。所有工具资格仍不代表最终实际capture、保全或push已发生。
+
+
+**唯一实际target停止与独立验收**：新config-v3 `0cc0cfe0…`／recipe `85ec33f2…`／ENTRY `ac14b768…`实际完整闭包通过。随后入口拒绝于原 `fixed_necessary`：左右140fixed／109unknown，各39全fixed Q；left仅face147坏cross并3 fixed edge contacts，right仅face381坏cross并10 contacts。真实failure `26160cb2…`／start `8889df9c…`／日志 `be42b251…`／有限见证 `93497514…`完整保留；独审 `871c3b0c…`复现全部原谓词、核1823输入前后字节，factgate=true、actual geometrygate=false，P1=2/P2=0。full-core及preDispatch均为空，完整solver／XYZ／577／whole／保存0；raw/envelope未生成，point／whole的配置与配方也未生成，不把已通过PURE当实际结果。
+
+**只读身份对应**：source-UV见证 `36227353…`核原topology/registry9字段、全部32semantic+104ordinary的corner/key/原literalUV进入140fixed，并对坏面及接触相关19角核原approved锚、原side atlas child和bary→UV；未见迁移坐标变换、侧别或节点错接。下一步须从固定源映射与target必要固定UV方向与原面/边相容性着手，不得靠未知点solver改动固定坏面；当前拒绝不推为全模型无解。独立IO对应复核 `8e0a6762…`（完整SHA `8e0a676285eb0dde472a8d5a28f5dbb237b40eacc224aef86119a976318100c6`）通过，核全部136条映射与原target.prepare逐项一致、九个原几何角色保持原始字节，3586输入及4 reviewer supports前后全exact、数值dispatch为0。最终结果记录 `7157d1fc…` 区分迁移／forward通过与target拒绝；最终17,931文件完整保全 `7012ebb7…`、15条历史lexical links保全 `77f47885…`均通过。实际归档及双仓状态后附。
+
+**实际运输首试与有限修订登记**：最终消费清单首版覆盖9188普通文件／186合成link metadata、38635 literal消费roles／2616 unique身份；实际plan尚未capture即被模型字节门禁拒绝。独立byte-boundary测试遗留两个`current.json`各22B、literal `BLENDER-v300 synthetic`（SHA `13c1c3da…`），未列入既有四fixture精确清单；诊断 `aa2812fc…`及原request/catalog保持。新独占v5仅补这两个真实负控文件的精确lexical路径／SHA／length／字面bytes，保旧v4和四fixture原字节，不按同SHA或路径模式泛化、不授保存／几何资格。six-fixture新控制与独审通过后重新停止新增写入，以新版选择/catalog/request交付全部原失败与新增资格。
+
+**运输v5已取得当前资格**：新adapter `bae34bfb…`／六fixture清单 `d50d30e4…`／prep `f30a49b3…`／独审 `94a2999f…`通过48作者重跑与10独立控制（58/58，P1/P2=0）；旧四条记录逐字段保持，只追加原诊断两条精确身份。完整literal9/22字节、长度、regular/nonlink、lexical resolve及前后完整身份均核；copy／新同SHA路径／别名／父或末级link／rebound／额外EOF／TOCTOU均拒，保存准入仍None。其余transport函数AST保持。新增控制temporary目录已释放，未在NEW再遗留模型header副本。实际独审器v5 `e94339ec…`与原 `8a51cdb6…`仅两行模块入口不同，完整origin／delta／selected base流式核验与零model边界保持。原首试失败及旧request/catalog保持，新版选择仅按bytes消费它们、不递归投影历史字段；实际capture另记。
+
+**第二次运输plan实际拒绝与v6有限修订登记**：v5已通过资格后，真实全量plan在capture前以`Delta filenames collide`拒绝；诊断 `e81fd956…`保留3组原负控目录中的`.git`或`.GiT`与literal `preserved-original-git-metadata-bytes`同名运输碰撞，原两路径／SHA与bytes均保持。新独占v6仅修reserved Git component及其escape marker前缀的可区分运输名，保完整原lexical身份／SHA／文件字节，碰撞仍快速拒绝，不按同SHA合并两记录。六fixture模型边界、全stream replay、base exact身份及零save保持；v5和两个失败request/catalog保留。新控制与独审通过后再冻结最终消费清单，不重算源、不重试target或下游。
+
+**运输v6当前资格完成**：source `88a5e019…`／prep `6954cf01…`／独审 `9fe847dc…`通过56作者重跑及9独立控制（65/65，P1/P2=0）。三组真实pair各保2原lexical owner，sameSHA不合并；6份完整字节实际tiny pack／replay与Git staged blob一致。`.git` casefold及escape marker的casefold前缀统一编码，原literal生成名再次编码；最终collision guard仍拒。six-fixture函数／catalog与其它transport函数保持，仅新增component函数并改1处调用。第一次独立强制alias mock未注入新加载helper导致的单项失败source/log保持，新独占v2修mock并核spy和精确拒因后65项全通过；不是生产代码缺陷或几何变化。实际审查器 `6e2e19d0…`保持原fullstream/origin定义。所有NEW写入已停止，最终选择50条current metadata／15份QA／70 literal reviewer supports，失败request/catalog仅byte-only，不递归投影旧字段。
+
+**本轮实际增量归档完成（独立回放审查另记）**：最终current选择 `6cb4b94a…`／catalog `a42cadc1…`／request `6f07d4ca…`／plan `95fd8129…`及50tuple只读审 `c1cd823a…`完整保持；9217普通源文件与186合成link metadata、38677 literal消费roles／2644 unique身份被精确覆盖。9443 delta captures＋3 capture元数据共9446归档records，另按exact原path／SHA引用1483既有base records，原已发布base不复制。实际manifest完整SHA `0f4443e74bf03585c5343c0b38ef39887cef716043783d688b53676644f9dcd4`，原64MiB chunk／1MiB IO不变。root实际capture及全delta／本轮selected-base回放完成，实核receipt完整SHA `64fefea9727050aada200542689e7dcf4a804c06ceaab11577f3387232022250`；初始自动receipt仅原子移到CONTROL且字节保持（观察 `02026d2c…`），App无越界receipt文件。2份原保护Blend参照仅字节角色、6个无效synthetic fixtures分别保留，新保存模型0；未重建symlink、不宣称所有历史嵌套引用闭合，不授target／整带／保存资格。
+
+**实际独立回放与最终交付索引**：独审完整SHA `817dc37e680fae2c8a8de50642437ef9acd7ab99aa46277554b03fab20db74be`通过（P1/P2=0），独立重建38677消费roles／2644 unique身份及70 literal reviewer supports的来源与顺序；9446 delta records完整解码962305544B，1483 selected-base records完整解码5639662088B，未宣称其余历史base全payload已检查。原stream verifier独立复验返回同一确定性SHA `64fefea9727050aada200542689e7dcf4a804c06ceaab11577f3387232022250`；零再次capture/pack、零新模型、无geometry/save资格。
+
+本轮App入库范围仅实验`sprout-hip-dependency-migration-20261012/`、同级`…-delivery/`、`…-delivery-verification.json`与实验父目录3条新增`-text`属性；原3条属性保留。实际清单／request／plan／保全／独审／九文档与Git字节审查原字节收在delivery目录。Panel仅本轮九份授权文档；精确提交自标识由各仓git history承载，最终origin feature分支HEAD、0/0同步与原用户main／App4725未跟踪状态由独立CONTROL的`dual-repository-publication-receipt.json`实核，不在提交中自引用同一commit SHA。归档只交付证据：唯一target仍在固定必要几何拒绝，fullsolver／577／G0–G6／完整表／新model均0，角色生产／S0／rig仍阻塞。
