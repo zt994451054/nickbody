@@ -1,6 +1,6 @@
 # v1.0.0 技术方案
 
-> 当前CHANGE-122：固定UV有界修订后的cut、source分区、atlas及136角forward实际与独审已通过；左右140固定角／39完全固定Q／全部固定边保持。历史原core每侧调用／返回2，历史CHANGE-123 r2每侧current调用／返回1、PII各0的失败证据完整保留。CHANGE-124数学双独审、Target/v6十源封存／111项PURE／非作者PQA与fresh ENTRY及ROOT完整字节复验通过；唯一新actual左右每侧current调用／返回1，fresh原seed／PI／PII各1，原PI／PII／strict disk及当前施工门全部通过，无重试、source查询或模型。SavedTargetQA/v4完整51项PURE、非作者47tiny／fresh51＋10真实CLI及ROOT43,432角色准入全部通过；唯一真实保存复算def14b1e及ROOT193,594角色完整后验通过，左右原全部几何／PI／PII和当前施工门重算通过，无新求解／source查询。Point/v4九源封存、66项完整PURE与非作者PQA通过，fresh ENTRY独审及ROOT82,459角色／342,412 owner字段完整准入通过，唯一实际在原field辅助文件导入PIL时失败037a3cda，作者调用／返回0、field构造部分进入未返回，原失败／输入字节保全；Point/v5十一源880c0019已封存、101项完整PUREa2d91618通过，ROOT33,021角色完整作者后验5637df83通过，非作者首次正式PQA在NumPy memmap类定义处被过宽profile拒绝，封存失败保留；新五源观察器v2 c09b8560封存、48项fresh控制通过，失败后32,993角色完整字节保全ba801027通过，新正式PQA9432c02c通过101＋48＋45／28控制、33,017完整角色／8,678路径及Pillow定义边界复验，ROOT66,051角色完整后验342ea438及生产准入通过，新14份配置972d1be0齐，唯一metadata配方冻结331ffad2／b70e231d通过，真实ENTRYde0e2dc9／唯一进程b09c9573严格通过，ROOT347,627角色／8,715路径／343,200 owner字段完整入口后验6e690862通过；新ROOT实际外层v4 c854e7d6的24纯证据控制及非作者静审38ce6776通过，唯一guarded CLI已启动、作者返回和实际结果仍待真证据；SavedPointQA/v3七源已封存、34项完整PURE通过，非作者33项与完整静态审核通过，正式readiness5c952b5e失败：fresh34为33通过／1被原module guard拒绝，原证据保全；新独占profile capsule-v2准备通过；SavedPointQA/v4七源68e10378正式封存、52项完整PURE7e7fe835通过，66,026角色／8,705路径完整字节一致，ROOT66,037角色完整作者后验cafed72d通过；新非作者九源观察器10c82279封存，完整66,431角色／8,782路径静态审查与fresh39通过，ROOT132,876角色完整独审静态后验eb1b0f2a通过；新正式readiness外层v3三源29b40bb9封存、18完整纯控及ROOT310角色完整支持后验8b6958a7通过；ROOT真实QA外层v9 fb38d827和32项纯证据控制通过、独立静审3ccbb892无已知阻挡；真ENTRY及ROOT入口后验已齐，唯一正式readiness失败444ffe13／d1bd0c2e：capsule runtime公开2字段与完整3字段不等，suite启动0、52／39／3CLI均未运行，bdd172dc限定因果核真；新observer-v2边界补完整runtime元数据，原作者与capsule guard不改，不授实际QA资格。Whole/v3九源封存、50项完整definition-only PURE通过，独审v1拒绝保留；v2独审P1/P2=0、fresh50＋12 tiny及ROOT完整93,099角色／生产准入复验通过；Point14份真实upstream已齐，真实141,224,671字节recipe冻结通过，fresh ENTRY811fce77及原进程77ec9082通过，Whole/v4最终12源a8daea88封存后的唯一完整77 PURE失败9d82a612：62实际60通过／2旧mock缺Point5家族字段ERROR，15容量未派发，152,679角色／21,158路径完整前后保持；限定因果观察a4db7c12通过，历史失败与sealed源保留，新exclusive Whole/v5仅补两mock三字段及边界文字后独审／重封／fresh77，四项未来实际资格仍未晋升。保存前Post-G0/v1容量拒绝完整保留；v2十一源封存、83完整PURE与ROOT178,735角色完整复核通过，独立59项本地控制及真实账本重建通过；当前真实账本容量上界832,813,416字节低于原1GiB，原namespace／长度／字节／23-20-167数学均保持，非作者fresh83＋fresh59＋6生产负控PQA严格0及ROOT178,948角色完整后验／生产准入通过，仅四个presave动作准备；后续六动作保存层十一源c5464c33封存、106项完整PURE072fe463通过，ROOT178,750角色完整复核d469b5c5通过，六源observer3ded94dc封存、64本地控制及真实账本预检通过，fresh106＋64＋6生产负控PQA2c74153a通过、ROOT178,970角色完整后验7682b6c7及生产准入通过，不授实际资格。原577实际点尚未生成，首次失败未进入作者；969-922整带／完整表／条件保存与重读尚未执行，新增模型0；生产／S0／rig仍阻塞。 最新见本文件末节与[施工记录§8](./pet-hip-transition-band-construction.md#8-change-122固定uv有界修订与实际完整target诊断)。
+> 当前CHANGE-125：正式小草换为身份基准重绑骨资产（[ADR-004](../../../foundation/tech-arch/decisions/ADR-004-identity-mesh-rerig-for-v1.md)），Rig v2 重拓扑路线暂停、文件保留；见文末 CHANGE-125 节。暂停前最后状态见 CHANGE-122 节。
 > **技术架构基线**：[foundation/tech-arch/overview.md](../../../foundation/tech-arch/overview.md)  
 > **需求文档**：[product/requirements.md](../product/requirements.md)  
 > **接口设计**：[api-design.md](./api-design.md)  
@@ -541,6 +541,7 @@ App 运行时只使用系统框架：RealityKit 负责有界 3D，Core Animation
 
 ### 7.5 角色资产与统一动画图 (PetAnimationGraph)
 
+*   **v1.0.0 当前正式资产（CHANGE-125 / ADR-004）**：身份基准网格 + 原 24 骨骨架，只平移关节位置并重算蒙皮权重，App 运行时代码不变。重绑骨脚本与验收工具在 App 仓库 `tools/pet-model/rerig/`。下列 Rig v2、32 关节和统一动画图条目是已暂停路线的合同，保留供恢复时使用。
 *   **生产资产**：人形小草 Rig v2 的网格、32 关节导出骨架、蒙皮、动作 manifest、坐标和认证门禁统一由 `pet-character-rig-v2.md` 定义。当前 24 骨资产只作为迁移期正式回退和视觉参考。licensed basemesh 必须先通过独立 source intake，再以 `licensed_basemesh_adapted` 新版本进入完整 S0；源文件既有拓扑质量、modifier、rig 或动作不能继承审批。
 *   **静态拓扑合同**：App 的 `sprout-rig-v2-static-topology-contract-v2.json` 是 profile、关节环、support route 和严格几何阈值的机器真源。`scoped_wip` 永远不能产生 S0 pass；只有绑定合同版本/哈希且语义声明完整的 `open_five_s0` formal candidate 可进入静态审核。关节环点数可按局部形态变化，但同一关节相邻环必须等点数并构成连续 quad strip，左右结构须满足合同差值；生产 32 关节骨架不等于每个变形环固定 32 点。
 *   **多宠物复用边界**：后续宠物复用的是骨架语义、动作 ID、认证流程、导出格式和运行时动画图，而不是强制复用同一身体网格、脸型或蒙皮权重。比例和拓扑兼容时可重定向同一动作源；体型、肢体粗细或脸部结构差异超过合同容差时，必须为该宠物单独重拓扑、蒙皮和通过变形门禁，避免套模造成塌陷或不自然表情。
@@ -730,3 +731,25 @@ forward 配方冻结在原严格fallback读取历史 `bridge-transverse-path-pre
 ### CHANGE-122 固定UV有界修订与完整 target 诊断（2026-10-12）
 
 当前实际结果：固定UV有界修订后的cut、source分区、atlas及136角forward实际与独审已通过；左右140固定角／39完全固定Q／全部固定边保持。历史原core每侧调用／返回2，历史CHANGE-123 r2每侧current调用／返回1、PII各0的失败证据完整保留。CHANGE-124数学双独审、Target/v6十源封存／111项PURE／非作者PQA与fresh ENTRY及ROOT完整字节复验通过；唯一新actual左右每侧current调用／返回1，fresh原seed／PI／PII各1，原PI／PII／strict disk及当前施工门全部通过，无重试、source查询或模型。SavedTargetQA/v4完整51项PURE、非作者47tiny／fresh51＋10真实CLI及ROOT43,432角色准入全部通过；唯一真实保存复算def14b1e及ROOT193,594角色完整后验通过，左右原全部几何／PI／PII和当前施工门重算通过，无新求解／source查询。Point/v4九源封存、66项完整PURE与非作者PQA通过，fresh ENTRY独审及ROOT82,459角色／342,412 owner字段完整准入通过，唯一实际在原field辅助文件导入PIL时失败037a3cda，作者调用／返回0、field构造部分进入未返回，原失败／输入字节保全；Point/v5十一源880c0019已封存、101项完整PUREa2d91618通过，ROOT33,021角色完整作者后验5637df83通过，非作者首次正式PQA在NumPy memmap类定义处被过宽profile拒绝，封存失败保留；新五源观察器v2 c09b8560封存、48项fresh控制通过，失败后32,993角色完整字节保全ba801027通过，新正式PQA9432c02c通过101＋48＋45／28控制、33,017完整角色／8,678路径及Pillow定义边界复验，ROOT66,051角色完整后验342ea438及生产准入通过，新14份配置972d1be0齐，唯一metadata配方冻结331ffad2／b70e231d通过，真实ENTRYde0e2dc9／唯一进程b09c9573严格通过，ROOT347,627角色／8,715路径／343,200 owner字段完整入口后验6e690862通过；新ROOT实际外层v4 c854e7d6的24纯证据控制及非作者静审38ce6776通过，唯一guarded CLI已启动、作者返回和实际结果仍待真证据；SavedPointQA/v3七源已封存、34项完整PURE通过，非作者33项与完整静态审核通过，正式readiness5c952b5e失败：fresh34为33通过／1被原module guard拒绝，原证据保全；新独占profile capsule-v2准备通过；SavedPointQA/v4七源68e10378正式封存、52项完整PURE7e7fe835通过，66,026角色／8,705路径完整字节一致，ROOT66,037角色完整作者后验cafed72d通过；新非作者九源观察器10c82279封存，完整66,431角色／8,782路径静态审查与fresh39通过，ROOT132,876角色完整独审静态后验eb1b0f2a通过；新正式readiness外层v3三源29b40bb9封存、18完整纯控及ROOT310角色完整支持后验8b6958a7通过；ROOT真实QA外层v9 fb38d827和32项纯证据控制通过、独立静审3ccbb892无已知阻挡；真ENTRY及ROOT入口后验已齐，唯一正式readiness失败444ffe13／d1bd0c2e：capsule runtime公开2字段与完整3字段不等，suite启动0、52／39／3CLI均未运行，bdd172dc限定因果核真；新observer-v2边界补完整runtime元数据，原作者与capsule guard不改，不授实际QA资格。Whole/v3九源封存、50项完整definition-only PURE通过，独审v1拒绝保留；v2独审P1/P2=0、fresh50＋12 tiny及ROOT完整93,099角色／生产准入复验通过；Point14份真实upstream已齐，真实141,224,671字节recipe冻结通过，fresh ENTRY811fce77及原进程77ec9082通过，Whole/v4最终12源a8daea88封存后的唯一完整77 PURE失败9d82a612：62实际60通过／2旧mock缺Point5家族字段ERROR，15容量未派发，152,679角色／21,158路径完整前后保持；限定因果观察a4db7c12通过，历史失败与sealed源保留，新exclusive Whole/v5仅补两mock三字段及边界文字后独审／重封／fresh77，四项未来实际资格仍未晋升。保存前Post-G0/v1容量拒绝完整保留；v2十一源封存、83完整PURE与ROOT178,735角色完整复核通过，独立59项本地控制及真实账本重建通过；当前真实账本容量上界832,813,416字节低于原1GiB，原namespace／长度／字节／23-20-167数学均保持，非作者fresh83＋fresh59＋6生产负控PQA严格0及ROOT178,948角色完整后验／生产准入通过，仅四个presave动作准备；后续六动作保存层十一源c5464c33封存、106项完整PURE072fe463通过，ROOT178,750角色完整复核d469b5c5通过，六源observer3ded94dc封存、64本地控制及真实账本预检通过，fresh106＋64＋6生产负控PQA2c74153a通过、ROOT178,970角色完整后验7682b6c7及生产准入通过，不授实际资格。原577实际点尚未生成，首次失败未进入作者；969-922整带／完整表／条件保存与重读尚未执行，新增模型0；生产／S0／rig仍阻塞。 详细证据及诊断实施边界见[施工记录§8](./pet-hip-transition-band-construction.md#8-change-122固定uv有界修订与实际完整target诊断)与[CHANGE-122](../CHANGES.md)。原失败、原硬点／锚／根表达／保留面／轴／n／T／阈值保持，不新增正式资源或基础设施。
+
+### CHANGE-125 正式小草重绑骨与 Rig v2 路线暂停（2026-10-16）
+
+用户反馈歪头时下巴不跟、动态褶皱和挥手不自然。阶段 0 验证确认根因是骨骼摆位与蒙皮权重：歪头时下巴实际转角只有头骨的 47%，抬臂带动头部最多 177 mm，左右关节不对称 42 mm。
+
+**方案**：沿用身份基准网格与 24 骨骨架。关节只平移不旋转，App 中按关节局部轴写的常量继续有效。蒙皮权重用 Blender 4.3.2 脚本重算：
+1. bone heat 初值；
+2. 手臂/腿按表面连通区域限定归属，并在腋下做局部平滑；
+3. 头部在颈部折线以上刚性跟随头骨，以下用表面测地距离做过渡带；
+4. 胯部用调和插值做腿到躯干的宽过渡，适应站姿腿根内收；
+5. 左右镜像平均。
+
+USD 中只改 Skeleton `bindTransforms`/`restTransforms` 和 Mesh `primvars:skel:jointIndices`/`jointWeights` 四个属性。
+
+**验收（原 → 新）**：下巴跟随比 0.472 → 1.0；头部刚性误差 82 mm → 0；抬臂带动头部 177 mm → 0；头胸褶皱 300～480 → 0；左右镜像误差 42 mm → 0；跨肢体渗漏 → 0；站姿胯部褶皱 145 → 32。
+
+**阶段 1 集成**：
+- 正式 `pet_sprout_s2.usdz` 同名替换，原资产存档于 App 仓库 `character_pipeline/sprout/rerig-v1/archive/`。
+- 桌面精灵图重烘焙第 0、1、8 行。
+- `CandidateBSkeletonFixture` 与相关测试哈希按新资产更新；Rig v2 路线工具的冻结哈希改指向存档原资产。
+
+**阶段 2 约束**：刚性大头歪头无碰撞上限约 22°（现有 ±38° 会压进肩膀），手臂外展上限约 65°。歪头改为"头约 20° + 上身侧倾 6° + 同侧手臂下沉 10°"，挥手需在外展上限内重新设计。
