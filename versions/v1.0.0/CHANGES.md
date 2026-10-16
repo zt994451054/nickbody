@@ -71,6 +71,9 @@
 
 | CHANGE-111 | 2026-10-08 | 开发中 | 首块有界可行性求解 | 一次真实输出数值/几何通过；两项最大值达标，三项质量失败，未采用映射 | ✅ 已完结（质量未通过） |
 
+| CHANGE-123 | 2026-10-12 | 开发中 | 完整target数值构造修正 | r2准备及ENTRY通过；每侧唯一实际FAIL，原证据保全并接CHANGE-124 | ⏳ 处理中 |
+| CHANGE-124 | 2026-10-13 | 开发中 | 坐标预条件／辅助余量完成 | Target/v6及保存复算通过；Point/v4实际因PIL依赖缺项失败、v5最小依赖修正中；下游仅准备 | ⏳ 处理中 |
+
 > 处理状态：⏳ 处理中（存在未勾选影响项）/ ✅ 已完结（所有影响项已处理）
 
 ---
@@ -2858,3 +2861,290 @@ App已精确提交`2b3588318e8a5f68bb0d81c505f14a12fc103897`（branch `feat/v1.0
 **实际独立回放与最终交付索引**：独审完整SHA `817dc37e680fae2c8a8de50642437ef9acd7ab99aa46277554b03fab20db74be`通过（P1/P2=0），独立重建38677消费roles／2644 unique身份及70 literal reviewer supports的来源与顺序；9446 delta records完整解码962305544B，1483 selected-base records完整解码5639662088B，未宣称其余历史base全payload已检查。原stream verifier独立复验返回同一确定性SHA `64fefea9727050aada200542689e7dcf4a804c06ceaab11577f3387232022250`；零再次capture/pack、零新模型、无geometry/save资格。
 
 本轮App入库范围仅实验`sprout-hip-dependency-migration-20261012/`、同级`…-delivery/`、`…-delivery-verification.json`与实验父目录3条新增`-text`属性；原3条属性保留。实际清单／request／plan／保全／独审／九文档与Git字节审查原字节收在delivery目录。Panel仅本轮九份授权文档；精确提交自标识由各仓git history承载，最终origin feature分支HEAD、0/0同步与原用户main／App4725未跟踪状态由独立CONTROL的`dual-repository-publication-receipt.json`实核，不在提交中自引用同一commit SHA。归档只交付证据：唯一target仍在固定必要几何拒绝，fullsolver／577／G0–G6／完整表／新model均0，角色生产／S0／rig仍阻塞。
+
+## CHANGE-122 | 2026-10-12 | 固定 UV 与整带连接相容性追查及有界修复
+
+**变更时当前阶段**：开发中（角色生产阻塞）
+**用户授权**：“你打算怎么做”后的四步计划，以及“有把握修好吗 还是 需要查阅资料”后的“好 继续”。先追查固定 UV 的切口侧、源锚和边界点序，修复产生不相容关系的环节；全部固定条件重新通过后，接续原 target、577 与完整整带验证。
+**开始状态**：CHANGE-121 的136行实际 forward 和运输交付通过；left face147、right face381与3／10固定边接触拒绝，fullsolver及后续均未执行。相邻 upper buffer UV 跳变仅为线索，尚不认定 seam、点序或特定锚为根因。
+**实施边界**：新独占目录 `sprout-hip-fixed-uv-repair-20261012`；原失败、源、已发布证据及用户工作区保持。优先追查涉及的19角和真实 source producer，不直接改最终UV、不任意重排target、不放宽阈值。若修订涉及cut、源边界/chart或锚定义，须先取得新的源级资格；只有确证既有源身份关联错误时才复用原Source78。原392硬点（含56接口）、110点、168根表达、336保留面、骨轴／hip轴、14保护星、n／T、AR及参考拟合保持。不得以局部修复代替左右全部固定面／边检查；全部原门禁通过后才认证完整表、生成隔离模型、保存及真实重读。零付费、安装、骨骼、权重、动作或正式资源晋升，不作自动参数扫描。
+**影响范围**：
+- [x] 原固定必要失败的原因见证及独立复核：原锚关联、PL边界顺序、cut归属、目标邻接已核对；新固定全部面／边实际验证通过（@Codex；已完成，完整target新失败另列）
+- [x] 新版本有界cut修订、控制及独审；新source arrangement／atlas冻结、ENTRY、实际结果与保存独审已通过（@Codex；已完成）
+- [x] 左右各140固定角／39完全固定Q及全部固定边重审，fresh 136角forward与保存独审、新target输入冻结及ENTRY通过（@Codex；已完成，不等于完整target通过）
+- [ ] 完整target新构造与资格：同参数诊断、完整保存、原谓词独审及独立Fraction复算已完成；右侧耦合自由点退化／越界与左侧PII半余量不足已定位，新构造修正及重新资格仍待完成（@Codex；截止：依保存证据有界推进，不作自动扫描）
+- [ ] 原577／969-922整带、完整表／实物／拟合视图／条件保存／重读（@winston，AI执行；截止：完整target及保存独审通过后，失败时保全具体证据）
+- [x] 九份授权文档的施工记录、角色规范及状态导航同步（@Codex；已按当前实际阻塞更新，后续实际结果继续同步）
+- [ ] 新增证据双仓归档、复验、提交及推送（@Codex；本轮结束前，尚未执行）
+
+**源修订与首次实际切口观察**：原130个物理锚／136条角映射与原parent、raw/native及target.prepare输入逐项吻合；旧切口侧的相邻buffer映像跳变已形成有限见证，尚未取得新source或target资格。冻结同一条单折点路线后，cut/v3的PURE与ENTRY通过，root实际执行在left第三段完整覆盖门停止；实际left inverse 1／forward 71／fragment 3／PL 2，sidePacket未返回，right全0。失败`4bee2f1e…`、开始记录`66da4556…`及完整输入／Python库前后字节保持；无新arrangement、atlas、forward、target、577或模型。
+
+**覆盖数值根因与有限修正**：保存失败的纯代数诊断`6a60122e…`及两份独立见证`d9b218b0…`／`b37d8f7c…`全扫旧left atlas的6327个child。第三段原浮点公式产生22处共享边微缝，未覆盖和`1.1170508962266013e-12`超过原`1e-12`；保存UV的精确有理闭半空间裁剪得到40个正区间，22个共享边交点逐值相等，精确未覆盖为0。该诊断只重构保存输入，未重调实际trace，也不认证新PL或物理切口。新的cut/v4仅修正闭半空间裁剪数值求值，保留冻结路线、真实空洞与原阈值，重新控制／独审后再执行；原PL、raw/native、完整selected-cell、接触与预算检查继续使用原函数。target/v3同时修正四个明确control owner的读取及两项历史合成runtime声明，16项PURE控制通过；尚待独审，不提升实际资格。
+
+**精确裁剪实际重跑及独审停止点**：cut/v4的34项PURE控制／独审`344c4155…`通过；新recipe-v2`cf9a0736…`补齐root字节观察器自身代码，fresh ENTRY`465fd3fe…`及root字节资格`cc0b92f3…`通过。唯一实际结果`783e2d2f…`为15,115,913B，两侧均inverse 1／old-chart forward 139／robust clip 3／原PL 3／sidePacket 1，全部返回；原保护130、完整selected-cell、接触及native预算检查通过，输入／库全字节保持。保存结果的QA/v5`89626196…`随后P2停止，未授源资格；它已核完整历史float观察335条逐字段等于原公式，却在从舍入UV精确反算局部值时触发额外检查。只读诊断`faf7512f…`保留该不一致：281条逆重放差与34条历史float anchor-sum超窗口；历史float本来仅作观察、不取得新fragment资格。QA/v6将保留完整原float tuple与原gap，撤除对该历史观察额外施加的精确fragment资格门；新exact fragment／实际PL／raw-native及原阈值检查保持，独审通过后才接续source。source／新forward／target／577／模型仍0。target/v4同时闭合独审代码、8051项当前导入支撑及完整前后证明，20项控制与独审`ba92c327…`通过，尚无target实际资格。
+
+**保存结果复核的入口与腿根观察差异**：QA/v6因准备记录的class仍写作v5，在几何复核前被拒绝，未产出实际QA；v7统一class／文件常量并补真正CLI启动控制，34项控制与独审`96befb4e…`通过。root唯一保存结果复核`99dd7138…`随后通过完整新exact／旧float区间，停止于两种腿根接触算法的集合强相等，输入字节保持，P1=0／P2=1。两份全量保存数据诊断`70192641…`／`566ec615…`独立扫left47,759／right51,600对；原NumPy最小二乘的完整接触tuple严格等于保存记录（left0／right1），精确闭线段距离每侧检出2条，全部仅最终piece与两个incident根边、参数s=1。漏记三条的浮点参数仅越过[0,1]约6.7e-15～2.7e-14；非法接触为0。新QA/v8将分别严格重放原浮点观察与独立精确禁止接触条件，不放宽原阈值，也不改切口／producer／根身份；原FAIL保持。source入口的有限metadata账本补充工具6项控制及独审`0a567d2a…`通过，仅增自代码与ENTRY审查支撑，不改原数值／owner aliases。当前source／新forward／target／577／模型仍0。
+
+**切口最终资格及新 source 实际验收**：QA/v8的40项控制及独审`2758bf32…`通过，root唯一保存结果审查`c7d0eb80…`通过新exact fragments、原PL／130保护点／native预算与完整旧float观察；精确闭线段接触全部合法，原阈值保持。source arrangement基配方`b9d246b8…`经已资格metadata工具扩展为`280a5616…`，8044项当前输入及150项明确历史owner声明完整保持；fresh ENTRY`57342f6d…`通过37项控制与隔离import-only检查。root实际`c12ba0c7…`每侧原分区函数调用／返回均1，left7874／right7825个完整子三角（upper6345／6276、lower1529／1549）；两侧完整分区及source拓扑门通过。保存source独立审查`49dde954…`对left6956／right6873个全部原父三角重新完成Fraction覆盖检查，P1/P2=0，全部当前输入字节保持。atlas输入冻结中；新forward／target／577／969-922整带／模型尚未执行，不授最终整带资格。
+
+**atlas 实际资格与 forward 冻结接线检查**：atlas基配方`c4cbc2e7…`及扩展`52087048…`经fresh ENTRY`dbe27d23…`通过；root唯一实际`85191e20…`每侧原MVC调用／返回均1，left3714V／6395tri、right3692V／6332tri。保存结果独立审查`31d15a9d…`完整重算新父分区、source78边界、度量残差与全部UV交对，通过，原阈值保持。forward/v4的28项控制（含9跨source-QA控制）及独审`77e1578a…`通过，但root实际冻结在读取该真实atlas后停止：冻结器把`originalIndependentDomainReplay`的带统计观察对象误当exact文件身份，`flatten_owners`被原严格parser拒绝`Byte binding fields differ`。无配方或实际forward输出，原source／atlas资格保持；新v5仅使用四类有类型的真实输出身份（atlas／disk／parentPartitionReview／uvPairReview），原丰富观察对象完整保留，重新控制及独审后接续。root forward字节观察器6控／15独立负控与独审`0e10dfaa…`，metadata补充工具6控／10独立负控及独审`c30edfdc…`通过，均不授实际forward。Point/v1因两份AST比较基准漏当前账本，独审`83fa4d27…`P2保留；v2补该两项完整身份，35控与独审`733e8fbc…`通过，实际577／整带／模型仍0。
+
+**完整真实输入冻结检查的第二处记录格式修正**：forward/v5的34项控制及独审`f4463d8e…`通过，root实际冻结随后在source QA库owner比较处停止，未写配方、未调用forward。actual atlas的库记录带完整`byteLength`，QA准备owner为相同literal path／SHA的两字段记录；两者字节一致，字典强相等误拒。新v6仅用完整当前path／SHA／长度观察比较，保留两种原记录表达并严格校验任何提供的长度；错误长度、不同SHA或不同literal路径仍拒绝。35项PURE控制及完整17项真实输入的生产`build_recipe`内存检查通过（`1be926ef…`），source constructor／query与recipe写入均0；尚待新的非作者独审和fresh ENTRY，不能继承v5执行资格。原v4／v5失败与已通过source／atlas证据保留。整带入口42项准备控制和独审`b480bb01…`通过，仅限metadata／IO／合成控制，实际577／G0–G6／模型仍0。
+
+**fresh forward 实际完成与保存结果验收**：v6非作者PURE`5a610b16…`通过35主控／13跨writer控制、完整17项真实输入DRY与7,530库文件证明；新的metadata扩展工具仅改四个版本literal，6控／10独立反例及独审`49df7604…`通过。root冻结基配方`a36eb04c…`并扩展为`2a95f01a…`，完整19,506 reviewer supports与8,145 probe supports逐角色保留；fresh ENTRY`1adf2170…`通过34原控制及独立post-freeze第35项DRY，明示阶段差异、不修改封存作者测试。ROOT字节准入`0dbd8394…`通过后唯一实际forward完成`03b5fed9…`：left／right各constructor 1、locate 68、select 68，全部返回，136角映射／130原物理锚保持。semantic`c2e47ef6…`与ordinary`376f27ac…`的保存结果独立重算`0f49b44b…`通过，8,170输入角色完整前后字节保持，原锚／raw／native及bank核验通过，`oldAtlasUvUsed=false`，reviewer零构造／locate／select。旧v5实际freeze失败的事后字节观察`ddfd4535…`明确仅核8,140当前角色的事后两次身份，不重建不存在的旧attempt before／after。target正在新输入冻结，完整solver／577／整带／保存仍未执行。
+
+**完整固定条件通过后的实际 target 停止点与诊断保全修订**：target/v4 基配方 `51b294e3…`、扩展 `e6f5b6e8…`及 fresh ENTRY `8ac8125d…`通过，20项控制、8,249当前角色与658加载模块／缓存完整证明。ROOT唯一实际 target 尝试两侧各完整核140固定角／39完全固定Q／所有固定边，均通过（保存 `4b6cfe28…`）；原完整core每侧调用／返回均1。原pre-dispatch观察为left boundarySeed／PI／PII各1、right boundarySeed／PI各1而PII为0；这只证明左侧进入PII，不能认定其最终通过。整体原几何门拒绝，失败 `06737364…`保留完整输入前后SHA且全部一致。当前执行器在拒绝前未落盘返回的drawing／metrics，失败payload亦漏该返回值；无法从现有字节判定右侧的具体margin／storage／拓扑指标，也不能伪造。新增独占诊断wrapper仅复用已经保存的全部固定UV及原209／457／836拓扑，以原core、原boundary seed、原512／1000迭代上限及1e-10参数做一次明确标注的诊断复现；每侧即时保存完整返回drawing／metrics及异常部分计数。须先有该新wrapper的PURE与非作者fresh审查；不作参数扫描、不调整锚／UV／拓扑／阈值、不重新source查询。原实际尝试与新增诊断尝试分开计数，诊断结果不取得实际target／577／整带／模型资格。原失败及v4源码保持，实际577／G0–G6／模型仍0。
+
+**保存固定输入的必要条件独审及诊断准入修正**：纯有理数诊断 v3 `cf5975bb…`与非作者独审 `14da7892…`逐值核两侧全部836方向（174固定／226单自由／436耦合）、109局部严格约束、40固定边区域及固定点包含关系，未发现该必要范围内的矛盾；不证明436耦合共同可解或全局存在，也不把局部有理见证作种子。诊断wrapper v1／v2保持原字节；v2独审发现旧8250账本的`recipe`角色覆盖新增诊断配方身份，P2停止 `316d1e3e…`明确撤销先前控制报告 `e6de6268…`的通过结论，ROOT没有消费旧通过结论、冻结或执行。新v3仅用唯一`diagnosticFrozenRecipe`角色保留新旧两份身份并拒绝角色碰撞，26项控制 `4098b03d…`通过，待非作者PURE与fresh ENTRY。整带ENTRY观察器及账本扩展工具的独审 `bc60fd7e…`／`45afa6a0…`通过，仅准备资格；实际诊断／577／整带／模型仍未新增执行。
+
+
+**同参数实际诊断完成、具体退化定位与后续有界设计**：新v3 PURE独审 `7fc93692…`通过26项原控制及真实CLI身份／字节负控；ROOT冻结 `b85de52d…`完整保留15,800输入角色，fresh ENTRY `1887d822…`通过。ROOT唯一实际诊断 `e8ad0796…`每侧调用／返回1、完整249UV及全部metrics即时保存（left `b8879ee1…`／right `22ab1458…`），15,802输入角色全字节保持；连同原尝试累计每侧2，原事件只作pre-dispatch观察。原谓词／账本独审 `f51757c0…`及独立全836／209Q／457E复算 `b9bfded1…`通过证据完整性，不授target资格。右PI优化器status0，但实际最小缩放cross为`-5.478572232991544e-12`、storage guard为`2.8360756076811605e-14`，11非正方向／5坏面／40边接触，PII仍0；所有坏方向均属2／3自由点耦合，174固定和226单自由方向没有同类失败。退化／固定fence见证 `e4eaf867…`确认自由点185（`hip:right:2:24`）越出边界77 `[93,94]`，其余108自由点在固定fence内；156／157及186／215相邻自由边分别仅约`9.8e-10`／`1.64e-10`。左PI通过，PII原strict geometry通过，实际cross最小`8.92950292219995e-9`低于规定半余量`8.947607945453167e-9`，完整构造仍拒绝；不能写左侧完整target已通过。保存约束负余量总和均约`2～4e-11`，小于原SLSQP停止参数`1e-10`，与[官方ftol说明](https://docs.scipy.org/doc/scipy-1.17.0/reference/optimize.minimize-slsqp.html)一致；这解释停机success与严格门禁FAIL并存，不证明全局无解或修复必成。下一步仅先设计数值单位归一化、显式凸边界构造域及保守余量；若实施须新封版本／控制／独审，原UV、拓扑、seed、参数和全部原验收门禁保持，不自动尝试或扫描。577／G0–G6／模型仍0。
+
+
+## CHANGE-123 | 2026-10-12 | 完整 target 数值构造修正与下游资格接续
+
+**变更时当前阶段**：开发中（角色生产阻塞）
+**用户授权**：继续执行已授权固定 UV 修复及完整整带计划；本项接续 CHANGE-122 的保存诊断，不重置历史尝试。
+**开始状态**：新 cut、source arrangement、atlas、136角 forward 与140固定角／39完全固定Q／全部固定边已实际通过。原完整 target 尝试及同参数诊断累计每侧原 core 调用／返回2；右侧PI自由点185越出实际凸边界，左侧PII低于原严格半余量，两侧完整 target 未通过。577／G0–G6／完整表／新模型仍未执行。
+**变更内容**：准备单独命名的当前 target 构造核：优化余量使用由174固定方向精确推导的共同二进制单位；PI仅将174 native常量行压成其原 native 最小cap，保留全部662变量行及全部836验收记录；统一加入109×78条原literal凸边界闭半平面；PII保留原单位真边Dirichlet能量，使用数据推导并向上取整的施工余量。原面积除数、固定UV、68 pin、249V／457E／209Q／836方向、原boundary harmonic seed、512／1000及ftol=1e-10、原exact storage／strict geometry／半余量门禁保持。
+**数学与身份边界**：共同单位及native cap压缩在实数意义上保持相应约束；边界条件限制原PI负余量探索域，PII施工余量加强可行域，可能改变能量最优点，必须如实命名为新方法。原346核心只复用几何／system helper，不宣称其solver body再次执行；新核及各真实dispatch计数与历史2次分开保存。优化器success不能代替实际残差或原验收门禁。失败iterate、局部有理见证及旧guide均不能作初始化；每个新冻结配方仅一次有界实际，不扫描、不自动重启或降低余量。
+**实施顺序**：先完成非作者符号／有限算术设计审查；再封Target/v5与SavedTargetQA/v3的当前实现、全部输入／库字节、PURE及非作者ENTRY；ROOT执行唯一新实际并即时保全完整drawing／raw metrics。目标全部原门及独立保存复核通过后，才冻结Point/v3、SavedPointQA/v2及Whole/v2真实新输入并继续577与原完整整带。后两段仅更新metadata lineage，保持原点作者runtime／数学合同及整带20份AST、23owner、7stage和6参数不变；Source/v4与Forward/v6按已合格身份复用。
+**影响范围**：
+- [x] 设计符号／finite error证书及非作者复核（v3及条件证书；两份独立PASS，无实际资格）
+- [ ] Target/v5、SavedTargetQA/v3及必要ledger／ENTRY工具当前闭包、PURE／非作者资格（@Codex；截止：新target实际前）
+- [ ] Point/v3、SavedPointQA/v2、Whole/v2及对应ledger／ENTRY metadata资格（@Codex；截止：各实际阶段前，不预绑定不存在的未来输入）
+- [ ] 新完整target实际及原门／独立保存验收（@winston，AI执行；截止：PURE与ENTRY通过后，失败保全）
+- [ ] 原577／969-922整带、完整表／条件保存／重读（@winston，AI执行；截止：全部真实前置通过后）
+- [ ] 九份授权文档状态同步、新证据双仓归档／复验／提交／推送（@Codex；截止：本轮结束前）
+
+**设计审查当前状态**：边界必要域及保存seed只读审查 `cd9a248e…`确认209Q的418三角盘拓扑及全部literal半平面；没有新seed或solver。设计v2 `e63dacad…`／标量证据 `897c7c57…`封存；非作者v2记录 `6526a61f…`因边界公式误使用face方向符号而P2停止，须新版显式使用polygonSign。当前两侧符号恰同为+1，仍不能继承该版实现资格。新版v3与finite certificate已封；非作者审cc7774fa…及第二审73ec0b11…均P1/P2=0，完整标量与字节复算通过。条件有限误差L约1.87124e-14，小于reserve9.29037e-14；其推论仍严格依赖实际one-sided residual、exact dyadic roundtrip及原门禁，success不能提供这些前置。Target/v5核／执行器正在实现；31项执行器控制已先红后绿，新PURE／配方／ENTRY／实际尚未生成，模型0。
+
+
+**归档工具准备（2026-10-13 UTC+8；未实际归档）**：Transport/v7当前adapter `591a2fad…`仅把literal sourceRoot切到本轮repair根，所有原函数／class AST保持；原published base observation及六份synthetic模型拒绝fixture身份继续显式绑定旧目录。初始freezer在任何control／capture前因保全v6 preparation文件名误改为v7而启动失败，原freezer与错误路径记录保持；独占r2仅更正该保全身份并绑定原失败，56项控制 `03f2ff2c…`及PURE `d47a5cd5…`通过，30／32输入角色前后字节保持。非作者PURE独审ee25f317…通过56项fresh控制、13原函数AST及真实CLI的synthetic写前哨兵；不授实际归档、几何或保存模型资格；无production request／plan／capture，不重取旧6GB已发表base。
+
+**当前Target/v5准备（2026-10-13 UTC+8）**：执行入口直接从已合格Source/Forward及保存fixed140重建原68 pin参数，绕过旧dispatcher的source sample准备链，旧原recipe／entry／freshEntryReview字面继续保全。新self使用currentTargetFrozenRecipe与freshCurrentTargetEntryReview保留角色，碰撞立即拒绝；每侧完整current drawing／raw metrics在event后置和几何gate前保存。31项当前执行器控制已通过；新kernel／events、完整PURE及非作者新ENTRY仍待封，实际新target0。
+
+**封存代码审查停止点与最小r2（2026-10-13 UTC+8；先记录后修改）**：v5十源码seal `84683891…`及35执行器＋33核＋10事件共78项PURE `3cf08850…`已通过完整8282角色／8278路径before-after。非作者代码审发现P2：`finiteCertificatePreconditionsPassed`仅检查bbox与R/cap，未实际验证新返回836值的浮点误差前置；旧保存点及局部subnormal控制不能替代新实际证据。v5不得取得ENTRY或执行，新实际0；其封存代码、PURE及待封非作者拒绝回执均保留。新独占`implementation/target/v5-r2`仅补逐当前836的native／精确cross／原Down／减法／dyadic误差证书和R−r≥reserve，再与当前施工门相交；目标问题、约束、Jacobian、原能量、seed、选项及原验收不改。外层v5 ABI保持，当前物理版本与PURE／PQA／输出目录单独标明r2；Point新资格只消费其真实新tuple，旧78项不冒充当前PQA。
+
+**r2完整PURE（2026-10-13 UTC+8）**：新十源码seal `c077034f…`（producer `cec2fe6f…`、kernel `33a69253…`），35执行器＋39核＋10事件共84项PURE `42d56bc4…`通过。新增逐CURRENT836 native／exact／Down／subtraction／dyadic后验测量，并检查R−r≥reserve，与施工门硬相交；不宣称未验证的泛IEEE运行资格。旧v5拒绝回执 `8ed70900…`完整保存78控制及P1=0/P2=1；其receipt写完后的logging因缺stage而exit1，另封process-status `ee80b139…`如实记录，不把该进程误称clean PASS。新r2非作者独审及SavedTargetQA/v3当前代码独审进行中；原source／forward复用，实际新target、577、整带与模型仍0。
+
+**r2非作者PURE通过（2026-10-13 UTC+8）**：独审 `4f73d8dd…`（19,856,747B）P1/P2均0，fresh 35执行器＋39核＋10事件共84项全部通过；主8297角色／8293路径、探针8346角色／8295路径及697加载模块／缓存完整before-after字节一致。原PI4／PII5、当前约束／Jacobian不变，独立逐两侧全部836算术误差及正负控制通过；真实PURE CLI仅走到first bound recipe read哨兵，不能误称未生成配方的actual准入。新同一observer `8be13609…`封存以供fresh ENTRY；ROOT已完整复核该主与支持byte proof，正在冻结当前配方。SavedTargetQA/v3当前42项完整控制与独审并行中；尚未新实际target／577／整带／模型。
+
+## CHANGE-124 | 2026-10-13 | 保存实际失败驱动的坐标预条件与辅助余量完成
+
+**变更时当前阶段**：开发中（完整 target 仍阻塞）
+**用户授权**：继续修复并完成原整带计划；接续 CHANGE-123 的唯一有界实际失败，不复跑同一配方、不重置历史计数。
+**实际依据**：Target/v5-r2 PURE／独审／fresh ENTRY通过后，ROOT实际每侧current core调用／返回1、PI各1、PII各0。失败 `f576f66c…` 与即时left `d067a0dd…`／right `ff7c6189…`均保全；8,349输入角色前后完整SHA一致，独占即时返回等于捕获的原drawing／raw metrics，模型与下游实际0。右侧原PI四项及严格disk通过、actual exactDown最小2.031144053598821e-5，但新增以reported τ计算的scaled deficit1.180878728135326e-10超过F=1e-10，阻止PII。左PI status8／nit67，唯一非正方向row581／face145（原face205）[152,182,153]全free，actual min=-4.790884261274268e-8；两侧closed8502 facets与逐836后验算术均通过。右侧不得标为完整target通过，左侧不证明固定条件无解。
+**拟议变更（先设计与非作者审查，再编码）**：
+1. 对free UV作唯一数据导出的二进制变量重参数化：由已有s=2^-14取得α=2^floor(log2(s)/2)=2^-7，ξ=U/α；回代、原物理bbox与fresh原boundary harmonic seed须逐值exact dyadic roundtrip。fixed140 literal不变；三角Jac free列按chain rule乘α/s，原物理能量gradient乘α、Hessian乘α²，literal facet Jac乘α。α²=s使free-free三角二阶系数由1/s化为1；这是列尺度证据，不能承诺收敛。原problem、pin、拓扑、seed物理值、512／1000及ftol、原门禁保持。
+2. 明确区分raw reported τ与可行辅助余量：对当前返回的全836 native／Down值，若原PI四项及后验前置通过，以m_c=nextafter(min(all native, all Down),−∞)>0构造τ_c=m_c/s，并实际证明exact dyadic回代、原native cap及全836非负native residual。同F=1e-10不变；原raw τ／fun／reported残差及其失败如实保全，新增certificate标为slack completion，不修改任何UV、不冒称reported optimum。PII r仍原.5 actual minDown，reserve与原PII半余量门保持。负的左min必拒，不以slack修复几何。
+**边界**：该数学方案须封存独立新设计及非作者审查。新方法必须fresh原seed开始另一次明确命名有界实际；现有失败iterate、已失败drawing、原诊断或局部见证一律不能作seed。Source/v4／Forward/v6只按已合格身份复用。不得放宽任何原验收阈值、取消PII误差预算或伪造原body调用。现有r2源码、PURE、ENTRY、失败、Point/v3 PURE等保持全部封存；新下游只接受将来的真实合格目标及对应SavedQA，不预造资格。
+**影响范围**：
+- [x] 新数学设计、保存失败证据独审与条件算术／chain-rule证明（design v4及两份独立PASS；仅条件设计，无实际资格）
+- [x] 独占新Target／SavedTargetQA当前代码、完整闭包、PURE／非作者ENTRY（Target/v6完整准备及实际已过；SavedTargetQA/v4正式readiness与ROOT完整43,432角色准入通过，2026-10-13）
+- [x] 新target唯一实际、原验收与独立保存复算（Target/v6 `bc488582…`、SavedQA/v4 `def14b1e…`及ROOT完整后验 `63d11a78…`通过，2026-10-13）
+- [ ] Point／SavedPointQA／Whole的新真实metadata接续（@Codex；截止：各实际前，不重用r2资格）
+- [ ] 原577／969-922整带、完整表／条件保存／重读（@winston，AI执行；截止：目标实际及独审通过后）
+- [ ] 九份授权文档同步、证据双仓归档／复验／提交／推送（@Codex；截止：本轮结束前）
+
+**新设计数学双审通过（2026-10-13 UTC+8）**：Design/v4 文本 `75837264…`、纯freezer `22f24dea…`与证据 `2b36e1b7…`封存；8,316完整物理依赖before／after一致，三包owner字面角色及显式长度全部保全。SOURCE非作者 `0afbff6b…`通过14 fresh控制、两侧全部836三角值／Jac／Hessian、8,502 facet、457真边E／grad／Hessian、218轴及436界端点roundtrip和全部实际误差。第二非作者 `f3ce3ca5…`通过38 fresh控制、8,520角色／8,321路径／4,902,198,051字节current full proof，继承module／cache及右保存点R前置实际算术也通过；ROOT已完整复验两报告current tuple。右raw F失败保持，左negative Down仍拒；completed τ一般可高于低报raw τ，证明只依赖同U可行certificate，不新增completed≤raw门，也不冒称最优。SOURCE v1仅module惰性加载闭包未通过、artifact v1/v2及SavedQA/v3的27通过／1 alias断言失败与另14纯复放全部保全，不混作当前资格。Target/v6与SavedTargetQA/v4现独占实现中；执行器49项synthetic先通过但尚未全十源码seal／完整PURE／非作者ENTRY；新实际、577、整带及模型仍0。
+
+**Target/v6完整代码封存与PURE通过（2026-10-13 UTC+8）**：十源seal `6d7d8808…`／7,348字节，kernel `1c0a2bbf…`；原18个顶层函数／类AST一致，IO、owner分区、即时返回事件与事件测试整字节保持。完整PURE `1ef91053…`／3,875,607字节通过111=49执行器+52内核mock+10事件控制，8,342角色／8,338路径before／after完整SHA相同，ROOT当前源码身份与seal匹配；完整CLI日志 `39f61a78…`保全。数学设计与历史r2失败作为完整依赖保留；历史原body每侧累计2、历史r2每侧调用／返回1和当前新调用计数独立。非作者当前PQA、fresh ENTRY及SavedQA/v4完整资格尚未完成，不能据PURE晋升新实际target；新seed／数值、577、整带、保存与新增模型仍0。
+
+**Target/v6非作者PQA与ROOT完整复验通过（2026-10-13 UTC+8）**：当前独立准备报告 `9d1965d3…`／35,875,235字节，fresh111项、保存算术及真实CLI全部强制准入门通过，并在输出创建前停住；9项负向控制均提前拒绝。ROOT重新完整读取主8,343角色、probe8,407角色／8,351物理路径及702模块／cache的current path／SHA／length before-after，生产 `require_preparation` 与3个支持owner全部通过。观察器v1的PII seed参数索引误认、v2只读中止均完整保留，未据此授予资格；v3封存观察器 `8d43d733…`用于接下来的真实recipe fresh ENTRY。SavedTargetQA/v4七源seal `b9323962…`已封存，完整51项PURE正在执行；Point/v4九源seal `438e32f3…`已绑定真实TargetPQA并做66项definition-only PURE，14项未来真实依赖仍未授予。Whole/v3迁移50项draft通过，SavedPointQA/v3作者31项选定draft与非作者31项tiny controls通过，均非当前实际资格。新target seed／solver、577／整带及新增模型仍0。
+
+**Point/v4完整PURE与真实target配方（2026-10-13 UTC+8）**：真实Target/v6 recipe `801527e0…`／16,102,650字节已按生产freezer冻结8,403当前角色；fresh ENTRY使用同封存观察器，111项当前控制已重新通过，完整真实metadata／CLI probe进行中。Point/v4真实definition-only PURE `a7599f72…`／21,278,515字节、66控制通过，32,713显式角色／8,384路径／4,975,105,092字节完整前后一致；所有108→210模块／cache覆盖、原577 runtime与十个contract谓词保持，14项未来实际仍pending。完整控制日志 `cf6706a7…`和CLI日志 `6ace3ddc…`保全；新非作者Point PQA正在独占观察器上实跑。ROOT将原整带保护快照逐字节复制到新whole-v3 before-state，SHA仍 `9f16c8b6…`／2,377,013字节，仅保护快照、无整带调用。Target实际准入不依赖未来SavedQA准备，故fresh ENTRY完整复验通过后可与QA4准备并行做唯一actual；SavedQA使用及Point／整带放行仍须其真实完整独立资格。新数值／577／整带／模型仍0。
+
+**Target/v6唯一实际通过与下游准备进展（2026-10-13 UTC+8）**：真实fresh ENTRY `d054506b…`／36,054,503字节通过111 fresh控制、8,404 public角色／8,422主支持及probe角色、702 probe模块；ROOT完整current byte／owner／生产准入复验通过。ROOT随后唯一实际exit0，结果 `bc488582…`／23,406,832字节；每侧current调用／返回1、fresh原seed1／PI1／PII1，历史原body2与历史r2 1分开保留。左右原PI／PII、strict disk、fixed140 literal及current条件全部true，无retry／source replay-query／candidateXYZ／model。左PI status0／nit235，minDown3.963091230102174e-8，PII status0／nit352，minDown1.9815549042461638e-8，均高于约2.9e-14原storage guard；右PII minDown1.0155720362633627e-5，原half-margin保持。即时raw drawing／optimizer state与完整before-after SHA保全，完整actual runtime log `f41c52ee…`；这仅施工结果，保存独审尚未授予。SavedTargetQA/v4完整51=32+19 PURE `c67871f5…`／43,700,425字节、41,008角色通过，非作者重新51+10真实CLI准备审查正在运行。
+
+**Point／Whole及SavedPointQA当前准备（2026-10-13 UTC+8）**：Point4独立PQA `84343aad…`／37,311,007字节、32,734角色／8,404路径／4,996,607,524字节、fresh66+10tiny通过；原33 owner→30current+3archival、7562显式长度及2169缓存和全部加载模块完整核对，14actual pending，ROOT full byte／生产准入与九源复验通过（封存表以文件名为键；ROOT额外索引复验脚本的role-key误用已修正，作者源未改变）。SavedPointQA/v3绑定真实Point PURE／PQA并封存七源 `7c8083a4…`／9,646字节，完整34 PURE实跑；其原3 patched metadata用例仅局部startup，独立真实recipe／ENTRY生产门验证仍待真实前置。测试子进程等待上限按当前完整账本增至1800秒，实际数值预算和门槛不变。Whole/v3九源seal `d4ed5400…`／34,880字节、完整PURE `c9a7f315…`／61,611,439字节、50控制通过；85,536角色／20,874路径／7,835,342,305字节、原6766保护SHA、Python7530与Blender静态5625、原20源码167定义AST／23依赖／7stage／6argv保持。作者完整复验后独立PQA进行中，4actual pending，未启动Blender或原whole main。577、整带、完整表、保存重读和新增模型均仍0。
+
+**保存后ROOT只读复验与准备审查记录（2026-10-13 UTC+8）**：ROOT未重跑target数值，重新完整核对8,409角色、current输入账本及原加载模块／cache；保存即时左右drawing与全部raw metrics和before-gates原result字面完全相同，每侧fresh seed／PI／PII严格1，独占结果及完整SHA不变。只读观察报告 `bd5d48be…` 明确不授予保存独审资格。SavedPointQA/v3完整34项PURE `e7f70b2e…`／75,470,057字节、65,459角色通过，完整CLI log `724f266e…` 保留，独立观察器继续静态与tiny准备，真实Point recipe／ENTRY／14上游尚待实际SavedTargetQA通过后提供。Whole独审v1拒绝 `00a14de5…` 完整保留：其观察器误将1,979,705,317字节历史证据限定为6766 protectedOriginal子集，实际该文件属于完整current Point上游闭包，v1已完整前后hash且equal=true；该拒绝不说明作者施工失败。修正仅涉及观察器库存归类，新目录v2／新seal `0f16e732…`／12 fresh tiny通过，重新完整独审进行中，未修改Whole封存作者源码、数学规则、阈值或执行实际整带。
+
+**Whole/v3独立准备及ROOT生产准入通过（2026-10-13 UTC+8）**：v2正式PQA `4ff0aef8…`／107,929,513字节，P1/P2严格整数0、findings空；fresh50作者重跑＋12tiny通过，93,098角色／20,898路径／8,015,088,885字节、30,192显式长度与123模块均全current before-after保持。原6766保护、7530 Python／cache与5625 Blender静态库存、20源167数学定义／23依赖／6argv／7stage和Point运行源码原字节保持，giant历史1979705317字节按完整current闭包全hash。ROOT独立完整读字节、模块、重建85,536 fixed tuple并执行生产 `whole.require_preparation` 通过，独占准入回执 `4e35b232…`／93,099角色；此仍仅准备资格，4个actual上游和真实Whole recipe／ENTRY未有，original main／Blender／模型仍0。v1拒绝及process／全部日志原封保留。SavedPointQA/v3非作者5观察器源封存 `ea5e2599…`，33 fresh tiny、65,496角色／8,432路径／5,109,685,149字节与208模块完整静态审核 `1463741a…` 通过，正式实际前置完整CLI／readiness仍待。
+
+**SavedTargetQA/v4准备审查历史范围定位（2026-10-13 UTC+8）**：v1 fresh32＋19虽通过，但盲按JSON后缀递归解析在历史23632字节截断文件失败，正式拒绝 `643c41ee…` 完整保留，未授readiness。该文件 `d9dec1a3…` 为原int64 TypeError留下的failed partial，原后继recipe明文绑定priorPartialOutput；另有1979705317字节当前giant证明资产、1979423595字节历史同名giant与两项归档runtime旧SHA，不应按当前owner递归晋升。v2封存前预检失败及8899候选路径fullhash诊断 `c41d562c…` 保存，24tiny通过；当前观察器按精确typed active／archival／physicalByte职责修正解析范围，所有真正准入owner仍strict parse及完整当前字节核查。曾以广域rg-l查询触及新actual文本字节但仅输出文件名、未取用数值/flags，已明确记录窄范围限制；不能冒称从未读取任何actual字节，也没有实际SavedQA调用或资格。本轮新target actual未重复执行、数学源码与门槛不变。
+
+
+**SavedTargetQA/v4观察器契约修正与重新封存（2026-10-13 UTC+8）**：v3精确域预检 `aa580f6d…` 发现当前design secondReview的loadedObserverModulePaths字符串辅助字段被误按字节三元组解析；原writer与sealed consumer证明该字段应与真正full byte proof逐模块投影一致。v3 45项tiny通过并封存后，独立静态审查又确认unknown module字段None可在分类前跳过，原v3 seal／tiny保持，未跑或继承正式51。独占v4仅修观察契约并新增拒绝控制：9个typed byte字段／2个辅助path字段严格成对和投影一致，未知字段含None必须拒绝；所有当前owner、giant full hash／optional length和module／cache保全。v4七源seal `7068f3ca…`／406,825字节、47项tiny `4ddb8487…`／609,025字节通过；另一非作者静态记录 `f9796c4b…` 的七源tuple与封存表完全相同，仅静态资格。ROOT独立完整核对707角色／303路径及seal与tiny原module／bytes，观察 `0abd73a9…` 通过。新的formal protocol `7eb3e576…` 已以封存源启动fresh51＋10真实main控制，不继承任何旧51结果；readiness及实际SavedTargetQA尚未生成。G0后四个保存前动作的当前IO／producer metadata adapter并行定义中，原数学／阈值／helper身份保留，全部真实后续资格仍pending。
+
+**保存前 adapter/v1 完整准备及确定容量阻塞（2026-10-13 UTC+8）**：post-G0/v1 十源封存 `3bcb0720…`／19,835字节，完整 definition-only PURE `f541804c…`／203,201,278字节、178,705角色／20,919路径、56/56控制通过，原23依赖／20源码／167定义AST保持，未执行实际G0、几何、source、Blender或保存。非作者十源静态复核 `2d675721…` 确认七项先前边界问题已修，独审草稿34tiny通过但未封存或授PQA。作者保守容量诊断 `06757610…` 得到 completion 的重复 owner declarations＋alias 至少1,136,089,282字节；非作者独立下界 `808ccbf6…` 为1,212,917,904字节，均已超过固定1GiB且尚未计完整未来输入。因此v1准备PASS仍有效，未来freeze明确阻塞，不能据此授执行资格。先记录后实施：保留sealed v1／PURE／诊断，独占v2将新层表示改为有限typed真实owner文件身份＋固定selector及field→current-role映射，准入重读真实owner并重建、逐字段核对原完整字面namespace／optionalLength／full bytes；原11消费角色／5当前准备支撑＋1归档runtime分类保持。不得放大1GiB、删owner、弱化module／cache或原几何门；新PQA及真实ENTRY须纳入观察器显式完整支撑账本，重新封存和独审后才可用，任何实际资格仍pending。
+
+**SavedTargetQA/v4 正式非作者准备通过（2026-10-13 UTC+8）**：封存v4七源的同一正式进程实际exit0，readiness `5688a566…`／46,019,076字节及controls `50e46fbb…`／45,081,655字节已独占保存；47tiny＋重新执行的32保存／metadata和19算术控制＋10真实main入口检查全部通过，P1/P2严格0、findings空。42,931角色／8,417路径／5,416,866,379字节、510模块／930源码与cache行完整before-after一致；6 namespace／33,439角色、4 original control／2归档声明严格typed复验。真实CLI正向只到几何前哨兵1次、9负向均0，np.load／analyse／output mkdir均0，baseline字节保持；真实数值／source尝试0，actualSavedQA／Point／Whole／model全部false。ROOT完整current报告／owner／module／51回执与日志复验已启动，实际保存复算须待该复验通过；额外纯post-run support sealer的独立module closure问题另留失败并在新支持版本修正，不更改或继承原正式源码与报告。
+
+**SavedTargetQA/v4 ROOT准入通过及唯一真实保存复算启动（2026-10-13 UTC+8）**：ROOT独占回执 `db4cb7f8…`／46,182,112字节，43,432角色／8,422路径完整before-after一致；正式readiness、controls、47tiny、fresh32／19真实回执及全stream、七源、原几何AST、当前owner／typed library／module／cache均重新核对通过。随后ROOT以真实Target `bc488582…` 与完整作者PURE `c67871f5…`启动唯一正式 `review_saved_target.py` CLI，外层在dispatch前独占打开完整stdout／stderr，并保全当前全输入和失败后观察；此仅保存数据复算，无新seed／target求解／source查询。尚未有actualSavedQA结果，原577／整带／模型仍0，不能提前授下游资格。
+
+**SavedTargetQA/v4 唯一实际通过及Point真实输入接续（2026-10-13 UTC+8）**：正式保存复算exit0，actual `def14b1e…`／59,802,854字节，原左右249V／457E／209Q／836方向／140固定／109free／39全固定Q全部逐项复算，全部original strict geometry／PI／PII半余量及当前dyadic coordinate／completed slack／8,502 facet条件通过，P1/P2严格0、findings空；reviewer零求解／seed／source查询／模型。完整进程回执 `e866c2b5…`／101,468,205字节保全dispatch1、所有真实stdout／stderr与before-after，输入无变更。ROOT再次完整核对actual、进程、Python库与正式准备／支持封存，后验 `63d11a78…`／216,998,508字节、193,594角色／8,448路径通过；post-support v1/v2惰性warnings模块问题及日志保留，新v3 `1173c469…`／251,302字节严格178支撑、89模块／146源cache before-after一致，只作执行支撑封存。Point4所需14份真实upstream已齐，配置 `81807979…`／4,739字节绑定真实SavedQA与所有source／forward／target lineage，ROOT已启动生产freezer；尚无真实Point recipe／ENTRY或577执行，不以配置晋升实际几何。后续整带／完整表／保存重读及新增模型仍0。
+
+**保存前 adapter/v2 完整准备与后续保存层定义（2026-10-13 UTC+8）**：v2十一源seal `8443a884…`／20,117字节，作者完整PURE `c9020c81…`／166,930,715字节、178,721角色／20,935完整物理文件、83/83控制实际通过；typed真实owner／固定selector／短角色映射完整重建178,657原字段，27有限槽的当前真实字面容量上界832,813,416字节低于固定1GiB，未来资格仍false，写前实际大小门继续强制。原23／20／167及source17／16／11消费／5准备／1归档保持；首次草稿容量期间README变更被完整byte guard拒绝，失败保留，源稳定后新预检及最终PURE通过。非作者容量记录 `8166ae81…`／25,160字节仅解析显式账本、数值opaque，Point当前保守134,610,266字节、Whole条件上界909,476,080字节，未知未来角色假设明确不认证，未发现确定阻塞，不替代生产freeze。v2非作者fresh83／PQA继续准备。先记录后实施：另建独占保存／重载层，保留v2只准四个保存前动作的scope，固定原G5隔离unskinned条件保存及G6真实reload／snapshot／native guard／geometry／fit／16视图／完整表复审各原源码和数学身份，仅调整当前真实owner、显式producer provenance与新独占输出IO。该层先完整PURE／非作者审查，实际保存仍须真G0–G4及全部16张原1200px视图独立验收，不授rig／S0／正式资源资格；Transport/v7继续拒绝新增模型，若将来真保存重读通过须另行当前model admission及新delivery资格。
+
+**Point/v4 真实生产配方冻结完成（2026-10-13 UTC+8）**：生产freezer真实exit0，recipe `a25d6cd7…`／141,224,671字节，完整14实际upstream／当前准备与PQA／producer lineage／owner字面字段和可选长度均通过生产准入，无pending占位。配置before-after相同，完整stdout／stderr及进程回执 `5dfa7c78…`／2,501字节保存。非作者将使用原四源observer seal `f38d7e1b…`（两个运行源＋test／README；先前“两源”简写只指运行源）执行新真实recipe的fresh ENTRY，45协议负控、四个真main／execute／prepare元数据哨兵及fresh定义导入必须全通过；ROOT再完整复验后才准唯一原3dd的577作者执行。当前未调用原prepare_data身体／author／source查询，未写Point实际、Whole或模型。SavedPointQA/v3正式readiness随后使用这份真实recipe及真正ENTRY，不伪造未来SavedQA或几何数据。
+
+**保存前 adapter/v2 ROOT完整复核及正式独审启动（2026-10-13 UTC+8）**：ROOT独占definition-only完整字节观察 `8318a418…`／210,583,536字节通过178,735角色／20,937路径；当前十一封源、作者83项PURE、全部原owner可选长度、typed selector／alias、原23／20／167及实际容量证明均重新读取核对，before-after不变。非作者独立真实账本重建与作者逐字段相等：178,657 owner字段、199,660 indexed roles、当前表示98,923,484字节及完整当前上界832,813,416字节，未认证未来实际namespace；其59项本地控制通过，六源observer封存 `6744dba6…` 后正式fresh83＋fresh59＋6真实生产负控PQA已启动，尚无正式资格。Point真实ENTRY仍在原唯一观察器进程运行，ROOT原577及Saved577完整字节准入／单次CLI外层已定义并完成语法核对，尚未调用实际生成或保存复算，不据外层草稿授资格。保存层草稿的原G0摘要接口绑定及同进程helper ROOT作用域问题已由独立预审定位、作者封前处理，未改已封post-v2／Point／Whole或任何原数学。
+
+**保存前 adapter/v2 正式非作者与ROOT生产准入通过（2026-10-13 UTC+8）**：六源observer seal `6744dba6…`／2,594字节保持；正式PQA `63490ead…`／242,919,076字节完整178,924角色／20,965路径，fresh author83、fresh independent59及6个真实CLI负控通过，严格P1/P2=0／findings空；原6766保护文件／23依赖／20源码／167定义、全部typed owner／optionalLength／module/cache／当前容量证明重建通过，十三实际flag均false。ROOT独占后验 `bbead2be…`／210,774,430字节完整178,948角色／20,969路径before-after一致，逐控制、子进程完整stdout/stderr／fresh83 probe、封源、owner及当前生产 `require_preparation` 全部通过；未来namespace仍未认证，不能由此授实际G0／保存资格。完整PQA支撑manifest `3386f76d…`／4,361字节及ROOT当前支撑观察 `5a9fff84…`／22,886字节保全，ROOT首次支撑误按JSON解码Python字面量stdout的纯记录失败保留，新v2按封存producer实际打印协议 `ast.literal_eval`＋strict row／完整字节验证通过，未改原producer或资格。原577/Saved577 ROOT外层失败保全与strict header封前审查 `bf1891fc…`／10,809字节、8项纯证据控制 `9b737b50…`／2,762字节通过，仅本地外层准备，无actual。Point唯一fresh ENTRY继续原进程，单次只读native stack诊断 `643f5896…` 显示hash／read／Python profile开销，只是定位证据，不证明无循环也不授资格。保存层106项草稿控制与新失败保全尚在封前验证，实际原577／Whole／model仍0。
+
+
+**Point/v4 真实ENTRY与ROOT准入通过、原577唯一实际启动（2026-10-13 UTC+8）**：原四源观察器的唯一正式进程实际正常exit0，fresh ENTRY `811fce77…`／42,069,490字节、45协议负控／4个真实main-execute-prepare元数据控制／fresh定义导入全部通过，严格P1/P2=0／findings空；正例仅到原数据前哨兵1次，三负例均0，原author／inverse／field／source／Whole调用均0。原完整outer `77ec9082…`／9,825,488字节保全observerLaunch1、完整streams、8,424路径5,378,077,862字节及module/cache before-after。完整support tuple `dbcb78ba…`／8,726字节保全原配方、freeze、十三源码与两份非资格诊断。ROOT当前全部82,459角色／342,412 owner字面字段／8,429路径完整准入 `95129a3e…`／87,373,522字节通过；随后ROOT以同封原Point/v4启动一次原577作者流程，尚无实际结果。旧ROOT外层f08f3127保持，独占v2 b1450fcc仅将实际receipt中过宽sourceQuery=false改为明确允许原577必要inverse／frozen-field.sample，新增source-atlas solve及额外Forward/Target查询仍false；独立只读审确认归一该字段后整个模块AST相同，未改dispatch／准入／数学或原runtime，未伪造独立查询计数。SavedPointQA/v3使用同一真recipe／真ENTRY开始fresh34＋33＋3真CLI readiness，全部实际577数据及原数值服务仍禁用；这与ROOT实际生成分别计数，不预授SavedQA／Whole。
+
+**六动作保存层/v1 作者完整准备通过（2026-10-13 UTC+8）**：十一份当前源码seal `c5464c33…`／20,172字节稳定封存，完整PURE `072fe463…`／193,844,347字节通过106/106控制、178,736完整角色／20,949路径全部before-after一致；23原依赖／20原源码／167原数学定义AST、source17／16／11消费／5准备／1归档及原before-state完整身份保持。当前有限typed owner账本完整重建357,378字段／199,690 indexed roles，当前表示125,464,250字节低于固定1GiB；未来实际namespace认证与20个实际晋升flag仍false，必须继续实际写前精确size门。ROOT完整字节／owner／module/cache复核和非作者fresh106／独立控制／六个真实CLI负控正在进行；未启动原G5、G6或Blender，不授模型／S0／rig资格，实际保存仍等待真G0–G4及原全部16视图独立验收。
+
+
+**SavedPointQA/v3 正式准备失败、独占观察器修正登记（2026-10-13 UTC+8；先记录后修改）**：同封五源观察器唯一正式readiness进程child exit1，原outer `5c952b5e…`／37,981,027字节保全dispatch1及所有before-after字节／模块cache一致；formalReadinessReview为空，不授SavedPoint准备／实际复算／Whole资格。fresh作者34完整返回33 PASS／1 FAIL，唯一失败是`test_real_parser_complete_owner_admission_to_pregeometry_boundary`；后续33独立控制与3真实CLI未执行。首因只读定位：旧runner先`runpy`整份observer，加载独立helper进sys.modules，但作者测试由当前`static_records()`生成的synthetic账本不含该helper；原完整module guard因账本缺项在metadata sentinel前正确拒绝。全部作者七源／原34 PURE、独立五源／静态审核及真实失败日志保持，不重跑旧入口、不删sys.modules或伪造module属性、不patch生产metadata／owner／byte／module门。先登记新独占observer版本：仅把fresh34运行器替换为标准库profile capsule，直接安装同一原数值入口hard boundary后运行原34完整suite，避免额外导入observer／helper；显式封存capsule与原源／全部实际modules/cache、before-after与失败streams，补充capsule隔离／边界／ledger负控，重新封源与全套fresh34＋33及3真CLI formal readiness。原author math／geometry／Point actual不改，修正准备通过与ROOT完整复验后才准唯一SavedPoint实际复算。
+
+**六动作保存层/v1 ROOT完整作者复验通过（2026-10-13 UTC+8）**：ROOT `d469b5c5…`／210,596,712字节独立核全部178,750角色／20,951路径、原106控制名称和完整日志、十一源码、每owner optionalLength与357,378字段／199,690 indexed roles、module/cache、source17／16／11／5／1及23／20／167数学，全部current before-after一致；125,464,250字节当前容量逐字段相同，未来实际认证与全部晋升flag仍false。非作者六源observer `3ded94dc…`已封存，64/64本地控制与真实完整账本独立预检通过，唯一fresh106＋fresh64＋六个真实CLI负控PQA已启动，尚无实际保存或G6资格。
+
+
+**Point/v4 唯一实际失败与既存Pillow依赖修正登记（2026-10-13 UTC+8；先记录后修改）**：唯一实际CLI child exit1，ROOT完整outer `037a3cda…`／87,376,629字节保全dispatch1、8,428 producer inputs及ROOT所有当前输入before-after一致，primary为真实CLI失败且无secondary；原failure `c6efce53…`／4,114,301字节与start `27a92f4f…`／2,410,257字节保持，无actual points。首因为原frozen reference raw NPZ加载后，`ReferenceFieldV2`部分数组初始化及`read_section_helper()`导入原`measure_target_hip.py`时`ModuleNotFoundError: No module named 'PIL'`；field constructor已进入但未返回，原3dd point author invoked0／returned0，尚未到before_author，后续inverse／field.sample未由该dispatch执行。不能把部分原数据／field constructor写成0，也不能重跑封存Point/v4。静态核查当前GM为Python3.14.5 arm64／SOABI cpython-314-darwin，隔离venv无PIL；本机既存`/opt/homebrew/lib/python3.14/site-packages/PIL`及pillow-12.2.0.dist-info为cp314-cp314-macosx_11_0_arm64，全部六native扩展同ABI，依赖vendored PIL/.dylibs与系统libSystem；旧当前python库账本漏此包。先登记独占Point/v5最小IO修正：保留全部Point/v4配方／ENTRY／PQA／源码／唯一失败与Target全部已过结果，只显式绑定既存PIL完整文件／cache／dist-info／native及vendored dylib，在隔离runtime追加这一已封存package根并逐完整current byte/module核对，绝不安装、复制或修改包。原point_runtime.py、原field/author/inverse bodies、Point合同十AST、577/409/168/392/56范围、原已冻结atlas与Target、source/UV/拓扑/门槛全部保持。新依赖ABI＋真实仅导入PIL.Image/_imaging的metadata probe及missing/tampered/length/foreign-path/ABI负控必须完整封存，结合原全部66 controls重新PURE、非作者PQA与fresh定义／ENTRY和ROOT fullbyte后，才准新配方的唯一实际；不自动数值重试、不重算Target／atlas、不授Whole或模型。SavedPoint readiness旧失败亦保全；新capsule观察器待新真实Point lineage后正式审查。
+
+**六动作保存层/v1 正式独立准备通过（2026-10-13 UTC+8）**：同封六源 `3ded94dc…`的唯一formal PQA `2c74153a…`／270,193,596字节完成178,946角色／20,979路径全before-after字节、module/cache一致；fresh106＋fresh64与六真实生产CLI负控全部通过，严格P1/P2=0／findings空，protected6766、23／20／167、source17／16／11／5／1及typed66/current357378字段／125,464,250容量完整重建。全部20 actual/future flag仍false，只取得定义准备资格；ROOT当前完整后验／生产require_preparation复验已启动。完整证据manifest `d1f60d9a…`／4,635字节保全source/probe/control/全streams；实际G5/G6仍待真上游及ROOT全16原图物理验收，不以该PQA晋升。
+
+
+**六动作保存层/v1 ROOT后验记录器最小修正（2026-10-13 UTC+8；先记录后修改）**：ROOT初始完整后验在所有PQA／PURE／probe／源码／owner／module／生产require_preparation已核对后，使用从Post-v2模板迁移的错误容量字段而KeyError停止，完整ROOT traceback `root-independent-preparation-verification-failure-v1.log`与记录器v1保持。源为ROOT生成器将宽泛`==83`替换为`==106`，误碰旧容量常数前缀，且旧Post-v2字段不属于Saved-v1容量schema；这是ROOT记录器适配错误，不能撤销或伪装原正式独立PQA失败。先登记独占记录器v2仅明确改为Saved-v1真实`exactCurrentRepresentationBytes=125464250`、`currentIndexedInputRoleCount=199690`、357378字段与固定1GiB／future false门，保留其余全部当前fullbyte／controls／source／production准入检查；原失败源与日志不覆盖，v2完成后才记录ROOT完整后验PASS，无数值／Blender或实际重跑。
+
+
+**Point/v4失败完整复核、Pillow加载范围与保存层ROOT后验通过（2026-10-13 UTC+8）**：ROOT完整失败观察 `163fc039…`／203,311,121字节核190,214角色／8,438路径，原实际outer／failure／start／ENTRY／准入及完整streams和当前owner全部before-after一致；仅保全原Point失败，不授新点。静态Pillow全包观察v2 `fa6bdbf2…`／339,034字节覆盖237文件14,783,838字节、97既存cache、8个cp314扩展及18 vendored dylibs；v1误将LC_ID_DYLIB自身份视为load dependency的诊断保留，v2按实际LC_LOAD身份完整核验，不修改包。最终最小激活设计改为精确PIL package spec，不扩大全局sys.path；真实GM metadata probe仅导入Image／ImageDraw／ImageFont及_imaging／_imagingft，必须逐包／native／实际module/cache完整字节核对，无数值函数调用。有限原17stage传播静审 `de3da80b…`／166,432字节完整49输入／44AST源before-after相同：仅Whole assembler的fresh GM原body另需同封Pillow激活，其余stage原body无需PIL；Blender为cp311，禁止加载此cp314扩展。Point5正式源及完整PURE尚未封存；新SavedPoint capsule-v2封存 `c8ff1975…`／377,881字节、26真实synthetic控制通过，仅准备观察器，不授readiness。六动作保存层ROOT独占v2后验 `7682b6c7…`／210,794,538字节完整178,970角色／20,983路径，原PQA／PURE／controls／owner／module/cache及生产准入全通过，当前125,464,250字节容量和所有未来false保持。先登记下一层迁移：Point5新源码／Pillow／v3 metadata必须显式进入独占Whole/v4、Post-G0/v3和Saved-stage/v2的当前lineage，不能使用旧Point4绑定冒充新资格；原23依赖／20源码／167定义、原stage及全部阈值不变，新各层完整PURE／独审／ENTRY后再执行真实链。未生成577／Whole／模型。
+
+
+**Point/v5现存依赖修正版完整作者准备通过（2026-10-13 UTC+8）**：十一份finite源码／文档 `880c0019…`／45,901字节正式封存（10py＋README），原Point/v4六源整字节、十个contract AST及原15参数author dispatch保持。唯一完整作者PURE `a2d91618…`／43,248,328字节通过101/101真实fresh控制（保留原66＋新增35），32,980 literal输入角色／8,651物理路径完整before-after一致；237 Pillow文件＋owner共238显式roles、16实际PIL定义模块、全部native／当前cache／可选长度核验，Image／ImageDraw／ImageFont与_imaging／_imagingft精确原路径、原导入语句与scope被实际负控覆盖。只读取定义，原field／author／inverse／source／Whole／模型全部false，14个未来真实upstream仍pending；不把PURE当作577执行资格。完整control log `6858401e…`／14,345字节，stdout `ddb2506f…`／251字节、stderr空保持；ROOT新独占完整作者后验v2与非作者正式准备审查接真封存／PURE启动，未启动freeze或数值。SavedPointQA作者迁移另建reviews/point/v4，旧七源／34项及失败不覆盖，原保存几何2e60472e保持；独立capsule与新作者各自封存后才接新Point5真recipe／ENTRY审查。
+
+
+**Point/v5 ROOT完整作者后验通过（2026-10-13 UTC+8）**：新记录器v2以真实GM `-I -B`一次执行通过，ROOT观察 `5637df83…`／35,110,798字节核33,021角色／8,655路径完整before-after一致；真作者PURE／十一源／全部101完整log／原66测试名称、原六完整源码及十AST、十四exact pending角色、运行时literal与完整SHA、全部加载module/cache及238依赖roles／精确PIL statement/native name-path／optionalLength均重核通过。生产 `preparation_inputs` 与原PURE逐字段相同，原失败保留；非作者PQA仍待完整formal完成，不先冻Point5配方或调用author。下一层Whole4有限静审 `7451502f…`／207,005字节只核144角色／141路径及原23／20／167／6argv／7stage源码，明确不能替代完整 inherited保护／Python／Blender资格；新稿按已登记最小metadata迁移执行，真Point5 PQA与SavedQA4公共header待真实结果，未授新整带／模型。
+
+
+**Point/v5非作者封前闭合与ROOT冻配方外层控制（2026-10-13 UTC+8）**：非作者五源seal `3c1ee07b…`／8,526字节与42项完整fresh控制 `98454b43…`／5,941字节已封，正式全量PQA接真作者a2d91618启动。封前发现Pillow live review将输入dict直接引用，之后追加fresh log会改变嵌套namespace而使当刻proof少一角色；新snapshot函数完整deepcopy当刻输入及两份观察，并有两个实际snapshot负控，未改Point5封源或数值。ROOT新独占freeze外层v2 `2dffdaed…`／8,299字节按真正ROOT全量准备grant的完整inputBindings重新before-after、strict proof及封源AST exact14集合核验，完整双stream和primary／secondary保全，fresh freezer argv保持；只为metadata freeze，尚未执行。九项synthetic外层证据控制在新fixture-v2 `98a986fe…`／9,429字节实际PASS，覆盖child失败、after-byte漂移、完整primary／secondary、stream stat异常、partial proof、scope、future集合、复用输出与bool exitcode。首轮8 PASS／1 FAIL是fixture patch旧helper实例而实际每次新导入helper，原test／完整失败日志保留，新fixture仅patch该次metadata_io实例，不改生产outer。全部synthetic false资格，不授Point actual／Whole／模型；真正freeze继续等待PQA及ROOT完整后验。
+
+
+**Point/v5首次正式独审停止及观察器有界修正登记（2026-10-13 UTC+8；先记录后修改）**：同封五源 `3c1ee07b…` 首次formal child exit1，未写PQA或授Point5资格，完整stdout／stderr及process-v1保留；原Point5十一源／101 PURE／ROOT完整作者后验不变。完整trace定位于 `source_inverse.py` 顶层导入NumPy的 `numpy._core.memmap` 类定义及其 `@set_module('numpy')`，旧profile只按numpy模块与co_name=memmap误判为真实raw-array服务。没有到Point author、原field、inverse constructor或Point runtime data body；NumPy class-definition已进入但实际memmap构造没有由这条栈调用，计数须据实际证据分别写，不将局部导入写成全0。先登记新独占非作者observer-v2：只区分类定义frame与真正memmap.__new__/__init__、继续拒真正np.load/save/fromfile及native raw IO，补真实synthetic定义允许／构造首body0拒绝控制；同封失败源码与42日志不改、不重跑原入口。新源码全控制／封存／独立全量current before-after后才再PQA，作者与原数学保持；Root原预备PQA脚本尚未运行，待新真实source/seal更新独占版。新增模型／577／整带仍0。
+
+
+**Point/v5新观察器v2封存及失败后完整字节保全（2026-10-13 UTC+8）**：首次正式失败的五封源、42控制、process bea48697与stderr 6d4059a2全部保持；新独占同级point-v5-v2五源seal `c09b8560…`／9,563字节正式封存，完整fresh48/48（原42＋6真实profile定义／构造负控）通过，来源before-after不变。只放行符合真实NumPy runtime module/file/name/qualname且非CO_NEWLOCALS的memmap类定义；真正__new__/__init__/flush、load/save/fromfile/frombuffer及native raw服务继续在首body前拒绝。失败后当前完整字节观察 `ba801027…`／35,084,745字节重新核32,993角色／8,662路径before-after一致，明确没有补造失败child未写出的live Pillow proof，不授旧失败资格。新的唯一formal fresh101＋48＋45协议负控＋28 Target计数负控已启动，尚无PQA；ROOT保存原未执行稿，新增v2只显式更新观察器路径、真实seal class/tuple及48数，并维持全部fullbyte/module/cache/optionalLength与生产require_preparation检查。SavedPointQA/v4草稿当前精确52=原34＋18，49项草稿通过，三个原完整parser控制仍等真PQA，未封源或替代完整PURE。剩余磁盘当前实测11GiB，继续必要完整归档，不删历史或篡改证据；原577／Whole／模型尚未生成。
+
+
+**Point/v5 ROOT新ENTRY／唯一actual外层迁移登记（2026-10-13 UTC+8；先记录后继续修订）**：旧Point/v4 ROOT源与实际失败不修改。新独占Point/v5外层草稿 `88e7e62f…`／31,059字节仅迁移当前v3 recipe／ENTRY及十一源101、五观察源48、新ROOT完整准备grant，actual数据公共class保持v2、原577函数15参数与必要inverse／frozen field查询保持。新的definition probe完整stdout/stderr使用物理文件记录，ROOT另以typed支持角色完整保全，嵌套Pillow模块／cache／字节与生产require_preparation重核；真实recipe及ROOT准备tuple未齐时为None，不能授资格或执行。封前继续用独占v2补足realMain等实际控制计数的严格整数检查，保留未执行v1，并以纯synthetic文件和现存完整IO验证旧inline stream、长度错误、stderr非空、JSON重复／输出漂移、foreign command/class/scope等拒绝。无Point作者、任何数值或模型调用。
+
+
+**Point/v5新独立PQA真正完整通过与新入口外层契约修正登记（2026-10-13 UTC+8）**：封存五观察源 `c09b8560…` 的唯一新formal child正常exit0，真PQA `9432c02c…`／76,059,474字节完整33,017 literal roles／8,678物理路径before-after一致；fresh作者101完整log `1dc15641…`／14,345字节、独立48、原45协议与28 Target计数负控全部通过，严格P1/P2=0、findings/forbidden attempts空。嵌套Pillow snapshot33,016角色准确不含稍后新追加fresh log，238 finite owner roles、6真实named模块与182→199仅定义导入核验，hardNumericalBoundary0及九实际flag false；不能由PQA预授点／整带。完整parent outer `7b37b980…`／35,084,866字节与stdout `5d5c1a94…`／252字节、空stderr及原首次失败均保持。ROOT真v2全量后验 `cac4c1d5…`／12,363字节正在一次执行；SavedQA4作者可接真PQA完成52全套与封源，不造recipe/ENTRY。新fresh ENTRY outer未执行稿 `8f37d625…`／23,573字节静审发现两处ROOT freeze公开schema适配误差：真实v2 freeze class与secondaryErrors列表不能沿用v1／空dict；先登记另建v2只修两literal及对应synthetic拒绝控制，保留原稿，未启动ENTRY或原作者。ROOT actual外层独占v2 `1fc93af2…`／31,227字节与16实际synthetic控制完整通过，源byte前后一致，全部仅本地证据准备。
+
+
+**Point/v5 ROOT完整准入通过及SavedQA/v4完整作者准备通过（2026-10-13 UTC+8）**：ROOT独占v2真实完整后验 `342ea438…`／71,913,132字节一次正常exit0，完整66,051角色／8,683物理路径before-after一致；真作者PURE／PQA／两seal／嵌套dependency snapshot／module/cache／各可选长度／238finite owner／十AST及生产require_preparation全部通过。真实十四原upstream配置 `972d1be0…`／4,742字节接a2d/9432，ROOT唯一freeze metadata进程已启动，尚无Point5真recipe或ENTRY／actual；原Point4失败保持。ROOT新ENTRY outer-v2静审 `db7e5193…`／26,055字节闭合真实freeze-v2公开schema、两当前producer pin、namespace collision、完整双stream与primary/secondary；26项真正synthetic控制 `17bf9e55…`／4,870字节通过，前25与v1未执行稿保留，仅准备，封源后仍等真recipe方运行。SavedPointQA/v4七源正式seal `68e10378…`／41,648字节和完整PURE `7e7fe835…`／75,963,116字节真正通过52/52（原34＋18），66,026 literalroles／8,705物理路径全字节before-after一致，204→204 actual modules/cache保全；原geometry/io/fixture整字节不变、34原测试AST保留（仅pending身份literal），不导入PIL、不读实际array/geometry，13实际flag全false。完整52日志 `6f8dce38…`／7,893字节、stdout `3b1436fa…`／242字节与空stderr，唯一outer `6756b874…`／11,445字节保全；独立新observer草稿当前39tiny（原33＋6capsule接口）准备中，capsule26不混算进39，尚无正式readiness。Whole4封前发现异常writer自身失败会替换主异常并跳过可达after观察，草稿修正登记在现有迁移范围：primary完整文本refs优先且失败次要记录、finally完整可达观察／原primary重抛、真实FS及exactUTF8；未改原io/routing/math，未封或授Whole资格。
+
+
+### CHANGE-124 补充｜2026-10-13｜Point/v5 真配方冻结通过、SavedQA/v4 ROOT作者后验及新独审静态封存
+
+先登记本轮 Root 新准入／执行 wrapper 与文档影响。Point/v5 真配方 `331ffad2`（141,556,539B）及唯一冻结进程 `b70e231d`（74,718,100B）exit0，完整 before/after 输入保持、secondaryErrors=[]，未执行点作者。独立封存 ENTRY outer `db7e5193` 按真实配置 `b3352617` 已唯一启动；结论尚未齐，仍不得授实际577资格。ROOT新 Point5执行v2 wrapper `1fc93af2` 的16项纯证据控制通过，未执行该实际作者。
+
+SavedPointQA/v4 的 ROOT 作者完整后验 `cafed72d`（75,757,802B，66,037角色／8,708路径）真实通过，执行 verifier-v2 `f317f06b`：原34测试AST只允许一个“awaits sealed Point/v4”→Point/v5 pending literal迁移，其他原谓词／geometry／IO／fixture整字节不变。保留最初未执行 verifier-v1，不将其写成真实失败。新非作者9源封存 `10c82279`（76,397,674B）、静态独审 `6db636f3`（76,395,620B）完整66,431角色／8,782路径前后一致，fresh39真实通过，loaded module/cache209→209保持。正式fresh52 capsule＋fresh39＋3生产metadata CLI需真Point5 ENTRY及ROOT后验后启动。
+
+Whole4仍为未封稿：首轮只读预审三项问题均须正式完整回归后才可解除；新27草稿控制stdout/stderr／outer保留，测试27OK但原进程在惰性unicodedata native闭包检查exit1，不记成PASS资格。计划77项尚非真实完整PURE。
+
+影响范围：
+- [x] 八份既有状态摘要同步真实冻结及Saved作者／独审静态事实。
+- [ ] ROOT新SavedQA4 seal/readiness/execute/post wrapper完整字节准入与独立静态复核：ROOT负责，随本轮推进，门未通过不启动真实QA。
+- [ ] Whole4最终sealed/PURE/PQA/ROOT及四份未来实际资格：原作者与非作者分别负责，随本轮推进，仍无数值执行。
+
+
+### CHANGE-124 补充｜2026-10-13｜SavedQA4 独审静态ROOT后验及后续外层失效保全修正
+
+ROOT真正完整独审静态后验 `eb1b0f2a`（155,173,132B）通过132,876 literal角色／8,785路径，9源码整字节／fresh39 AST与完整日志／两份完整packet及module/cache前后一致。formal readiness仍等待真Point5 ENTRY和ROOT入口完整后验，不由静态后验预授实际QA。
+
+先登记新的外层修正影响：非作者Saved-readiness外层v1纯支持seal `21eabd4e`（496,936B）真实14控制通过，保留其三源与流，尚未真实main。ROOT只读确认两个未覆盖的失败保全缺口：current_records读取失败未返回导致主进程丢失已声明records；support hash在异常保全范围外可能覆盖primary并跳过receipt。新独占v2保留共享增量ledger、逐support保存完整secondary及原primary；原sealed9 observer／author7保持，不修改已封旧3源。须新完整18控制、封存及ROOT复验后才能唯一正式readiness。
+
+ROOT新SavedQA4实际外层初稿v1/v2/v3均未正式执行并保留。独立静审发现v3先hash partial output再断言child exit会掩盖已知非零失败，另建v4 `0235f25d`（26,168B），先strict真实exit、finally独立保存partial output及secondary；fullafter／完整双流／原geometry门保持。19纯控制真实全部通过；首个v3 test fixture为18PASS／1ERROR（io.read参数先求值但fixture文件缺失，未到mock child），原流保留，test-v4仅补合法临时JSON＋全SHA，不能算作生产失败。实际Point、SavedQA、Whole尚未执行。
+
+Whole4三处封前代码问题＋README公开finalG0 class已修；作者fresh27 `841827dc`、非作者fresh27 `51c80ef9`均真实PASS，仅12integration＋15capacity/evidence，不能替代原50。当前12源限定静审 `513aba1e`无已知阻挡，source23／20／167／6argv／7stage保留；原50＋新27完整77 PURE待真实完成。ROOT新before-state metadata snapshot `9f16c8b6`（2,377,013B）与原OLD fullbytes前后严格相等，观察 `9d1df8c7`（851B），未重授protected模型资格。
+
+影响范围：
+- [x] 八份既有状态摘要同步ROOT静态后验与Whole封前限定进展。
+- [ ] 新Saved-readiness outer-v2封存／ROOT完整复验／唯一formal52＋39＋3CLI：非作者与ROOT分别负责，依真实ENTRY及ROOT准入门推进。
+- [ ] ROOT SavedQA4外层v4独立静审、真实readiness准入／唯一QA／完整post：ROOT负责，依真577及readiness门推进。
+- [ ] Whole4完整77 PURE／PQA／ROOT：作者／非作者／ROOT分别负责；四份真future仍缺，不授G0。
+
+
+### CHANGE-124 补充｜2026-10-13｜SavedQA4 最终独立入口外层与ROOT全进程准入准备闭合
+
+非作者readiness outer-v2原18测试真实16PASS／2FAIL，完整失败seal `a710d95f`（503,063B）保留：两个新增support reader注入测试patch旧io实例，main每次load新模块使预期拒绝未注入；metadata失败保增量ledger的新控制均已通过。新exclusive v3仅修两测试fixture为该次同io实例，三生产源修正逻辑保持，完整18实际PASS；seal `29b40bb9`（504,595B），3源＋302literal角色／294物理路径／168module/cache前后一致，原14控制方法AST完整保持。ROOT完整当前支持后验 `8b6958a7`（301,826B）通过310角色／297路径，源／18 exact名字／全文stream／每alias可选长度及全physical/module proof重核。未真实readiness main，封9 observer和作者7不变。
+
+先登记ROOT全真实进程准入增量：新SavedQA4执行wrapper-v8 `2bed7489`（31,320B）保留v5的真实child非零优先、partial hash次要错误及已验证输出消失不能伪PASS；新增readiness-process必填真实CLI身份、完整parent input/physical/module/cache/四流前后验证、sealed outer `e37409d6`／13953完整source、strict0/once1和真formal结果tuple检查。parent真recipe/ENTRY及命令必须同时等于此次actual公共tuple与readiness proof_realPointRecipe／Entry；所有owner长度仍逐项验证。新29完整纯控制实际PASS（test-v9 `621a4c7c`／23,913B），包含coherent foreign parent tuple替换仍须拒绝。独立只读v8增量 `015d21ae`（3,268B）无已知阻挡；该独审没有import ROOT入口、重跑29或授真实PQA。所有未执行v1–v7稿与旧控制／失败流保留。
+
+Whole4最终12源真正seal `a8daea88`（281,825B）完成，绑定原23／20／167、6argv、7stage、IO/routing全文、原50＋新12＋15=77名字、真Point PURE/PQA与同bytes before-state。仅static source seal，全部完整生产closure／PURE77／futureactual gate仍false；一次完整PURE外层正在准备。新Post3有限metadata稿显式迁新Whole4 class/source，真人PURE／PQA未到就strict pending，不继承旧Post2资格。
+
+影响范围：
+- [x] 八份状态摘要同步真外层封存／ROOT支持后验、Root-v8纯控及Whole4真源seal。
+- [ ] Point5 trueENTRY结果、ROOT完整入口后验、唯一actual577：依当前唯一正在运行的metadata独审完成，ROOT负责，不重试数值。
+- [ ] SavedQA4真formal52＋39＋3CLI及ROOT全进程准入／唯一actualQA／post：非作者与ROOT分别负责，随上述真门继续。
+- [ ] Whole4完整77 PURE/PQA/ROOT、Post3/Saved2新lineage准备及完整整带后续链：各域分别负责，当前不授G0、表／模型／生产资格。
+
+
+### CHANGE-124 补充｜2026-10-13｜Whole4 完整准备失败保全与Whole5最小测试夹具修复
+
+Whole4已封12源 `a8daea88` 的唯一完整77 PURE真实exit1；第一套62实际60PASS／2ERROR，15容量suite未dispatch，未生成PURE。原完整进程 `9d82a612`（75,595,008B）保存152,679 literal角色／21,158物理路径／8,332,900,846B全文件前后一致，99 module/cache不变，after/support errors均0，dispatch1；原sealed源码及全部stream保留。限定因果观察 `a4db7c12`（238,067B）核真168角色／162路径，仅窄诊断支持，不能写成又一次完整152,679复核。
+
+原因是两个原 `require_preparation`-only SimpleNamespace夹具缺新 `RECIPE_CLASS`／`PURE_PROTOCOL`／`ENTRY_PROTOCOL`；在生产familyguard首属性读取抛AttributeError，尚未到原正/负qualification哨兵。真实Point5定义已在suite前通过Whole准备入口。先登记新exclusive `implementation/whole/v5` 修复：只补两mock真Point5 v3家族字段，以及新execution/whole-v5边界与对应测试／README文字；保留生产家族guard、原正/负断言、原数学／IO／routing与23／20／167／7stage不变。新草稿须另一非作者审查，再正式12源封存、一次完整fresh77（62＋15），原Whole4失败不修改、不覆写、不作为资格。
+
+Post3未封草稿真实18有限控制通过，原83测试源码与数学契约保持；新真Whole PURE/PQA缺失严格pending，当前未封存Post3、未跑原83/fullPURE或任何实际阶段。Point5当前唯一ENTRY仍活跃，未授点作者资格。Data卷当前8.1GiB可用，每次新增真实写入按当前容量先验；未清理或删除历史。
+
+影响范围：
+- [x] 八份既有状态摘要同步Whole4完整失败与明确因果。
+- [ ] Whole5最小草稿／非作者审查／12源seal／完整77 PURE／PQA／ROOT：作者、非作者和ROOT分别负责，随本轮推进，未来四资格仍pending。
+- [ ] Post3／Saved2迁移真正当前Whole lineage并完整审查：对应作者与非作者负责，不继承旧准备资格。
+
+
+### CHANGE-124 补充｜2026-10-13｜真Point5 ENTRY通过与ROOT单次执行证据边界补强
+
+真Point5 ENTRY `de0e2dc9`（37,908,172B）与唯一真实外层 `b09c9573`（86,103,470B）exit0，8701入口角色／8696物理路径、206861外层角色／8708物理路径前后一致，P1/P2=0，4真实metadata CLI、独立fresh定义与Pillow hard边界0；未执行点作者。ROOT自己的完整admit正在运行；通过前仍无实际577资格。
+
+先登记ROOT未执行实际wrapper补强：保留原v2 source／16纯控与本次完整admit；新exclusive v3仅按SavedQA4已核实失败边界补强actual dispatch：真实非零退出先保为primary，再单独记录partial output身份次要错误；已验证成功输出在after消失或改字节必须拒绝PASS；receipt采用原1GiB exact UTF8＋当前statvfs/16MiB余量，receipt写失败把完整primary/secondary保到stderr。不修改点作者11源、当前recipe/ENTRY/public class、原validate几何/owner门或允许的原inverse/field调用，绝无额外数值尝试。
+
+影响范围：
+- [ ] ROOT Point5实际外层v3有限纯控／另一非作者静审：ROOT和非作者负责，必须在唯一数值dispatch前闭合。
+- [ ] ROOT当前完整入口admit结果、唯一实际577与完整后验：ROOT负责，依真资格及新wrapper准备推进，不重试。
+
+
+### CHANGE-124 补充｜2026-10-13｜Point5 ROOT完整入口准入完成与Saved4正式readiness启动授权
+
+ROOT真正完整Point5 ENTRY准入 `6e690862`（403,698,412B）exit0，347,627角色／8,715路径、36当前owner namespace／343,200 owner字段全部完整重hash且前后一致，每alias可选长度及原数学／谓词保持。真实launch `cd55f231`（2181B）、stdout `2130ad2f`（348B）及完整空stderr保留；本次仅metadata准入，未执行点作者。非作者Saved4已获真ENTRY＋ROOT门，按最终sealed outer-v3启动唯一formal52 capsule＋39＋3metadata CLI，不需actual点作为这些synthetic控制的输入。
+
+ROOT新的未执行Point5实际wrapper-v3 `74a8b292`（33,032B）补强已完成，原admit函数AST不变；原实际输出validation block精确抽为validate_actual，几何/owner/输入proof谓词不变。新22纯证据控制真实PASS，最终test-v3 `6b09517a`（16,690B）、完整stderr `9aa5b357`（2995B）、stdout空SHA；最初test-v2实际21PASS／1FAIL保留，是partial hash注入patch旧io而dispatch新io，最终只补fixture bound_io同实例，生产source未再次修改。另一非作者正在只读评审，22PASS不授数值资格。
+
+影响范围：
+- [x] 八份状态摘要同步真ENTRY及ROOT347,627角色完整准入。
+- [ ] ROOT-v3静审／唯一actual577、Saved4正式readiness／ROOT完整准入／唯一QA、Whole5完整77及新lineage：依各真门分别推进，完整整带和模型仍未执行。
+
+
+### CHANGE-124 补充｜2026-10-13｜Point ROOT实际外层缺失流边界补强
+
+非作者对未执行Root-v3完整字节／AST复审确认前述primary、输出after和writer修正；发现started后mandatory stdout/stderr消失时preserve_identity返回None却未列secondary，原process gate存在误PASS边界。先登记新exclusive Root-v4：已尝试真实dispatch后每份mandatory流必须完整可达，missing明确secondary并拒绝PASS；原输出／首因／1GiB／字节／几何门保持，新加stdout与stderr分别消失两个有限控制。Root-v3与22PASS/首次fixture失败流保留，未执行actual，原Point/v5作者11源码与配方/ENTRY不变。
+
+
+### CHANGE-124 补充｜2026-10-13｜ROOT Point5实际唯一启动及Saved外层同类缺失流修正
+
+ROOT单次launch `6420abfc`（6689B）以真Root准入6e690862和新Root-v4 c854e7d6启动唯一Point5 guarded execute。新外层24纯控／非作者静态 `38ce6776`（13,554B）通过；记录只读静态限定，不授实际资格。当前在执行流程中，未以启动事实伪报作者已返回或点输出已生成。
+
+先登记同类Saved实际外层漏洞修正：新exclusive Root-Saved-v9给started后的mandatory stdout/stderr缺失列secondary，过程validator同时强制两个完整stream字段；新有限缺失stdout/stderr及typedprocess控制。Root-Saved-v8／29控制／独审历史保留，author7／observer9／正式readiness-v3源码均不修改；实际QA尚未启动。
+
+
+### CHANGE-124 补充｜2026-10-13｜ROOT两实际外层最终纯控／静审与Saved正式readiness唯一启动
+
+Root-Point-v4 `c854e7d6`（33,195B）与24完整纯控通过，非作者只读观察 `38ce6776`（13,554B）确认新增missing-stream elif去除后整个生产AST与v3一致，原admit/byte/ENTRY九函数及原12项成功validation statements保持，原16＋22 tests methods AST未改；未独立重跑24，不误授资格。ROOT已唯一派发真正Point5 CLI，输入first metadata阶段活跃，无点结果/失败回执，作者调用/返回尚不可推定。
+
+Root-Saved-v9 `fb38d827`（31,591B）与32完整纯控通过，非作者 `3ccbb892`（10,839B）确认仅两缺流边界新增，原29 tests/fixture AST精确保持；新typedprocess控制的空stream row仅测试keyset表头，不冒称fullbyte，正式collect/post仍逐row fullSHA/长度复验。旧v8 source/29/015d独审记录完整保留。未正式Saved admit/actual/post。
+
+Saved4按true ENTRY de0e/37908172及ROOT完整准入6e69已唯一启动正式readiness，parent独占dispatcher `2fb7ad24`（7636B）保留两全流，使用sealed outer-v3 e374/13953不改其3源或observer9；计划fresh52 capsule＋fresh39＋3production metadata CLI，当前未结论，不能以启动写成通过。
+
+影响范围：
+- [x] 八份状态摘要同步新Root-v4/v9真准备与两个唯一CLI进程启动状态。
+- [ ] 真Point5 actual577返回／保存QA完整链、Whole5 sealed/PURE77／非作者正式PQA／ROOT，依各当前真门推进，无自动重试。
+
+
+### CHANGE-124 补充｜2026-10-13｜Saved4正式readiness失败：capsule运行时字段边界
+
+唯一Saved正式readiness真实exit1，outer `444ffe13`（65,317,809B）保全150,088角色／8,802路径、完整before/after和每alias长度、module/cache不变、after/support errors均{}；formal结果不存在。observer失败 `d1bd0c2e`（88,608,492B）与父 `b8dc61ed`（233,397B）、全部双流及primary保留。fresh capsule在suite前断言退出，suiteLaunchCount=0、suiteObservation=None、forbiddenActualServiceAttempts=[]；52／39／3CLI均未执行，不能写成它们未通过或已运行。
+
+ROOT读取真实ledger/receipt及sealed L240确认：capsuleSource三字段完整相等；runtime沿用作者公开两字段path/SHA，capsule强等的identity(sys.executable)是三字段，因缺byteLength=52448拒绝。完整真实runtime SHA2477正确；这是隔离adapter元数据形状，尚未进入测试或实际geometry，不能归因到Pillow/点生成。
+
+先登记最小新exclusive observer-v2：adapter只在capsule边界核真公开两字段runtime并生成完整三字段runtime，显式声明同一runtime完整支持，原author7/public2/capsule-v2生产guard/原39 predicates不改；新增真实capsule入口runtime形状及坏可选长度控制，记录准确数量。必须另非作者审查、新九源seal、完整staticfresh与ROOT支持复验后再启动新的唯一正式readiness；当前旧source/失败绝不覆写，Root真实QA未执行。
+
+影响范围：
+- [ ] 新observer-v2 adapter形状最小修正／完整有限控制／另非作者审查／封存／ROOT完整支持后验及新真实readiness：各域依真门推进。
+- [ ] Point5唯一当前实际CLI仍继续，原返回／点结果pending；不因metadata失败重试或替换数值进程。
