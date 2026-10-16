@@ -3172,7 +3172,7 @@ ROOT读取真实ledger/receipt及sealed L240确认：capsuleSource三字段完�
 **变更内容**：
 1. 正式资产 `Sources/NickBodyCore/pet3d/pet_sprout_s2.usdz` 替换为 v3 重绑骨版本（同名，SHA-256 `fdd85526395b3707febf82f053645f88ea80beab3d4f89594cbc83249f0ecdb0`）；原资产（`0c2f165b…273d`）存档保留，可回滚。
 2. 桌面精灵图 `pet_sprout_sheet.png` 用新模型按现有流程重烘焙 idle 相关行（第 0、1、8 行），哈欠/睡觉/庆祝等其余行保持。
-3. 骨架测试夹具 `CandidateBSkeletonFixture` 与镜像资产测试的哈希按新资产重新生成并逐项核对测试预期；Codex 路线工具中冻结的正式资产哈希改指向存档原资产，保证其仍可复现。
+3. 骨架测试夹具 `CandidateBSkeletonFixture` 与镜像资产测试的哈希按新资产重新生成并逐项核对测试预期。Rig v2 路线工具保持原样（其脚本哈希已记录在该路线证据中），其保护哨兵在正式资产变化后会拒绝运行；对应测试改为在正式资产不是冻结原版时跳过（见下方实施记录）。
 4. 阶段 0 脚本收入 App 仓库 `tools/pet-model/`，附 README 说明。
 5. 运行时代码不变：站姿补丁（头 0.9 缩放、腿根内收 1.4、上臂/前臂下垂 20°/12°、前摆 8°）保持。
 6. ADR-003 定义的 Rig v2 重拓扑 + 32 关节生产路线（含正在进行的髋裆过渡带施工，最新 CHANGE-122～124）标记为 ⏸ 暂停：全部文档、脚本、证据与中间产物保留不删除；CHANGE-123／124 未勾选的影响项冻结在当前状态，不再推进。恢复须用户另行批准。决策记录见 [ADR-004](../../foundation/tech-arch/decisions/ADR-004-identity-mesh-rerig-for-v1.md)。
@@ -3186,9 +3186,18 @@ ROOT读取真实ledger/receipt及sealed L240确认：capsuleSource三字段完�
 **影响范围**：
 - [x] 阶段 0 证据与脚本存档（`~/Library/Application Support/nick/stage0-rerig-20261015/`）
 - [x] 文档：本条目；`versions/v1.0.0/README.md`、`engineering/tech-solution.md`、`engineering/pet-character-rig-v2.md`（§2.2 与 §8.0.101）、髋裆施工／方法验证／面流布局文档顶部状态；`foundation/tech-arch/overview.md`、`changelog.md`；新增 ADR-004 并标注 ADR-003 状态；`HANDOFF.md` 顶部提示
-- [ ] App 仓库：阶段 0 脚本收入 `tools/pet-model/`
-- [ ] App 仓库：正式 USDZ 替换并存档原资产
-- [ ] App 仓库：骨架夹具／测试哈希更新，Codex 路线工具冻结哈希改指向存档
-- [ ] App 仓库：桌面精灵图重烘焙（第 0、1、8 行）
-- [ ] 验证：`swift build`、`swift test`、模型工具测试通过；不带调试参数的正式模型截图与 v3 验收截图像素一致
-- [ ] 用户实机体验正式 App（大厅、跟练、桌面宠物）
+- [x] App 仓库：阶段 0 脚本收入 `tools/pet-model/rerig/`（分支 `feat/v1.0.0-sprout-rerig`，`7a430108`）
+- [x] App 仓库：正式 USDZ 替换（`fdd85526…`）并逐字节存档原 USDZ 与原图集（`309fff0f`）
+- [x] App 仓库：骨架夹具／测试哈希更新；暂停路线的保护哨兵测试改为条件跳过（`309fff0f`、`c68fb75f`）
+- [x] App 仓库：桌面精灵图重烘焙第 0、1、8 行（`52871ec5…`，`4af2bea6`）
+- [x] 验证：`swift build`、`swift test` 158/158；模型工具测试 497 个中 466 通过、31 个按暂停路线跳过、0 失败，Node 测试 144/144；正式模型截图 8/8 与调试路径加载同一候选逐像素一致，其中 4 张与阶段 0 验收截图逐像素一致
+- [ ] 用户实机体验正式 App（大厅、跟练、桌面宠物）（@winston）
+
+**实施记录（2026-10-16）**：
+- 骨架夹具：24 个关节的静止变换按新资产重新生成，旋转部分与原骨架差 ≤ 5e-7，只有关节平移变化，资产缩放 0.021999998 不变。`PlantedFootSolverTests` 原来断言"左右腿骨段长度不同"（原资产左大腿 5.98／右大腿 4.77），新骨架左右对称（大腿 5.460、小腿 2.915）；该用例改为核对新长度，并用人为拉长右小腿的变体继续覆盖"按各侧实际数据推导"。`PlantedFootSolver` 本身按关节实际平移和最短弧旋转求解，不假设骨骼轴向，无需改动。
+- 暂停路线测试（与原计划的差异）：原计划把 Rig v2 路线工具的冻结哈希改指向存档原资产。核查发现这些工具脚本自身的 SHA-256 已被该路线 10 余份证据报告记录；tripo h31 实验的复核还直接比对证据里记录的 `Sources/…` 路径。改脚本会让已暂停路线的证据对不上，且 tripo 复核无论如何无法通过。因此工具与实验脚本一律不动，相关 31 个测试经 `tools/pet-model/tests/paused_rig_v2_route.py` 在正式资产不是冻结原版时跳过（恢复原资产即自动重新运行）；v009 证据测试改为核对存档原资产。
+- 桌面精灵图：用存档原模型按同一流程重烘焙作对照，第 0/1/8 行与旧图集平均差 0.6（8 月后运行时代码变化所致）；v3 平均差 4.6～7.7。同时发现 `build_sprite_sheet.sh` 的 ffmpeg overlay 默认走 yuv420，每次烘焙都让保留行损失一次色度（最大 15 级），改为 RGB overlay 后保留行与原图集逐字节一致。
+- 关键门禁重跑：按 2026-08-12 的 48 探针矩阵 × 0°/90°/180°/-90° 分别抓取原资产与新资产。原判失败的 5 个探针（左右大腿屈 35°、右大腿伸 35°、左右上臂内收 45°）在新资产上胸腹/背部折痕与手臂陷入消失；其余探针缩略图复核未见新问题（未做逐张原尺寸审核）。
+- 可复现性：按 `tools/pet-model/rerig/README.md` 从存档原资产重跑，`usd_compare` 128 个属性 0 差异，包内 usdc 与贴图逐字节相同，仅 zip 时间戳不同。
+- 可见差异（转阶段 2）：头部刚性后，运行时站姿补丁 `headScale 0.9` 完整作用于整个头（原权重下只作用一半左右），3D 与桌面精灵图中头部比旧图集小约一成；是否把该值调回 0.95～1.0 需与歪头碰撞约束一起在阶段 2 决定。
+- 证据：App 仓库 `character_pipeline/sprout/rerig-v1/review/`（对照图），完整截图存档于 `~/Library/Application Support/nick/stage0-rerig-20261015/stage1/`。

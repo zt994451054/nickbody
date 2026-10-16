@@ -48,8 +48,8 @@ Rig v2 必须支撑以下长期能力，而不是只通过某一个挥手动作�
 
 | 资源 | 当前 SHA-256 | 保护规则 |
 |------|--------------|---------|
-| `Sources/NickBodyCore/pet3d/pet_sprout_s2.usdz` | `0c2f165b6a8be7aa36cf3b0668f6557919de09a8609243403a1822ea1a05273d` | Rig v2 完整认证和用户批准前不得覆盖 |
-| `Sources/NickBodyCore/pet_sprout_sheet.png` | `5b0603f730fba4cbe38fc6fdd6da6a6d14f23a9a88e7265351a4e0bf4b6fbdc3` | 新动作逐帧批准前不得覆盖；迁移后由独立 strip 替代 |
+| `Sources/NickBodyCore/pet3d/pet_sprout_s2.usdz` | `fdd85526395b3707febf82f053645f88ea80beab3d4f89594cbc83249f0ecdb0` | CHANGE-125 经用户批准换为重绑骨版本；此后替换须新的变更记录和用户批准。原资产 `0c2f165b…273d` 逐字节存档于 App 仓库 `character_pipeline/sprout/rerig-v1/archive/pet_sprout_s2.pre-rerig.usdz` |
+| `Sources/NickBodyCore/pet_sprout_sheet.png` | `52871ec55bfee789fee48f746abea2c9f65c3c788f611d4d97b5680df0c5684a` | CHANGE-125 用重绑骨模型重烘焙第 0、1、8 行，其余行逐字节保留；新动作逐帧批准前不得覆盖。原图集 `5b0603f7…bdc3` 存档于同一目录 |
 
 每个候选必须写入独立目录。候选文件名、目录名或截图不得伪装为 `final`、`approved` 或正式 bundle 路径。
 

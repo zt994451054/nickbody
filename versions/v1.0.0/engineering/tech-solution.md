@@ -750,6 +750,7 @@ USD 中只改 Skeleton `bindTransforms`/`restTransforms` 和 Mesh `primvars:skel
 **阶段 1 集成**：
 - 正式 `pet_sprout_s2.usdz` 同名替换，原资产存档于 App 仓库 `character_pipeline/sprout/rerig-v1/archive/`。
 - 桌面精灵图重烘焙第 0、1、8 行。
-- `CandidateBSkeletonFixture` 与相关测试哈希按新资产更新；Rig v2 路线工具的冻结哈希改指向存档原资产。
+- `CandidateBSkeletonFixture` 与相关测试哈希按新资产更新；Rig v2 路线工具保持原样，其保护哨兵测试在正式资产不是冻结原版时跳过。
+- 核对结果：Swift 测试 158/158，模型工具测试 0 失败（31 个按暂停路线跳过）；正式 App 截图与已验收候选逐像素一致；8 月 48 探针关键门禁中原判失败的 5 项在新资产上消失。头部刚性后 `headScale 0.9` 完整生效，头部比旧图集小约一成，留待阶段 2 与歪头约束一起决定。
 
 **阶段 2 约束**：刚性大头歪头无碰撞上限约 22°（现有 ±38° 会压进肩膀），手臂外展上限约 65°。歪头改为"头约 20° + 上身侧倾 6° + 同侧手臂下沉 10°"，挥手需在外展上限内重新设计。
